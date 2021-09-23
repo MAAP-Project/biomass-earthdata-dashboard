@@ -16,7 +16,6 @@ To set up the development environment for this website, you'll need to install t
 
 - [Node](http://nodejs.org/) 12.x (To manage multiple node versions we recommend [nvm](https://github.com/creationix/nvm))
 - [Yarn](https://yarnpkg.com/) package manager
-- [Gulp]() TBD
 
 ### Install Application Dependencies
 

@@ -499,29 +499,16 @@ class PageHeader extends React.Component {
                       to='/explore'
                       exact
                       variation='achromic-plain'
-                      title='View the Explore page'
+                      title='View the Products page'
                       useIcon={
                         isMediumDown ? null : ['chevron-down--small', 'after']
                       }
                     >
-                      Explore
+                      Products
                     </Button>
                     <PrimeMenuBlock>
                       <PrimeMenuBlockTitle>Explore</PrimeMenuBlockTitle>
                       <PrimeSubmenu aria-label='submenu'>
-                        <li>
-                          <Button
-                            element={NavLinkFilter}
-                            to='/explore/global'
-                            exact
-                            variation={
-                              isMediumDown ? 'achromic-plain' : 'primary-plain'
-                            }
-                            title='Explore the global map'
-                          >
-                            Global
-                          </Button>
-                        </li>
                         {spotlightAreas &&
                           spotlightAreas.map((ss) => (
                             <li key={ss.id}>
