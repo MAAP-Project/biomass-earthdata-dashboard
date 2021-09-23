@@ -1,39 +1,22 @@
-# Earthdata Dashboard Starter
+# Biomass Earthdata Dashboard
 
-The Earthdata Dashboard Starter is a stripped-down version of the dashboard developed to support deriving insights on the impact of COVID-19 on different environmental factors. This stripped down version of the site supports exploring Earth Satellite imagery.
-
-Source code: https://github.com/nasa-impact/earthdata-simple
-Visit the live site on: https://earthdata.nasa.gov/covid19/
-
-This dashboard is powered by an [open source API](https://github.com/NASA-IMPACT/covid-api/) that is developed in parallel. This API focuses on serving the Cloud Optimized GeoTIFF and time-series indicator data that people can interact with in the dashboard.
+The Biomass Earthdata Dashboard is a stripped-down version of the dashboard developed to support deriving insights on the impact of COVID-19 on different environmental factors. 
 
 ## Current Features
 
-* Earthdata (Raster) Visualization
-
-
-## Future Features
-
-To simplify configuration for this example dashboard, a number of key features of the original COVID-19 dashboard have been removed. Specifically:
-
-* [Indicators](https://earthdata.nasa.gov/covid19/indicators)
-* [Discoveries](https://earthdata.nasa.gov/covid19/discoveries)
-
-It is the intent of this repository to add generators and guidance for adding those to a new deployment.
-
-## New features
-
-* Vector data visualization
-* User-provided search parameters produces data visualization
+* Raster Visualization
 
 ## Installation and Usage
+
 The steps below will walk you through setting up your own instance of the project.
 
 ### Install Project Dependencies
+
 To set up the development environment for this website, you'll need to install the following on your system:
 
-- [Node](http://nodejs.org/) v12 (To manage multiple node versions we recommend [nvm](https://github.com/creationix/nvm))
-- [Yarn](https://yarnpkg.com/) Package manager
+- [Node](http://nodejs.org/) 12.x (To manage multiple node versions we recommend [nvm](https://github.com/creationix/nvm))
+- [Yarn](https://yarnpkg.com/) package manager
+- [Gulp]() TBD
 
 ### Install Application Dependencies
 
@@ -41,6 +24,12 @@ If you use [`nvm`](https://github.com/creationix/nvm), activate the desired Node
 
 ```
 nvm install
+```
+
+or
+
+```
+nvm use 12
 ```
 
 Install Node modules:
@@ -52,6 +41,7 @@ yarn install
 ### Usage
 
 #### Config files
+
 All the config files can be found in `app/assets/scripts/config`.
 After installing the projects there will be 3 main files:
   - `local.js` - Used only for local development. On production this file should not exist or be empty.

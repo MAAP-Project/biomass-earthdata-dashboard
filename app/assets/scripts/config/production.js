@@ -1,9 +1,9 @@
 module.exports = {
   default: {
     environment: 'production',
-    appTitle: 'Earthdata Dashboard',
-    appDescription: 'Explore the data using our new experimental dashboard.',
-    twitterHandle: '@NASAEarthData',
+    appTitle: 'Biomass Earthdata Dashboard',
+    appDescription: 'Explore the Biomass datasets.',
+    // twitterHandle: '@NASAEarthData',
     mbToken: 'pk.eyJ1IjoiY292aWQtbmFzYSIsImEiOiJja2F6eHBobTUwMzVzMzFueGJuczF6ZzdhIn0.8va1fkyaWgM57_gZ2rBMMg',
     api: process.env.STAGE == "staging" ? process.env.STAGING_API_URL : (process.env.API_URL || 'http://localhost:8000/v1'),
     map: {

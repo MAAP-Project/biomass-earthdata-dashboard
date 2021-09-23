@@ -7,7 +7,7 @@ export class CdkStack extends cdk.Stack {
     super(scope, id, props);
 
     // The code that defines your stack goes here
-    const myBucket = new s3.Bucket(this, `earthdata-dashboard-${process.env.PROJECT}-${process.env.STAGE}`, {
+    const myBucket = new s3.Bucket(this, `${process.env.STAGE}-${process.env.PROJECT}-earthdata-dashboard`, {
       publicReadAccess: true,
       removalPolicy: cdk.RemovalPolicy.DESTROY,        
       websiteIndexDocument: "index.html"
