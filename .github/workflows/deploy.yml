@@ -4,12 +4,14 @@ on:
     branches:
       - main
       - staging
+      - production
 
 env:
   AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
   AWS_REGION: ${{ secrets.AWS_REGION }}
-  API_URL: ${{ secrets.API_URL }}
+  PRODUCTION_API_URL: ${{ secrets.PRODUCTION_API_URL }}
   STAGING_API_URL: ${{ secrets.STAGING_API_URL }}
+  DIT_API_URL: ${{ secrets.DIT_API_URL }}
 
 jobs:
   fetch-branch:
