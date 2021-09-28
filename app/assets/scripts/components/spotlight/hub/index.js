@@ -81,7 +81,7 @@ class SpotlightAreasHub extends React.Component {
                 <EntriesList>
                   <li>
                     <EntryNavLink
-                      to='/explore/global'
+                      to='/products/global'
                       title='Explore global'
                     >
                       <EntryNavLinkTitle>Global</EntryNavLinkTitle>
@@ -94,8 +94,8 @@ class SpotlightAreasHub extends React.Component {
                     spotlightAreas.map((item) => (
                       <li key={item.id}>
                         <EntryNavLink
-                          to={`/explore/${item.id}`}
-                          title={`View spotlight area ${item.label}`}
+                          to={`/products/${item.id}`}
+                          title={`View product area ${item.label}`}
                         >
                           <EntryNavLinkTitle>{item.label}</EntryNavLinkTitle>
                           <EntryNavLinkMedia>

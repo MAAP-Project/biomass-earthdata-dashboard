@@ -7,7 +7,7 @@ import { NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import config from '../../../config';
-import { fetchSpotlightSingle as fetchSpotlightSingleAction } from '../../../redux/spotlight';
+import { fetchProductSingle as fetchProductSingleAction } from '../../../redux/product';
 import { wrapApiResult } from '../../../redux/reduxeed';
 import { layerTypes } from '../layers/types';
 import { glsp } from '../../../styles/utils/theme-values';
@@ -269,7 +269,7 @@ class MbMap extends React.Component {
         .setLngLat(spotlight.center)
         .addTo(map)
         .onClick((coords) => {
-          this.props.fetchSpotlightSingle(spotlight.id);
+          this.props.fetchProductSingle(spotlight.id);
           this.setState({ popover: { coords, spotlightId: spotlight.id } });
         });
     };
@@ -515,7 +515,7 @@ class MbMap extends React.Component {
         title={
           spotlight.id ? (
             <SpotlightNavLink
-              to={`/explore/${spotlight.id}`}
+              to={`/products/${spotlight.id}`}
               title={`Visit ${spotlight.label} page`}
             >
               {spotlight.label}
@@ -540,7 +540,7 @@ class MbMap extends React.Component {
           <Button
             variation='primary-raised-dark'
             element={NavLink}
-            to={`/explore/${spotlightId}`}
+            to={`/products/${spotlightId}`}
             title={`Visit ${spotlight.label} page`}
             useIcon={['chevron-right--small', 'after']}
           >
@@ -585,7 +585,7 @@ MbMap.propTypes = {
   disableControls: T.bool,
   spotlightList: T.object,
   spotlight: T.object,
-  fetchSpotlightSingle: T.func
+  fetchProduct: T.func
 };
 
 function mapStateToProps (state) {
@@ -595,7 +595,7 @@ function mapStateToProps (state) {
 }
 
 const mapDispatchToProps = {
-  fetchSpotlightSingle: fetchSpotlightSingleAction
+  fetchProductSingle: fetchProductSingleAction
 };
 
 export default connect(mapStateToProps, mapDispatchToProps, null, {

@@ -4,7 +4,7 @@ import { combineReducers } from 'redux';
 import layerData from './layer-data';
 import timeSeries from './time-series';
 import cogTimeData from './cog-time-data';
-import spotlight from './spotlight';
+import spotlight from './product';
 
 export const reducers = {
   layerData,
