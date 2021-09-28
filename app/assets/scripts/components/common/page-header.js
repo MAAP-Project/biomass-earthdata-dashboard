@@ -552,7 +552,7 @@ class PageHeader extends React.Component {
                             <li key={ss.id}>
                               <Button
                                 element={NavLinkFilter}
-                                to={`/products/${ss.id}`}
+                                to={`/country_pilots/peru`}
                                 variation={
                                   isMediumDown
                                     ? 'achromic-plain'
