@@ -22,7 +22,7 @@ import {
 } from '../../styles/inpage';
 import Prose from '../../styles/type/prose';
 import MbMap from '../common/mb-map-explore/mb-map';
-import { fetchSpotlightSingle as fetchSpotlightSingleAction } from '../../redux/spotlight';
+import { fetchProductSingle as fetchProductSingleAction } from '../../redux/product';
 import { wrapApiResult } from '../../redux/reduxeed';
 
 import { headingAlt } from '../../styles/type/heading';
@@ -328,7 +328,7 @@ class Home extends React.Component {
   }
 
   componentDidMount (prevProps, prevState) {
-    this.requestSpotlight();
+    this.requestProduct();
   }
 
   componentDidUpdate (prevProps, prevState) {
@@ -380,14 +380,14 @@ class Home extends React.Component {
     });
   }
 
-  async requestSpotlight () {
-    await this.props.fetchSpotlightSingle(stories[this.state.storyIndex].spotlightId);
+  async requestProduct () {
+    await this.props.fetchProductSingle(stories[this.state.storyIndex].spotlightId);
   }
 
   async onMapAction (action, payload) {
     switch (action) {
       case 'map.loaded': {
-        this.setState({ mapLoaded: true }, this.requestSpotlight);
+        this.setState({ mapLoaded: true }, this.requestProduct);
         break;
       }
       case 'map.move': {
@@ -435,7 +435,7 @@ class Home extends React.Component {
       return ({
         storyIndex: mod(prevState.storyIndex - 1, stories.length)
       });
-    }, this.requestSpotlight);
+    }, this.requestProduct);
   }
 
   nextStory (e) {
@@ -448,7 +448,7 @@ class Home extends React.Component {
       return ({
         storyIndex: mod(prevState.storyIndex + 1, stories.length)
       });
-    }, this.requestSpotlight);
+    }, this.requestProduct);
   }
 
   render () {
@@ -492,7 +492,7 @@ class Home extends React.Component {
                   <IntroStatsTitle>Some numbers</IntroStatsTitle>
                   <IntroStatsList>
                     <dt>Areas</dt>
-                    <dd><Link to='/explore' title='Explore the areas'>{zeroPad(spotlightsCount)}</Link></dd>
+                    <dd><Link to='/products' title='Explore the areas'>{zeroPad(spotlightsCount)}</Link></dd>
                   </IntroStatsList>
                 </IntroStats>
                 <IntroStories>
@@ -565,7 +565,7 @@ class Home extends React.Component {
 }
 
 Home.propTypes = {
-  fetchSpotlightSingle: T.func,
+  fetchProductSingle: T.func,
   spotlightList: T.object,
   spotlight: T.object
 };
@@ -578,7 +578,7 @@ function mapStateToProps (state, props) {
 }
 
 const mapDispatchToProps = {
-  fetchSpotlightSingle: fetchSpotlightSingleAction
+  fetchProductSingle: fetchProductSingleAction
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

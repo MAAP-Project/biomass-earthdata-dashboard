@@ -24,7 +24,7 @@ import SecPanel from './sec-panel';
 import ExploreNavigation from '../../common/explore-navigation';
 
 import { themeVal } from '../../../styles/utils/general';
-import { fetchSpotlightSingle as fetchSpotlightSingleAction } from '../../../redux/spotlight';
+import { fetchProductSingle as fetchProductSingleAction } from '../../../redux/product';
 import { wrapApiResult, getFromState } from '../../../redux/reduxeed';
 import {
   showGlobalLoading,
@@ -104,16 +104,24 @@ class SpotlightAreasSingle extends React.Component {
 
     // Set query state definition for url state storing.
     const common = getCommonQsState(props);
-
+    
     switch (props.match.params.spotlightId) {
-      case 'togo':
-        common.layers.default = 'togo-ag';
+      case 'cci_biomass':
+        common.layers.default = 'cci_biomass';
         break;
-      case 'wble':
-        common.layers.default = 'water-wq-gl-chl';
+      case 'gedi_l4b':
+        common.layers.default = 'gedi_l4b';
+        break;
+      case 'nasa_jpl':
+        common.layers.default = 'nasa_jpl';
+        break;
+      case 'icesat2_boreal':
+        common.layers.default = 'icesat2_boreal';
+        break;
+      case 'nceo_africa':
+        common.layers.default = 'nceo_africa';
         break;
       default:
-        common.layers.default = 'nightlights-hd';
         break;
     }
 
@@ -139,13 +147,13 @@ class SpotlightAreasSingle extends React.Component {
   }
 
   componentDidMount () {
-    this.requestSpotlight();
+    this.requestProduct();
   }
 
   componentDidUpdate (prevProps, prevState) {
     const { spotlightId } = this.props.match.params;
     if (spotlightId !== prevProps.match.params.spotlightId) {
-      this.requestSpotlight();
+      this.requestProduct();
       // Reset state on page change.
       this.setState({
         ...getInitialMapExploreState(),
@@ -164,9 +172,9 @@ class SpotlightAreasSingle extends React.Component {
     this.props.history.push({ search: qString });
   }
 
-  async requestSpotlight () {
+  async requestProduct () {
     showGlobalLoading();
-    await this.props.fetchSpotlightSingle(this.props.match.params.spotlightId);
+    await this.props.fetchProductSingle(this.props.match.params.spotlightId);
     hideGlobalLoading();
   }
 
@@ -300,7 +308,7 @@ class SpotlightAreasSingle extends React.Component {
 }
 
 SpotlightAreasSingle.propTypes = {
-  fetchSpotlightSingle: T.func,
+  fetchProductSingle: T.func,
   spotlight: T.object,
   spotlightList: T.object,
   summary: T.node,
@@ -323,7 +331,7 @@ function mapStateToProps (state, props) {
 }
 
 const mapDispatchToProps = {
-  fetchSpotlightSingle: fetchSpotlightSingleAction
+  fetchProductSingle: fetchProductSingleAction
 };
 
 export default connect(

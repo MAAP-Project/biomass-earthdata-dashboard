@@ -431,6 +431,8 @@ class PageHeader extends React.Component {
     const { spotlightList, isMediumDown } = this.props;
 
     const spotlightAreas = spotlightList.isReady() && spotlightList.getData();
+    const countryPilots = spotlightAreas; // TODO
+
     const url = window.location.toString();
 
     return (
@@ -496,7 +498,7 @@ class PageHeader extends React.Component {
                   <li>
                     <Button
                       element={NavLinkFilter}
-                      to='/explore'
+                      to='/products'
                       exact
                       variation='achromic-plain'
                       title='View the Products page'
@@ -507,14 +509,50 @@ class PageHeader extends React.Component {
                       Products
                     </Button>
                     <PrimeMenuBlock>
-                      <PrimeMenuBlockTitle>Explore</PrimeMenuBlockTitle>
+                      <PrimeMenuBlockTitle>Products</PrimeMenuBlockTitle>
                       <PrimeSubmenu aria-label='submenu'>
                         {spotlightAreas &&
                           spotlightAreas.map((ss) => (
                             <li key={ss.id}>
                               <Button
                                 element={NavLinkFilter}
-                                to={`/explore/${ss.id}`}
+                                to={`/products/${ss.id}`}
+                                variation={
+                                  isMediumDown
+                                    ? 'achromic-plain'
+                                    : 'primary-plain'
+                                }
+                                title={`Explore ${ss.label}`}
+                              >
+                                {ss.label}
+                              </Button>
+                            </li>
+                          ))}
+                      </PrimeSubmenu>
+                    </PrimeMenuBlock>
+                  </li>
+                  <li>
+                    <Button
+                      element={NavLinkFilter}
+                      to='/products'
+                      exact
+                      variation='achromic-plain'
+                      title='View the Country Pilots page'
+                      useIcon={
+                        isMediumDown ? null : ['chevron-down--small', 'after']
+                      }
+                    >
+                      Country Pilots
+                    </Button>
+                    <PrimeMenuBlock>
+                      <PrimeMenuBlockTitle>Country Pilots</PrimeMenuBlockTitle>
+                      <PrimeSubmenu aria-label='submenu'>
+                        {countryPilots &&
+                          countryPilots.map((ss) => (
+                            <li key={ss.id}>
+                              <Button
+                                element={NavLinkFilter}
+                                to={`/products/${ss.id}`}
                                 variation={
                                   isMediumDown
                                     ? 'achromic-plain'

@@ -4,46 +4,46 @@ import config from '../config';
 import { makeActions, makeFetchThunk, makeAPIReducer } from './reduxeed';
 
 // /////////////////////////////////////////////////////////////////////////////
-// SPOTLIGHT_SINGLE
+// PRODUCT_SINGLE
 // /////////////////////////////////////////////////////////////////////////////
 
-const spotlightSingleActions = makeActions('SPOTLIGHT_SINGLE', true);
+const productSingleActions = makeActions('PRODUCT_SINGLE', true);
 
-export function fetchSpotlightSingle (id) {
+export function fetchProductSingle (id) {
   return makeFetchThunk({
-    url: `${config.api}/sites/${id}`,
+    url: `${config.api}/products/${id}`,
     // cache: true,
-    statePath: ['spotlight', 'single', id],
-    requestFn: spotlightSingleActions.request.bind(null, id),
-    receiveFn: spotlightSingleActions.receive.bind(null, id)
+    statePath: ['product', 'single', id],
+    requestFn: productSingleActions.request.bind(null, id),
+    receiveFn: productSingleActions.receive.bind(null, id)
   });
 }
 
-const spotlightSingleReducer = makeAPIReducer('SPOTLIGHT_SINGLE', true);
+const productSingleReducer = makeAPIReducer('PRODUCT_SINGLE', true);
 
 // /////////////////////////////////////////////////////////////////////////////
-// SPOTLIGHT_LIST
+// PRODUCT_LIST
 // /////////////////////////////////////////////////////////////////////////////
 
-const spotlightActions = makeActions('SPOTLIGHT_LIST');
+const productActions = makeActions('PRODUCT_LIST');
 
-export function fetchSpotlightList () {
+export function fetchProductList () {
   return makeFetchThunk({
-    url: `${config.api}/sites`,
+    url: `${config.api}/products`,
     cache: true,
-    requestFn: spotlightActions.request,
-    receiveFn: spotlightActions.receive,
-    mutator: d => d.sites
+    requestFn: productActions.request,
+    receiveFn: productActions.receive,
+    mutator: d => d.products
   });
 }
 
-const spotlightListReducer = makeAPIReducer('SPOTLIGHT_LIST');
+const productListReducer = makeAPIReducer('PRODUCT_LIST');
 
 // /////////////////////////////////////////////////////////////////////////////
 // Export
 // /////////////////////////////////////////////////////////////////////////////
 
 export default combineReducers({
-  single: spotlightSingleReducer,
-  list: spotlightListReducer
+  single: productSingleReducer,
+  list: productListReducer
 });

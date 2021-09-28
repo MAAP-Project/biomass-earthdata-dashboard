@@ -11,7 +11,7 @@ import theme from './styles/theme/theme';
 import store from './utils/store';
 import history from './utils/history';
 import config from './config';
-import { fetchSpotlightList } from './redux/spotlight';
+import { fetchProductList } from './redux/product';
 
 import GlobalStyles from './styles/global';
 import ErrorBoundary from './fatal-error-boundary';
@@ -29,7 +29,7 @@ import About from './components/about';
 import Development from './components/development';
 
 // Load the spotlight areas list.
-store.dispatch(fetchSpotlightList());
+store.dispatch(fetchProductList());
 
 const { gaTrackingCode } = config;
 
@@ -81,15 +81,15 @@ class Root extends React.Component {
               {this.state.dataReady && (
                 <Switch>
                   <Route exact path='/' component={Home} />
-                  <Route exact path='/explore' component={SpotlightHub} />
+                  <Route exact path='/products' component={SpotlightHub} />
                   <Route
                     exact
-                    path='/explore/global'
+                    path='/products/global'
                     component={GlobalExplore}
                   />
                   <Route
                     exact
-                    path='/explore/:spotlightId'
+                    path='/products/:spotlightId'
                     component={SpotlightSingle}
                   />
                   <Route path='/sandbox' component={Sandbox} />
