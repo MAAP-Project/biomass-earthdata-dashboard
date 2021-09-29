@@ -39,17 +39,17 @@ const layerOverrides = [
 ];
 
 // Store the layer data.
-const layersDataBySpotlight = {};
+const layersDataByProduct = {};
 
-export function getSpotlightLayers (spotlightId) {
-  return layersDataBySpotlight[spotlightId];
+export function getProductLayers(productId) {
+  return layersDataByProduct[productId];
 }
 
-export function getGlobalLayers () {
-  return layersDataBySpotlight.global;
+export function getGlobalLayers() {
+  return layersDataByProduct.global;
 }
 
-export const storeSpotlightLayers = (spotlightId, layers) => {
+export const storeProductLayers = (productId, layers) => {
   // Overrides to the layer settings.
   const spotLayers = layers
     .map((layer) => {
@@ -60,5 +60,5 @@ export const storeSpotlightLayers = (spotlightId, layers) => {
       return defaultsDeep({}, base, layer);
     });
 
-  layersDataBySpotlight[spotlightId] = spotLayers;
+  layersDataByProduct[productId] = spotLayers;
 };

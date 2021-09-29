@@ -10,7 +10,7 @@ import {
   hideGlobalLoading,
   showGlobalLoadingMessage
 } from './components/common/global-loading';
-import { storeSpotlightLayers } from './components/common/layers';
+import { storeProductLayers } from './components/common/layers';
 
 // Dev note:
 // The datasets (or map layers) information was moved to the api, however some
@@ -24,25 +24,25 @@ import { storeSpotlightLayers } from './components/common/layers';
 // development is planned for the near future.
 
 class LayerDataLoader extends React.Component {
-  componentDidMount () {
+  componentDidMount() {
     showGlobalLoadingMessage('Loading datasets');
   }
 
-  componentDidUpdate (prevProps) {
-    const { spotlightList } = this.props;
-    if (spotlightList.isReady() && !prevProps.spotlightList.isReady()) {
-      this.requestData(spotlightList.getData());
+  componentDidUpdate(prevProps) {
+    const { productList } = this.props;
+    if (productList.isReady() && !prevProps.productList.isReady()) {
+      this.requestData(productList.getData());
     }
   }
 
-  async requestData (spotlightList) {
-    const ids = [...spotlightList.map((s) => s.id), 'global'];
+  async requestData(productList) {
+    const ids = [...productList.map((s) => s.id), 'global'];
     await Promise.all(
-      ids.map(async (spotlightId) => {
+      ids.map(async (productId) => {
         const { body } = await fetchJSON(
-          `${config.api}/datasets/${spotlightId}`
+          `${config.api}/datasets/${productId}`
         );
-        storeSpotlightLayers(spotlightId, body.datasets);
+        storeProductLayers(productId, body.datasets);
       })
     );
 
@@ -50,19 +50,19 @@ class LayerDataLoader extends React.Component {
     this.props.onReady();
   }
 
-  render () {
+  render() {
     return null;
   }
 }
 
 LayerDataLoader.propTypes = {
-  spotlightList: T.object,
+  productList: T.object,
   onReady: T.func
 };
 
-function mapStateToProps (state, props) {
+function mapStateToProps(state, props) {
   return {
-    spotlightList: wrapApiResult(state.spotlight.list)
+    productList: wrapApiResult(state.product.list)
   };
 }
 

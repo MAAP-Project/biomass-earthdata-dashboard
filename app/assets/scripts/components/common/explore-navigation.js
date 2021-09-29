@@ -64,19 +64,19 @@ const PanelNavLink = styled(NavLink)`
 `;
 
 class ExploreNavigation extends React.Component {
-  componentDidMount () {
-    if (this.props.spotlights.length) {
+  componentDidMount() {
+    if (this.props.products.length) {
       this.positionSelected();
     }
   }
 
-  componentDidUpdate (prevProps, prevState) {
-    if (prevProps.spotlights.length !== this.props.spotlights.length) {
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.products.length !== this.props.products.length) {
       this.positionSelected();
     }
   }
 
-  positionSelected () {
+  positionSelected() {
     // The scroll has to be controlled using dom functions.
     // Get scroll area position.
     const { top: areaFromDocTop } = document
@@ -97,8 +97,8 @@ class ExploreNavigation extends React.Component {
       .scrollTop = scrollOffset - 32;
   }
 
-  render () {
-    const { spotlights } = this.props;
+  render() {
+    const { products } = this.props;
 
     return (
       <PanelBlockNav>
@@ -113,7 +113,7 @@ class ExploreNavigation extends React.Component {
                   Global
                 </PanelNavLink>
               </li>
-              {spotlights.map((ss) => (
+              {products.map((ss) => (
                 <li key={ss.id}>
                   <PanelNavLink
                     exact
@@ -133,7 +133,7 @@ class ExploreNavigation extends React.Component {
 }
 
 ExploreNavigation.propTypes = {
-  spotlights: T.array
+  products: T.array
 };
 
 export default ExploreNavigation;

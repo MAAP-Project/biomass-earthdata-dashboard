@@ -43,7 +43,7 @@ import media from '../../styles/utils/media-queries';
 import { zeroPad } from '../../utils/format';
 
 import stories from './stories';
-import { getSpotlightLayers } from '../common/layers';
+import { getProductLayers } from '../common/layers';
 import { mod } from '../../utils/utils';
 
 const CYCLE_TIME = 8000;
@@ -302,7 +302,7 @@ const StoryProse = styled(Prose)`
 `;
 
 class Home extends React.Component {
-  constructor (props) {
+  constructor(props) {
     super(props);
     this.mbMapRef = React.createRef();
     this.state = {
@@ -327,27 +327,27 @@ class Home extends React.Component {
     this.storiesCyclingTimeout = null;
   }
 
-  componentDidMount (prevProps, prevState) {
+  componentDidMount(prevProps, prevState) {
     this.requestProduct();
   }
 
-  componentDidUpdate (prevProps, prevState) {
+  componentDidUpdate(prevProps, prevState) {
     const { mapLoaded, storyIndex } = this.state;
-    const { spotlight } = this.props;
-    const { spotlightId, layers } = stories[storyIndex];
+    const { product } = this.props;
+    const { productId, layers } = stories[storyIndex];
     if (mapLoaded) {
-      if (spotlight !== prevProps.spotlight) {
+      if (product !== prevProps.product) {
         this.resizeMap();
-        const spotlightData = spotlight[spotlightId].getData();
-        if (spotlightData.bounding_box) {
+        const productData = product[productId].getData();
+        if (productData.bounding_box) {
           const storyLayers = layers;
-          const spotlightLayers = getSpotlightLayers(spotlightId)
+          const productLayers = getProductLayers(productId)
             .map(layer => ({ ...layer, enabled: storyLayers.includes(layer.id) }));
-          this.mbMapRef.current.mbMap.fitBounds(spotlightData.bounding_box);
+          this.mbMapRef.current.mbMap.fitBounds(productData.bounding_box);
           this.setState({
-            mapLayers: spotlightLayers
+            mapLayers: productLayers
           }, () => {
-            for (const l of spotlightLayers) {
+            for (const l of productLayers) {
               if (l.enabled && !this.state.activeLayers.includes(l.id)) {
                 this.toggleLayer(l);
               }
@@ -358,13 +358,13 @@ class Home extends React.Component {
     }
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     if (this.storiesCyclingTimeout) {
       clearTimeout(this.storiesCyclingTimeout);
     }
   }
 
-  toggleLayer (layer) {
+  toggleLayer(layer) {
     toggleLayerCommon.call(this, layer, () => {
       if (this.storiesCyclingTimeout) {
         clearTimeout(this.storiesCyclingTimeout);
@@ -380,11 +380,11 @@ class Home extends React.Component {
     });
   }
 
-  async requestProduct () {
-    await this.props.fetchProductSingle(stories[this.state.storyIndex].spotlightId);
+  async requestProduct() {
+    await this.props.fetchProductSingle(stories[this.state.storyIndex].productId);
   }
 
-  async onMapAction (action, payload) {
+  async onMapAction(action, payload) {
     switch (action) {
       case 'map.loaded': {
         this.setState({ mapLoaded: true }, this.requestProduct);
@@ -400,7 +400,7 @@ class Home extends React.Component {
     }
   }
 
-  toggleStoriesCycling () {
+  toggleStoriesCycling() {
     const { storiesCycling } = this.state;
     if (storiesCycling) {
       this.stopStoriesCycling();
@@ -409,7 +409,7 @@ class Home extends React.Component {
     }
   }
 
-  stopStoriesCycling () {
+  stopStoriesCycling() {
     // Stop timeout when the user paused
     if (this.storiesCyclingTimeout) {
       clearTimeout(this.storiesCyclingTimeout);
@@ -417,7 +417,7 @@ class Home extends React.Component {
     this.setState({ storiesCycling: false });
   }
 
-  startStoriesCycling () {
+  startStoriesCycling() {
     // Prepare timeout when the user restarts.
     this.storiesCyclingTimeout = setTimeout(() => {
       this.nextStory();
@@ -425,7 +425,7 @@ class Home extends React.Component {
     this.setState({ storiesCycling: true });
   }
 
-  prevStory (e) {
+  prevStory(e) {
     // If the user is manually navigating, stop the auto play.
     if (e) {
       e.preventDefault();
@@ -438,7 +438,7 @@ class Home extends React.Component {
     }, this.requestProduct);
   }
 
-  nextStory (e) {
+  nextStory(e) {
     // If the user is manually navigating, stop the auto play.
     if (e) {
       e.preventDefault();
@@ -451,7 +451,7 @@ class Home extends React.Component {
     }, this.requestProduct);
   }
 
-  render () {
+  render() {
     const {
       storyIndex,
       mapLayers,
@@ -463,8 +463,8 @@ class Home extends React.Component {
     const { storyDate } = currentStory;
     const layers = this.getLayersWithState(mapLayers);
 
-    const { isReady, getData } = this.props.spotlightList;
-    const spotlightsCount = isReady() ? getData().length : 0;
+    const { isReady, getData } = this.props.productList;
+    const productsCount = isReady() ? getData().length : 0;
 
     return (
       <App pageTitle='Home'>
@@ -492,11 +492,11 @@ class Home extends React.Component {
                   <IntroStatsTitle>Some numbers</IntroStatsTitle>
                   <IntroStatsList>
                     <dt>Areas</dt>
-                    <dd><Link to='/products' title='Explore the areas'>{zeroPad(spotlightsCount)}</Link></dd>
+                    <dd><Link to='/products' title='Explore the areas'>{zeroPad(productsCount)}</Link></dd>
                   </IntroStatsList>
                 </IntroStats>
                 <IntroStories>
-                  {storiesCycling && !!storiesCyclingIteration && <CycleProgressBar key={storiesCyclingIteration} /> }
+                  {storiesCycling && !!storiesCyclingIteration && <CycleProgressBar key={storiesCyclingIteration} />}
                   <IntroStoriesHeader>
                     <IntroStoriesTitle>Did you know?</IntroStoriesTitle>
                     <IntroStoriesToolbar>
@@ -566,14 +566,14 @@ class Home extends React.Component {
 
 Home.propTypes = {
   fetchProductSingle: T.func,
-  spotlightList: T.object,
-  spotlight: T.object
+  productList: T.object,
+  product: T.object
 };
 
-function mapStateToProps (state, props) {
+function mapStateToProps(state, props) {
   return {
-    spotlightList: wrapApiResult(state.spotlight.list),
-    spotlight: wrapApiResult(state.spotlight.single, true)
+    productList: wrapApiResult(state.product.list),
+    product: wrapApiResult(state.product.single, true)
   };
 }
 

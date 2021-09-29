@@ -21,14 +21,14 @@ import LayerDataLoader from './layer-data-loader';
 // Views
 import Home from './components/home';
 import GlobalExplore from './components/global';
-import SpotlightHub from './components/spotlight/hub';
-import SpotlightSingle from './components/spotlight/single';
+import ProductHub from './components/products/hub';
+import ProductSingle from './components/products/single';
 import Sandbox from './components/sandbox';
 import UhOh from './components/uhoh';
 import About from './components/about';
 import Development from './components/development';
 
-// Load the spotlight areas list.
+// Load the product areas list.
 store.dispatch(fetchProductList());
 
 const { gaTrackingCode } = config;
@@ -42,7 +42,7 @@ if (gaTrackingCode) {
 
 // Root component. Used by the router.
 class Root extends React.Component {
-  constructor (props) {
+  constructor(props) {
     super(props);
 
     this.state = {
@@ -58,14 +58,14 @@ class Root extends React.Component {
     });
   }
 
-  componentDidMount () {
+  componentDidMount() {
     // Hide the welcome banner.
     const banner = document.querySelector('#welcome-banner');
     banner.classList.add('dismissed');
     setTimeout(() => banner.remove(), 500);
   }
 
-  render () {
+  render() {
     return (
       <Provider store={store}>
         <Router history={history}>
@@ -81,7 +81,7 @@ class Root extends React.Component {
               {this.state.dataReady && (
                 <Switch>
                   <Route exact path='/' component={Home} />
-                  <Route exact path='/products' component={SpotlightHub} />
+                  <Route exact path='/products' component={ProductHub} />
                   <Route
                     exact
                     path='/products/global'
@@ -89,8 +89,8 @@ class Root extends React.Component {
                   />
                   <Route
                     exact
-                    path='/products/:spotlightId'
-                    component={SpotlightSingle}
+                    path='/products/:productId'
+                    component={ProductSingle}
                   />
                   <Route path='/sandbox' component={Sandbox} />
                   <Route path='/about' component={About} />

@@ -67,7 +67,7 @@ const LayersButton = styled(Button)`
 // It is disconnected from the global state because it needs to be included
 // via the mapbox code.
 export default class LayerControlDropdown extends React.Component {
-  render () {
+  render() {
     const {
       overlayState,
       handleOverlayChange
@@ -91,12 +91,12 @@ export default class LayerControlDropdown extends React.Component {
         <LayersList>
           <li>
             <LayerSwitch
-              name='switch-spotlight'
-              title='Toggle spotlight markers on/off'
-              checked={overlayState.spotlightMarkers}
-              onChange={() => handleOverlayChange('spotlightMarkers')}
+              name='switch-product'
+              title='Toggle product markers on/off'
+              checked={overlaystate.productMarkers}
+              onChange={() => handleOverlayChange('productMarkers')}
             >
-              Spotlight markers
+              Product markers
             </LayerSwitch>
           </li>
         </LayersList>

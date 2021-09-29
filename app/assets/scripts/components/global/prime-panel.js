@@ -22,17 +22,17 @@ const PrimePanel = styled(Panel)`
 `;
 
 class ExpMapPrimePanel extends React.Component {
-  render () {
+  render() {
     const {
       layers,
       onAction,
       onPanelChange,
       mapLoaded,
       aoiState,
-      spotlightList
+      productList
     } = this.props;
 
-    const spotlightAreas = spotlightList.isReady() && spotlightList.getData();
+    const products = productList.isReady() && productList.getData();
 
     return (
       <PrimePanel
@@ -47,7 +47,7 @@ class ExpMapPrimePanel extends React.Component {
         )}
         bodyContent={
           <>
-            <ExploreNavigation spotlights={spotlightAreas || []} />
+            <ExploreNavigation products={products || []} />
             <DataLayersBlock
               layers={layers}
               mapLoaded={mapLoaded}
@@ -75,7 +75,7 @@ ExpMapPrimePanel.propTypes = {
   layers: T.array,
   mapLoaded: T.bool,
   aoiState: T.object,
-  spotlightList: T.object
+  productList: T.object
 };
 
 export default ExpMapPrimePanel;

@@ -122,7 +122,7 @@ const dateMax = (...args) =>
 const cogLayers = {};
 
 class GlobalExplore extends React.Component {
-  constructor (props) {
+  constructor(props) {
     super(props);
     // Functions from helper file.
     this.setLayerState = setLayerState.bind(this);
@@ -212,20 +212,20 @@ class GlobalExplore extends React.Component {
     };
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     this.props.invalidateCogTimeData();
   }
 
-  onPanelChange (panel, revealed) {
+  onPanelChange(panel, revealed) {
     this.setState({ [panel]: revealed });
   }
 
-  updateUrlQS () {
+  updateUrlQS() {
     const qString = this.qsState.getQs(this.state);
     this.props.history.push({ search: qString });
   }
 
-  async requestCogData () {
+  async requestCogData() {
     const {
       aoi: { feature },
       cogDateRanges
@@ -251,7 +251,7 @@ class GlobalExplore extends React.Component {
     hideGlobalLoading();
   }
 
-  async requestSingleCogData (id) {
+  async requestSingleCogData(id) {
     const {
       aoi: { feature },
       cogDateRanges
@@ -272,7 +272,7 @@ class GlobalExplore extends React.Component {
     hideGlobalLoading();
   }
 
-  onPanelAction (action, payload) {
+  onPanelAction(action, payload) {
     // Returns true if the action was handled.
     handlePanelAction.call(this, action, payload);
 
@@ -335,7 +335,7 @@ class GlobalExplore extends React.Component {
     }
   }
 
-  async onMapAction (action, payload) {
+  async onMapAction(action, payload) {
     // Returns true if the action was handled.
     handleMapAction.call(this, action, payload);
 
@@ -383,15 +383,15 @@ class GlobalExplore extends React.Component {
     }
   }
 
-  toggleLayer (layer) {
+  toggleLayer(layer) {
     toggleLayerCommon.call(this, layer, () => {
       this.updateUrlQS();
       this.requestCogData();
     });
   }
 
-  render () {
-    const { spotlightList } = this.props;
+  render() {
+    const { productList } = this.props;
     const layers = this.getLayersWithState();
     const activeTimeseriesLayers = this.getActiveTimeseriesLayers();
     const activeCogTimeseriesLayers = activeTimeseriesLayers
@@ -430,7 +430,7 @@ class GlobalExplore extends React.Component {
                   this.resizeMap();
                   this.onPanelChange('panelPrime', revealed);
                 }}
-                spotlightList={spotlightList}
+                productList={productList}
               />
               <ExploreCarto>
                 <MapMessage active={this.state.aoi.drawing}>
@@ -454,7 +454,7 @@ class GlobalExplore extends React.Component {
                   comparing={isComparing}
                   enableLocateUser
                   enableOverlayControls
-                  spotlightList={spotlightList}
+                  productList={productList}
                 />
                 <Timeline
                   isActive={!!activeTimeseriesLayers.length}
@@ -489,14 +489,14 @@ GlobalExplore.propTypes = {
   invalidateCogTimeData: T.func,
   mapLayers: T.array,
   cogTimeData: T.object,
-  spotlightList: T.object,
+  productList: T.object,
   location: T.object,
   history: T.object
 };
 
-function mapStateToProps (state, props) {
+function mapStateToProps(state, props) {
   return {
-    spotlightList: wrapApiResult(state.spotlight.list),
+    productList: wrapApiResult(state.product.list),
     mapLayers: getGlobalLayers(),
     cogTimeData: wrapApiResult(state.cogTimeData, true)
   };

@@ -183,7 +183,7 @@ export const layerTypes = {
 
       // Check if the source tiles have changed and need to be replaced. This
       // may happen in the stories when maintaining the layer and changing the
-      // spotlight. One example is the slowdown raster layer on la and sf.
+      // product. One example is the slowdown raster layer on la and sf.
       const sourceTiles = mbMap.getSource(id).tiles;
       const newSourceTiles = source.tiles;
       // Quick compare
@@ -374,5 +374,5 @@ export const layerTypes = {
         paint
       );
     }
-  }  
+  }
 };
