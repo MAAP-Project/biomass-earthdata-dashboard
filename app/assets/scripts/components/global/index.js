@@ -18,7 +18,7 @@ import {
   InpageTitle,
   InpageBody
 } from '../../styles/inpage';
-import MbMap from '../common/mb-map-explore/mb-map';
+import MbMap from '../common/mb-map-products/mb-map';
 import Timeline from '../common/timeline';
 import MapMessage from '../common/map-message';
 
@@ -31,7 +31,7 @@ import {
   invalidateCogTimeData as invalidateCogTimeDataAction
 } from '../../redux/cog-time-data';
 import { utcDate } from '../../utils/utils';
-import { getGlobalLayers } from '../common/layers';
+import { getProductGlobalLayers } from '../common/layers';
 import {
   setLayerState,
   getLayerState,
@@ -497,7 +497,7 @@ GlobalExplore.propTypes = {
 function mapStateToProps(state, props) {
   return {
     productList: wrapApiResult(state.product.list),
-    mapLayers: getGlobalLayers(),
+    mapLayers: getProductGlobalLayers(),
     cogTimeData: wrapApiResult(state.cogTimeData, true)
   };
 }

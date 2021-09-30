@@ -14,17 +14,17 @@ import {
   InpageTitle,
   InpageBody
 } from '../../../styles/inpage';
-import MbMap from '../../common/mb-map-products/mb-map';
+import MbMap from '../../common/mb-map-country-pilots/mb-map';
 import UhOh from '../../uhoh';
 import DataLayersBlock from '../../common/data-layers-block';
 import Panel, { PanelHeadline, PanelTitle } from '../../common/panel';
 import MapMessage from '../../common/map-message';
 import Timeline from '../../common/timeline';
 import SecPanel from './sec-panel';
-import ProductsNavigation from '../../common/products-navigation';
+import CountryPilotsNavigation from '../../common/country-pilots-navigation';
 
 import { themeVal } from '../../../styles/utils/general';
-import { fetchProductSingle as fetchProductSingleAction } from '../../../redux/product';
+import { fetchCountryPilotSingle as fetchCountryPilotSingleAction } from '../../../redux/country-pilot';
 import { wrapApiResult, getFromState } from '../../../redux/reduxeed';
 import {
   showGlobalLoading,
@@ -86,7 +86,7 @@ const PrimePanel = styled(Panel)`
   `}
 `;
 
-class ProductSingle extends React.Component {
+class CountryPilotSingle extends React.Component {
   constructor(props) {
     super(props);
     // Functions from helper file.
@@ -105,21 +105,18 @@ class ProductSingle extends React.Component {
     // Set query state definition for url state storing.
     const common = getCommonQsState(props);
 
-    switch (props.match.params.productId) {
-      case 'cci_biomass':
+    switch (props.match.params.countryPilotId) {
+      case 'wales':
         common.layers.default = 'cci_biomass';
         break;
-      case 'gedi_l4b':
+      case 'japan':
         common.layers.default = 'gedi_l4b';
         break;
-      case 'nasa_jpl':
+      case 'paraguay':
         common.layers.default = 'nasa_jpl';
         break;
-      case 'icesat2_boreal':
+      case 'peru':
         common.layers.default = 'icesat2_boreal';
-        break;
-      case 'nceo_africa':
-        common.layers.default = 'nceo_africa';
         break;
       default:
         break;
@@ -147,13 +144,13 @@ class ProductSingle extends React.Component {
   }
 
   componentDidMount() {
-    this.requestProduct();
+    this.requestCountryPilot();
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const { productId } = this.props.match.params;
-    if (productId !== prevProps.match.params.productId) {
-      this.requestProduct();
+    const { countryPilotId } = this.props.match.params;
+    if (countryPilotId !== prevProps.match.params.countryPilotId) {
+      this.requestCountryPilotId();
       // Reset state on page change.
       this.setState({
         ...getInitialMapExploreState(),
@@ -172,9 +169,9 @@ class ProductSingle extends React.Component {
     this.props.history.push({ search: qString });
   }
 
-  async requestProduct() {
+  async requestCountryPilot() {
     showGlobalLoading();
-    await this.props.fetchProductSingle(this.props.match.params.productId);
+    await this.props.fetchCountryPilotSingle(this.props.match.params.countryPilotId);
     hideGlobalLoading();
   }
 
@@ -191,8 +188,8 @@ class ProductSingle extends React.Component {
     switch (action) {
       case 'map.loaded':
         if (this.state.mapPos === null) {
-          const productData = this.props.product.getData();
-          this.mbMapRef.current.mbMap.fitBounds(productData.bounding_box);
+          const countryPilotData = this.props.countryPilot.getData();
+          this.mbMapRef.current.mbMap.fitBounds(countryPilotData.bounding_box);
         }
         break;
     }
@@ -205,11 +202,11 @@ class ProductSingle extends React.Component {
   }
 
   render() {
-    const { product, productList, summary } = this.props;
+    const { countryPilot, countryPilotList, summary } = this.props;
 
-    if (product.hasError()) return <UhOh />;
+    if (countryPilot.hasError()) return <UhOh />;
 
-    const products = productList.isReady() && productList.getData();
+    const countryPilots = countryPilotList.isReady() && countryPilotList.getData();
 
     const layers = this.getLayersWithState();
     const activeTimeseriesLayers = this.getActiveTimeseriesLayers();
@@ -236,7 +233,7 @@ class ProductSingle extends React.Component {
               </InpageHeadline>
             </InpageHeaderInner>
           </InpageHeader>
-          {product.isReady() && (
+          {countryPilot.isReady() && (
             <InpageBody>
               <ExploreCanvas panelPrime={this.state.panelPrime} panelSec={this.state.panelSec}>
                 <PrimePanel
@@ -254,7 +251,7 @@ class ProductSingle extends React.Component {
                   }
                   bodyContent={
                     <>
-                      <ProductsNavigation products={products || []} />
+                      <CountryPilotsNavigation countryPilots={countryPilots || []} />
                       <DataLayersBlock
                         layers={layers}
                         mapLoaded={this.state.mapLoaded}
@@ -307,10 +304,10 @@ class ProductSingle extends React.Component {
   }
 }
 
-ProductSingle.propTypes = {
-  fetchProductSingle: T.func,
-  product: T.object,
-  productList: T.object,
+CountryPilotSingle.propTypes = {
+  fetchCountryPilotSingle: T.func,
+  countryPilot: T.object,
+  countryPilotList: T.object,
   summary: T.node,
   match: T.object,
   location: T.object,
@@ -318,23 +315,23 @@ ProductSingle.propTypes = {
 };
 
 function mapStateToProps(state, props) {
-  const { productId } = props.match.params;
+  const { countryPilotId } = props.match.params;
 
   return {
-    summary: summaries[productId],
-    mapLayers: getProductLayers(productId),
-    productList: wrapApiResult(state.product.list),
-    product: wrapApiResult(
-      getFromState(state, ['product', 'single', productId])
+    summary: summaries[countryPilotId],
+    mapLayers: getProductLayers(countryPilotId),
+    countryPilotList: wrapApiResult(state.countryPilot.list),
+    countryPilot: wrapApiResult(
+      getFromState(state, ['country_pilot', 'single', countryPilotId])
     )
   };
 }
 
 const mapDispatchToProps = {
-  fetchProductSingle: fetchProductSingleAction
+  fetchCountryPilotSingle: fetchCountryPilotSingleAction
 };
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(ProductSingle);
+)(CountryPilotSingle);

@@ -18,6 +18,7 @@ import waterGlSpm from './layer-wq-gl-spm';
 import detectionPlane from './layer-detection-plane';
 import agTogo from './layer-togo-ag';
 
+// TODO: this can probably be removed
 const layerOverrides = [
   no2,
   no2Diff,
@@ -38,14 +39,14 @@ const layerOverrides = [
   agTogo
 ];
 
-// Store the layer data.
+// Store the Product layer data.
 const layersDataByProduct = {};
 
 export function getProductLayers(productId) {
   return layersDataByProduct[productId];
 }
 
-export function getGlobalLayers() {
+export function getProductGlobalLayers() {
   return layersDataByProduct.global;
 }
 

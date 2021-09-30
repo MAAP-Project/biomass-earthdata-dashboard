@@ -428,10 +428,10 @@ class PageHeader extends React.Component {
   }
 
   render() {
-    const { productList, isMediumDown } = this.props;
+    const { productList, countryPilotList, isMediumDown } = this.props;
 
     const products = productList.isReady() && productList.getData();
-    const countryPilots = products; // TODO
+    const countryPilots = countryPilotList.isReady() && countryPilotList.getData();
 
     const url = window.location.toString();
 
@@ -651,12 +651,14 @@ class PageHeader extends React.Component {
 
 PageHeader.propTypes = {
   productList: T.object,
+  countryPilotList: T.object,
   isMediumDown: T.bool
 };
 
 function mapStateToProps(state, props) {
   return {
-    productList: wrapApiResult(state.product.list)
+    productList: wrapApiResult(state.product.list),
+    countryPilotList: wrapApiResult(state.countryPilot.list)
   };
 }
 

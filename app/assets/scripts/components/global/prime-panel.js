@@ -11,7 +11,7 @@ import {
   PanelBlockBody
 } from '../common/panel-block';
 import FilterAoi from './filter-aoi';
-import ExploreNavigation from '../common/explore-navigation';
+import ProductsNavigation from '../common/products-navigation';
 
 import media, { isLargeViewport } from '../../styles/utils/media-queries';
 
@@ -47,7 +47,7 @@ class ExpMapPrimePanel extends React.Component {
         )}
         bodyContent={
           <>
-            <ExploreNavigation products={products || []} />
+            <ProductsNavigation products={products || []} />
             <DataLayersBlock
               layers={layers}
               mapLoaded={mapLoaded}

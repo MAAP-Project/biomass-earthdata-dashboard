@@ -21,7 +21,7 @@ import {
   InpageBody
 } from '../../styles/inpage';
 import Prose from '../../styles/type/prose';
-import MbMap from '../common/mb-map-explore/mb-map';
+import MbMap from '../common/mb-map-products/mb-map';
 import { fetchProductSingle as fetchProductSingleAction } from '../../redux/product';
 import { wrapApiResult } from '../../redux/reduxeed';
 

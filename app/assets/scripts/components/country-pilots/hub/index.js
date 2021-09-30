@@ -32,19 +32,19 @@ const metadata = {
   color: '#2276AC'
 };
 
-class ProductHub extends React.Component {
+class CountryPilotHub extends React.Component {
   render() {
-    const { productsList } = this.props;
-    const products = productsList.isReady() && productsList.getData();
-    const productsCount = converter.toWords(products ? products.length : 0);
+    const { countryPilotsList } = this.props;
+    const countryPilots = countryPilotsList.isReady() && countryPilotsList.getData();
+    const countryPilotsCount = converter.toWords(countryPilots ? countryPilots.length : 0);
 
     return (
-      <App pageTitle='Product areas'>
+      <App pageTitle='Country Pilot areas'>
         <Inpage>
           <InpageHeader>
             <InpageHeaderInner>
               <InpageHeadline>
-                <InpageTitle>Understanding Products Areas</InpageTitle>
+                <InpageTitle>Understanding Country Pilot Areas</InpageTitle>
               </InpageHeadline>
             </InpageHeaderInner>
           </InpageHeader>
@@ -58,18 +58,18 @@ class ProductHub extends React.Component {
                     economic factors.
                   </p>
                   <p>
-                    This dashboard highlights {productsCount} product areas around the
+                    This dashboard highlights {countryPilotsCount} country pilot areas around the
                     world, allowing you to explore how a specific location&apos;s
                     response to global phenomena has influenced local
                     environmental signals.
                   </p>
                   <p>
-                    The {productsCount} product areas were chosen based on their large
+                    The {countryPilotsCount} country pilot areas were chosen based on their large
                     populations and high level of economic activity, which
                     reveal significant changes in response to global phenomena.
                   </p>
                   <p>
-                    Click below to visit a product area.
+                    Click below to visit a country pilot area.
                   </p>
                 </Prose>
               </HubFold>
@@ -79,27 +79,16 @@ class ProductHub extends React.Component {
                   dashColor={metadata.color}
                 />
                 <EntriesList>
-                  <li>
-                    <EntryNavLink
-                      to='/products/global'
-                      title='Explore global'
-                    >
-                      <EntryNavLinkTitle>Global</EntryNavLinkTitle>
-                      <EntryNavLinkMedia>
-                        <img src={`${baseUrl}/assets/graphics/content/products/global.jpg`} width='960' height='480' alt='Area thumbnail' />
-                      </EntryNavLinkMedia>
-                    </EntryNavLink>
-                  </li>
-                  {products &&
-                    products.map((item) => (
+                  {countryPilots &&
+                    countryPilots.map((item) => (
                       <li key={item.id}>
                         <EntryNavLink
-                          to={`/products/${item.id}`}
-                          title={`View product area ${item.label}`}
+                          to={`/country_pilots/${item.id}`}
+                          title={`View Country Pilot area ${item.label}`}
                         >
                           <EntryNavLinkTitle>{item.label}</EntryNavLinkTitle>
                           <EntryNavLinkMedia>
-                            <img src={`${baseUrl}/assets/graphics/content/products/${item.id}.jpg`} width='960' height='480' alt='Area thumbnail' />
+                            <img src={`${baseUrl}/assets/graphics/content/country_pilots/${item.id}.jpg`} width='960' height='480' alt='Area thumbnail' />
                           </EntryNavLinkMedia>
                         </EntryNavLink>
                       </li>
@@ -135,16 +124,16 @@ class ProductHub extends React.Component {
   }
 }
 
-ProductHub.propTypes = {
-  productsList: T.object
+CountryPilotHub.propTypes = {
+  countryPilotsList: T.object
 };
 
 function mapStateToProps(state, props) {
   return {
-    productsList: wrapApiResult(state.product.list)
+    countryPilotsList: wrapApiResult(state.countryPilot.list)
   };
 }
 
 const mapDispatchToProps = {};
 
-export default connect(mapStateToProps, mapDispatchToProps)(ProductHub);
+export default connect(mapStateToProps, mapDispatchToProps)(CountryPilotHub);

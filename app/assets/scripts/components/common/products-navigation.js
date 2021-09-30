@@ -63,7 +63,7 @@ const PanelNavLink = styled(NavLink)`
   }
 `;
 
-class ExploreNavigation extends React.Component {
+class ProductsNavigation extends React.Component {
   componentDidMount() {
     if (this.props.products.length) {
       this.positionSelected();
@@ -132,8 +132,8 @@ class ExploreNavigation extends React.Component {
   }
 }
 
-ExploreNavigation.propTypes = {
+ProductsNavigation.propTypes = {
   products: T.array
 };
 
-export default ExploreNavigation;
+export default ProductsNavigation;
