@@ -14,14 +14,14 @@ import {
   InpageTitle,
   InpageBody
 } from '../../../styles/inpage';
-import MbMap from '../../common/mb-map-explore/mb-map';
+import MbMap from '../../common/mb-map-products/mb-map';
 import UhOh from '../../uhoh';
 import DataLayersBlock from '../../common/data-layers-block';
 import Panel, { PanelHeadline, PanelTitle } from '../../common/panel';
 import MapMessage from '../../common/map-message';
 import Timeline from '../../common/timeline';
 import SecPanel from './sec-panel';
-import ExploreNavigation from '../../common/explore-navigation';
+import ProductsNavigation from '../../common/products-navigation';
 
 import { themeVal } from '../../../styles/utils/general';
 import { fetchProductSingle as fetchProductSingleAction } from '../../../redux/product';
@@ -30,7 +30,7 @@ import {
   showGlobalLoading,
   hideGlobalLoading
 } from '../../common/global-loading';
-import { getSpotlightLayers } from '../../common/layers';
+import { getProductLayers } from '../../common/layers';
 import {
   setLayerState,
   getLayerState,
@@ -86,8 +86,8 @@ const PrimePanel = styled(Panel)`
   `}
 `;
 
-class SpotlightAreasSingle extends React.Component {
-  constructor (props) {
+class ProductSingle extends React.Component {
+  constructor(props) {
     super(props);
     // Functions from helper file.
     this.setLayerState = setLayerState.bind(this);
@@ -104,8 +104,8 @@ class SpotlightAreasSingle extends React.Component {
 
     // Set query state definition for url state storing.
     const common = getCommonQsState(props);
-    
-    switch (props.match.params.spotlightId) {
+
+    switch (props.match.params.productId) {
       case 'cci_biomass':
         common.layers.default = 'cci_biomass';
         break;
@@ -146,13 +146,13 @@ class SpotlightAreasSingle extends React.Component {
     };
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.requestProduct();
   }
 
-  componentDidUpdate (prevProps, prevState) {
-    const { spotlightId } = this.props.match.params;
-    if (spotlightId !== prevProps.match.params.spotlightId) {
+  componentDidUpdate(prevProps, prevState) {
+    const { productId } = this.props.match.params;
+    if (productId !== prevProps.match.params.productId) {
       this.requestProduct();
       // Reset state on page change.
       this.setState({
@@ -163,27 +163,27 @@ class SpotlightAreasSingle extends React.Component {
     }
   }
 
-  onPanelChange (panel, revealed) {
+  onPanelChange(panel, revealed) {
     this.setState({ [panel]: revealed });
   }
 
-  updateUrlQS () {
+  updateUrlQS() {
     const qString = this.qsState.getQs(this.state);
     this.props.history.push({ search: qString });
   }
 
-  async requestProduct () {
+  async requestProduct() {
     showGlobalLoading();
-    await this.props.fetchProductSingle(this.props.match.params.spotlightId);
+    await this.props.fetchProductSingle(this.props.match.params.productId);
     hideGlobalLoading();
   }
 
-  onPanelAction (action, payload) {
+  onPanelAction(action, payload) {
     // Returns true if the action was handled.
     handlePanelAction.call(this, action, payload);
   }
 
-  async onMapAction (action, payload) {
+  async onMapAction(action, payload) {
     // Returns true if the action was handled.
     handleMapAction.call(this, action, payload);
 
@@ -191,25 +191,25 @@ class SpotlightAreasSingle extends React.Component {
     switch (action) {
       case 'map.loaded':
         if (this.state.mapPos === null) {
-          const spotlightData = this.props.spotlight.getData();
-          this.mbMapRef.current.mbMap.fitBounds(spotlightData.bounding_box);
+          const productData = this.props.product.getData();
+          this.mbMapRef.current.mbMap.fitBounds(productData.bounding_box);
         }
         break;
     }
   }
 
-  toggleLayer (layer) {
+  toggleLayer(layer) {
     toggleLayerCommon.call(this, layer, () => {
       this.updateUrlQS();
     });
   }
 
-  render () {
-    const { spotlight, spotlightList, summary } = this.props;
+  render() {
+    const { product, productList, summary } = this.props;
 
-    if (spotlight.hasError()) return <UhOh />;
+    if (product.hasError()) return <UhOh />;
 
-    const spotlightAreas = spotlightList.isReady() && spotlightList.getData();
+    const products = productList.isReady() && productList.getData();
 
     const layers = this.getLayersWithState();
     const activeTimeseriesLayers = this.getActiveTimeseriesLayers();
@@ -236,7 +236,7 @@ class SpotlightAreasSingle extends React.Component {
               </InpageHeadline>
             </InpageHeaderInner>
           </InpageHeader>
-          {spotlight.isReady() && (
+          {product.isReady() && (
             <InpageBody>
               <ExploreCanvas panelPrime={this.state.panelPrime} panelSec={this.state.panelSec}>
                 <PrimePanel
@@ -254,7 +254,7 @@ class SpotlightAreasSingle extends React.Component {
                   }
                   bodyContent={
                     <>
-                      <ExploreNavigation spotlights={spotlightAreas || []} />
+                      <ProductsNavigation products={products || []} />
                       <DataLayersBlock
                         layers={layers}
                         mapLoaded={this.state.mapLoaded}
@@ -307,25 +307,25 @@ class SpotlightAreasSingle extends React.Component {
   }
 }
 
-SpotlightAreasSingle.propTypes = {
+ProductSingle.propTypes = {
   fetchProductSingle: T.func,
-  spotlight: T.object,
-  spotlightList: T.object,
+  product: T.object,
+  productList: T.object,
   summary: T.node,
   match: T.object,
   location: T.object,
   history: T.object
 };
 
-function mapStateToProps (state, props) {
-  const { spotlightId } = props.match.params;
+function mapStateToProps(state, props) {
+  const { productId } = props.match.params;
 
   return {
-    summary: summaries[spotlightId],
-    mapLayers: getSpotlightLayers(spotlightId),
-    spotlightList: wrapApiResult(state.spotlight.list),
-    spotlight: wrapApiResult(
-      getFromState(state, ['spotlight', 'single', spotlightId])
+    summary: summaries[productId],
+    mapLayers: getProductLayers(productId),
+    productList: wrapApiResult(state.product.list),
+    product: wrapApiResult(
+      getFromState(state, ['product', 'single', productId])
     )
   };
 }
@@ -337,4 +337,4 @@ const mapDispatchToProps = {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(SpotlightAreasSingle);
+)(ProductSingle);

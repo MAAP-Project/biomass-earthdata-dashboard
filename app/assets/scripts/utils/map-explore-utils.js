@@ -6,12 +6,12 @@ import { utcDate } from './utils';
 /*
   The function exported by this file are to be understood as mixins for any
   component that implements map layer management. This is the case of the global
-  and spotlight pages. There was some code duplication and time restrictions
+  and product pages. There was some code duplication and time restrictions
   didn't allow for a full refactor. These functions need the component content
   to work, so they have either to be bound or invoked with call
 */
 
-export function getInitialMapExploreState () {
+export function getInitialMapExploreState() {
   return {
     activeLayers: [],
     _urlActiveLayers: [],
@@ -31,7 +31,7 @@ export function getInitialMapExploreState () {
   };
 }
 
-export function getCommonQsState () {
+export function getCommonQsState() {
   return {
     map: {
       accessor: 'mapPos',
@@ -104,7 +104,7 @@ export function getCommonQsState () {
  *                return an object which will be merged with the existent data
  * @param {funct} cb Callback to execute after setting state.
  */
-export function setLayerState (id, data, cb) {
+export function setLayerState(id, data, cb) {
   this.setState(state => {
     const currentState = state.layersState[id] || {};
     return {
@@ -126,7 +126,7 @@ export function setLayerState (id, data, cb) {
  * @param {string} id Layer for which to get the state.
  * @param {mixed} prop Path to a specific prop (optional). Used lodash.get
  */
-export function getLayerState (id, prop) {
+export function getLayerState(id, prop) {
   const path = prop
     ? typeof prop === 'string' ? [id, prop] : [id, ...prop]
     : id;
@@ -137,7 +137,7 @@ export function getLayerState (id, prop) {
  * Returns the layer list, merging the visibility state and any other data
  * stored for each layer in the layer state.
  */
-export function getLayersWithState (layers) {
+export function getLayersWithState(layers) {
   const { activeLayers, layersState } = this.state;
   const mapLayers = layers || this.props.mapLayers;
   return mapLayers.map((l) => {
@@ -154,7 +154,7 @@ export function getLayersWithState (layers) {
 /**
  * Invokes the map (and comparing map - if enabled) resize method.
  */
-export function resizeMap () {
+export function resizeMap() {
   const component = this.mbMapRef.current;
   if (component) {
     // Delay execution to give the panel animation time to finish.
@@ -176,7 +176,7 @@ export function resizeMap () {
  * @param {string} action The action to handle
  * @param {object} payload Action data
  */
-export function handlePanelAction (action, payload) {
+export function handlePanelAction(action, payload) {
   switch (action) {
     case 'layer.toggle':
       this.toggleLayer(payload);
@@ -218,7 +218,7 @@ export function handlePanelAction (action, payload) {
  * @param {string} action The action to handle
  * @param {object} payload Action data
  */
-export async function handleMapAction (action, payload) {
+export async function handleMapAction(action, payload) {
   switch (action) {
     case 'map.loaded':
       {
@@ -259,7 +259,7 @@ export async function handleMapAction (action, payload) {
  * @param {object} state The component state
  * @param {object} layer Layer data
  */
-export function getUpdatedActiveLayersState (state, layer) {
+export function getUpdatedActiveLayersState(state, layer) {
   const { exclusiveWith = [], id } = layer;
   const { activeLayers, layersState } = state;
   // Hide any layers that are not compatible with the current one.
@@ -302,7 +302,7 @@ export function getUpdatedActiveLayersState (state, layer) {
  * @param {object} layer Layer object
  * @param {function} cb callback after the state is updated.
  */
-export function toggleLayerCommon (layer, cb) {
+export function toggleLayerCommon(layer, cb) {
   const layerId = layer.id;
   const isEnabled = this.state.activeLayers.includes(layerId);
 
@@ -325,7 +325,7 @@ export function toggleLayerCommon (layer, cb) {
  * Toggle the compare for the given layer
  * @param {object} layer Layer object
  */
-export function toggleLayerCompare (layer) {
+export function toggleLayerCompare(layer) {
   const layerId = layer.id;
   const isComparing = this.getLayerState(layerId, 'comparing');
 
@@ -361,7 +361,7 @@ export function toggleLayerCompare (layer) {
   }
 }
 
-function isDateInDomain (date, domain) {
+function isDateInDomain(date, domain) {
   if (!date) return false;
   if (domain.length === 2) {
     // Start and end, check if between dates.
@@ -376,7 +376,7 @@ function isDateInDomain (date, domain) {
  * Toggle the visibility for the raster timeseries layer
  * @param {object} layer Layer object
  */
-export function toggleLayerRasterTimeseries (layer) {
+export function toggleLayerRasterTimeseries(layer) {
   this.setState(state => {
     // Init the timeline date.
     const timelineDate = state.timelineDate &&
@@ -409,7 +409,7 @@ export function toggleLayerRasterTimeseries (layer) {
 /**
  * Returns timeseries data that are active
  */
-export function getActiveTimeseriesLayers () {
+export function getActiveTimeseriesLayers() {
   return this.props.mapLayers.filter(
     (l) =>
       l.type.includes('timeseries') && this.state.activeLayers.includes(l.id)

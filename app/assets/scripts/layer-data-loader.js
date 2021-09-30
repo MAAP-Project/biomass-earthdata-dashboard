@@ -10,39 +10,39 @@ import {
   hideGlobalLoading,
   showGlobalLoadingMessage
 } from './components/common/global-loading';
-import { storeSpotlightLayers } from './components/common/layers';
+import { storeProductLayers } from './components/common/layers';
 
 // Dev note:
-// The datasets (or map layers) information was moved to the api, however some
+// The products (or map layers) information was moved to the api, however some
 // parts of the app access the data in a synchronous way, making it impossible
-// to fetch datatsets on demand. The homepage itself requires several datasets
+// to fetch datatsets on demand. The homepage itself requires several products
 // to be loaded so the map can be animated.
 // For the time being, layers will be front loaded as part of the application
 // bootstrap process and only when all the data is present the app will start.
-// This allows us to quickly get the datasets information from the api without
+// This allows us to quickly get the products information from the api without
 // significant refactor. This was decided taking into account that significant
 // development is planned for the near future.
 
 class LayerDataLoader extends React.Component {
-  componentDidMount () {
-    showGlobalLoadingMessage('Loading datasets');
+  componentDidMount() {
+    showGlobalLoadingMessage('Loading products');
   }
 
-  componentDidUpdate (prevProps) {
-    const { spotlightList } = this.props;
-    if (spotlightList.isReady() && !prevProps.spotlightList.isReady()) {
-      this.requestData(spotlightList.getData());
+  componentDidUpdate(prevProps) {
+    const { productList: productList } = this.props;
+    if (productList.isReady() && !prevProps.productList.isReady()) {
+      this.requestProductData(productList.getData());
     }
   }
 
-  async requestData (spotlightList) {
-    const ids = [...spotlightList.map((s) => s.id), 'global'];
+  async requestProductData(productList) {
+    const ids = [...productList.map((s) => s.id), 'global'];
     await Promise.all(
-      ids.map(async (spotlightId) => {
+      ids.map(async (productId) => {
         const { body } = await fetchJSON(
-          `${config.api}/datasets/${spotlightId}`
+          `${config.api}/products/${productId}`
         );
-        storeSpotlightLayers(spotlightId, body.datasets);
+        storeProductLayers(productId, body.datasets);
       })
     );
 
@@ -50,19 +50,19 @@ class LayerDataLoader extends React.Component {
     this.props.onReady();
   }
 
-  render () {
+  render() {
     return null;
   }
 }
 
 LayerDataLoader.propTypes = {
-  spotlightList: T.object,
+  productList: T.object,
   onReady: T.func
 };
 
-function mapStateToProps (state, props) {
+function mapStateToProps(state, props) {
   return {
-    spotlightList: wrapApiResult(state.spotlight.list)
+    productList: wrapApiResult(state.product.list)
   };
 }
 

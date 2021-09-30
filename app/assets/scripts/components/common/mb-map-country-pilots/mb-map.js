@@ -14,7 +14,7 @@ import { glsp } from '../../../styles/utils/theme-values';
 import mbAoiDraw from './mb-aoi-draw';
 import { round } from '../../../utils/format';
 import { createMbMarker } from './mb-popover/utils';
-import { getSpotlightLayers } from '../layers';
+import { getProductLayers } from '../layers';
 import MapboxControl from '../mapbox-react-control';
 
 import ReactPopoverGl from './mb-popover';
@@ -89,7 +89,7 @@ const PopoverDetails = styled(Dl)`
   }
 `;
 
-const SpotlightNavLink = styled(NavLink)`
+const ProductNavLink = styled(NavLink)`
   &,
   &:visited {
     color: inherit;
@@ -97,7 +97,7 @@ const SpotlightNavLink = styled(NavLink)`
 `;
 
 class MbMap extends React.Component {
-  constructor (props) {
+  constructor(props) {
     super(props);
     this.mapContainer = null;
     this.mbMap = null;
@@ -105,33 +105,33 @@ class MbMap extends React.Component {
 
     this.state = {
       overlayState: {
-        spotlightMarkers: true
+        productMarkers: true
       },
       popover: {
         coords: null,
-        spotlightId: null
+        productId: null
       }
     };
 
     // Store markers to be able to remove them.
-    this.spotlightMarkersList = [];
+    this.productMarkersList = [];
 
     this.handleOverlayChange = this.handleOverlayChange.bind(this);
   }
 
-  componentDidMount () {
+  componentDidMount() {
     // Mount the map on the net tick to prevent the right side gap.
     setTimeout(() => this.initMap(), 1);
   }
 
-  componentDidUpdate (prevProps, prevState) {
+  componentDidUpdate(prevProps, prevState) {
     // Manually trigger render of detached react components.
     this.overlayDropdownControl &&
       this.overlayDropdownControl.render(this.props, this.state);
     this.overlayDropdownControlCompare &&
       this.overlayDropdownControlCompare.render(this.props, this.state);
 
-    const { activeLayers, comparing, spotlightList } = this.props;
+    const { activeLayers, comparing, productList } = this.props;
 
     // Compare Maps
     if (comparing !== prevProps.comparing) {
@@ -212,13 +212,13 @@ class MbMap extends React.Component {
     }
 
     // Update mapLayers if changed
-    const { spotlightMarkers } = this.state.overlayState;
-    if (prevState.overlayState.spotlightMarkers !== spotlightMarkers) {
-      if (spotlightMarkers) {
-        this.updateSpotlights();
+    const productMarkers = this.state.overlayState;
+    if (prevState.overlayState.productMarkers !== productMarkers) {
+      if (productMarkers) {
+        this.updateProducts();
       } else {
-        this.spotlightMarkersList.forEach(m => m.remove());
-        this.spotlightMarkersList = [];
+        this.productMarkersList.forEach(m => m.remove());
+        this.productMarkersList = [];
         this.setState({ popover: {} });
       }
     }
@@ -231,17 +231,17 @@ class MbMap extends React.Component {
       this.mbDraw.update(prevProps.aoiState, this.props.aoiState);
     }
 
-    // If spotlightList is active and was made available, add it to the map
+    // If productList is active and was made available, add it to the map
     if (
-      spotlightList &&
-      spotlightList.isReady() &&
-      !prevProps.spotlightList.isReady()
+      productList &&
+      productList.isReady() &&
+      !prevProps.productList.isReady()
     ) {
-      this.updateSpotlights();
+      this.updateProducts();
     }
   }
 
-  handleOverlayChange (id) {
+  handleOverlayChange(id) {
     this.setState(state => ({
       // Replace the array index with the negated value.
       overlayState: Object.assign({}, state.overlayState, {
@@ -251,47 +251,47 @@ class MbMap extends React.Component {
   }
 
   /**
-   * Adds spotlight markers to mbMap and mbMapComparing. This functions uses
-   * component state to control spotlights loading state, because maps will
+   * Adds product markers to mbMap and mbMapComparing. This functions uses
+   * component state to control products loading state, because maps will
    * finish loading at different times.
    */
-  updateSpotlights () {
-    // Check if spotlights are available
-    const { spotlightList } = this.props;
-    if (!spotlightList || !spotlightList.isReady()) return;
+  updateProducts() {
+    // Check if products are available
+    const { productList } = this.props;
+    if (!productList || !productList.isReady()) return;
 
-    // Get spotlights from API data
-    const spotlights = spotlightList.getData();
+    // Get products from API data
+    const products = productList.getData();
 
     // Define a common function to add markers
-    const addMarker = (spotlight, map) => {
+    const addMarker = (product, map) => {
       return createMbMarker(map, { color: this.props.theme.color.primary })
-        .setLngLat(spotlight.center)
+        .setLngLat(product.center)
         .addTo(map)
         .onClick((coords) => {
-          this.props.fetchProductSingle(spotlight.id);
-          this.setState({ popover: { coords, spotlightId: spotlight.id } });
+          this.props.fetchProductSingle(product.id);
+          this.setState({ popover: { coords, productId: product.id } });
         });
     };
 
     // Add markers to mbMap, if not done yet
     if (this.mbMap) {
-      spotlights.forEach((s) => {
+      products.forEach((s) => {
         const m = addMarker(s, this.mbMap);
-        this.spotlightMarkersList.push(m);
+        this.productMarkersList.push(m);
       });
     }
 
     // Add markers to mbMapComparing, if not done yet
     if (this.mbMapComparing) {
-      spotlights.forEach((s) => {
+      products.forEach((s) => {
         const m = addMarker(s, this.mbMapComparing);
-        this.spotlightMarkersList.push(m);
+        this.productMarkersList.push(m);
       });
     }
   }
 
-  enableCompare (prevProps) {
+  enableCompare(prevProps) {
     this.mbMap.resize();
     this.mbMapComparing = new mapboxgl.Map({
       attributionControl: false,
@@ -345,7 +345,7 @@ class MbMap extends React.Component {
     this.mbMapComparing.once('load', () => {
       this.mbMapComparingLoaded = true;
       this.updateActiveLayers(prevProps);
-      this.updateSpotlights();
+      this.updateProducts();
     });
 
     this.compareControl = new CompareMbGL(
@@ -355,7 +355,7 @@ class MbMap extends React.Component {
     );
   }
 
-  updateActiveLayers (prevProps) {
+  updateActiveLayers(prevProps) {
     this.props.activeLayers.forEach((layerId) => {
       const layerInfo = this.props.layers.find((l) => l.id === layerId);
       if (!layerInfo) return;
@@ -366,7 +366,7 @@ class MbMap extends React.Component {
     });
   }
 
-  initMap () {
+  initMap() {
     const { lng, lat, zoom } = this.props.position || {
       lng: center[0],
       lat: center[1],
@@ -438,7 +438,7 @@ class MbMap extends React.Component {
 
     this.mbMap.on('load', () => {
       const allProps = this.props;
-      const { spotlightList, comparing, onAction } = allProps;
+      const { productList, comparing, onAction } = allProps;
       onAction('map.loaded');
 
       if (comparing) {
@@ -449,9 +449,9 @@ class MbMap extends React.Component {
         });
       }
 
-      // If spotlight list is available on map mount, add it to the map
-      if (spotlightList && spotlightList.isReady()) {
-        this.updateSpotlights(spotlightList.getData());
+      // If product list is available on map mount, add it to the map
+      if (productList && productList.isReady()) {
+        this.updateProducts(productList.getData());
       }
     });
 
@@ -467,7 +467,7 @@ class MbMap extends React.Component {
     });
   }
 
-  renderOverlayDropdown (props, state) {
+  renderOverlayDropdown(props, state) {
     return (
       <ThemeProvider theme={props.theme}>
         <LayerControlDropdown
@@ -478,14 +478,14 @@ class MbMap extends React.Component {
     );
   }
 
-  renderPopover () {
-    const { spotlightId } = this.state.popover;
+  renderPopover() {
+    const { productId } = this.state.popover;
 
-    let spotlight = {};
+    let product = {};
 
-    if (spotlightId) {
-      const { getData, isReady } = this.props.spotlight[spotlightId];
-      spotlight = isReady() ? getData() : {};
+    if (productId) {
+      const { getData, isReady } = this.props.product[productId];
+      product = isReady() ? getData() : {};
     }
 
     const truncateArray = (arr, count) => {
@@ -502,8 +502,8 @@ class MbMap extends React.Component {
       ];
     };
 
-    const spotlightLayers = getSpotlightLayers(spotlightId);
-    const layersToShow = truncateArray(spotlightLayers, 3);
+    const productLayers = getProductLayers(productId);
+    const layersToShow = truncateArray(productLayers, 3);
 
     return (
       <ReactPopoverGl
@@ -513,19 +513,19 @@ class MbMap extends React.Component {
         offset={[38, 3]}
         suptitle='Area'
         title={
-          spotlight.id ? (
-            <SpotlightNavLink
-              to={`/products/${spotlight.id}`}
-              title={`Visit ${spotlight.label} page`}
+          product.id ? (
+            <ProductNavLink
+              to={`/products/${product.id}`}
+              title={`Visit ${product.label} page`}
             >
-              {spotlight.label}
-            </SpotlightNavLink>
+              {product.label}
+            </ProductNavLink>
           ) : (
             'Loading'
           )
         }
         content={
-          spotlight.id && (
+          product.id && (
             <Prose>
               <PopoverDetails>
                 <dt>Layers</dt>
@@ -540,8 +540,8 @@ class MbMap extends React.Component {
           <Button
             variation='primary-raised-dark'
             element={NavLink}
-            to={`/products/${spotlightId}`}
-            title={`Visit ${spotlight.label} page`}
+            to={`/products/${productId}`}
+            title={`Visit ${product.label} page`}
             useIcon={['chevron-right--small', 'after']}
           >
             Explore area
@@ -551,7 +551,7 @@ class MbMap extends React.Component {
     );
   }
 
-  render () {
+  render() {
     return (
       <>
         {this.mbMap && this.renderPopover()}
@@ -583,14 +583,14 @@ MbMap.propTypes = {
   enableLocateUser: T.bool,
   enableOverlayControls: T.bool,
   disableControls: T.bool,
-  spotlightList: T.object,
-  spotlight: T.object,
+  productList: T.object,
+  product: T.object,
   fetchProduct: T.func
 };
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
-    spotlight: wrapApiResult(state.spotlight.single, true)
+    product: wrapApiResult(state.product.single, true)
   };
 }
 

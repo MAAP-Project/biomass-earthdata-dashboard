@@ -32,19 +32,19 @@ const metadata = {
   color: '#2276AC'
 };
 
-class SpotlightAreasHub extends React.Component {
-  render () {
-    const { spotlightList } = this.props;
-    const spotlightAreas = spotlightList.isReady() && spotlightList.getData();
-    const spotlightsCount = converter.toWords(spotlightAreas ? spotlightAreas.length : 0);
+class ProductHub extends React.Component {
+  render() {
+    const { productsList } = this.props;
+    const products = productsList.isReady() && productsList.getData();
+    const productsCount = converter.toWords(products ? products.length : 0);
 
     return (
-      <App pageTitle='Spotlight areas'>
+      <App pageTitle='Product areas'>
         <Inpage>
           <InpageHeader>
             <InpageHeaderInner>
               <InpageHeadline>
-                <InpageTitle>Understanding Spotlight Areas</InpageTitle>
+                <InpageTitle>Understanding Products Areas</InpageTitle>
               </InpageHeadline>
             </InpageHeaderInner>
           </InpageHeader>
@@ -58,18 +58,18 @@ class SpotlightAreasHub extends React.Component {
                     economic factors.
                   </p>
                   <p>
-                    This dashboard highlights {spotlightsCount} spotlight areas around the
+                    This dashboard highlights {productsCount} product areas around the
                     world, allowing you to explore how a specific location&apos;s
                     response to global phenomena has influenced local
                     environmental signals.
                   </p>
                   <p>
-                    The {spotlightsCount} spotlight areas were chosen based on their large
+                    The {productsCount} product areas were chosen based on their large
                     populations and high level of economic activity, which
                     reveal significant changes in response to global phenomena.
                   </p>
                   <p>
-                    Click below to visit a spotlight area.
+                    Click below to visit a product area.
                   </p>
                 </Prose>
               </HubFold>
@@ -86,12 +86,12 @@ class SpotlightAreasHub extends React.Component {
                     >
                       <EntryNavLinkTitle>Global</EntryNavLinkTitle>
                       <EntryNavLinkMedia>
-                        <img src={`${baseUrl}/assets/graphics/content/cities/global.jpg`} width='960' height='480' alt='Area thumbnail' />
+                        <img src={`${baseUrl}/assets/graphics/content/products/global.jpg`} width='960' height='480' alt='Area thumbnail' />
                       </EntryNavLinkMedia>
                     </EntryNavLink>
                   </li>
-                  {spotlightAreas &&
-                    spotlightAreas.map((item) => (
+                  {products &&
+                    products.map((item) => (
                       <li key={item.id}>
                         <EntryNavLink
                           to={`/products/${item.id}`}
@@ -99,14 +99,14 @@ class SpotlightAreasHub extends React.Component {
                         >
                           <EntryNavLinkTitle>{item.label}</EntryNavLinkTitle>
                           <EntryNavLinkMedia>
-                            <img src={`${baseUrl}/assets/graphics/content/cities/${item.id}.jpg`} width='960' height='480' alt='Area thumbnail' />
+                            <img src={`${baseUrl}/assets/graphics/content/products/${item.id}.jpg`} width='960' height='480' alt='Area thumbnail' />
                           </EntryNavLinkMedia>
                         </EntryNavLink>
                       </li>
                     ))}
                 </EntriesList>
               </HubFold>
-              <HubFold>
+              {/* <HubFold>
                 <InpageHGroup
                   title='Attribution'
                   dashColor={metadata.color}
@@ -126,7 +126,7 @@ class SpotlightAreasHub extends React.Component {
                     </li>
                   </ul>
                 </Prose>
-              </HubFold>
+              </HubFold> */}
             </PageConstrainer>
           </InpageBody>
         </Inpage>
@@ -135,16 +135,16 @@ class SpotlightAreasHub extends React.Component {
   }
 }
 
-SpotlightAreasHub.propTypes = {
-  spotlightList: T.object
+ProductHub.propTypes = {
+  productsList: T.object
 };
 
-function mapStateToProps (state, props) {
+function mapStateToProps(state, props) {
   return {
-    spotlightList: wrapApiResult(state.spotlight.list)
+    productsList: wrapApiResult(state.product.list)
   };
 }
 
 const mapDispatchToProps = {};
 
-export default connect(mapStateToProps, mapDispatchToProps)(SpotlightAreasHub);
+export default connect(mapStateToProps, mapDispatchToProps)(ProductHub);
