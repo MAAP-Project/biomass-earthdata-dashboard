@@ -9,7 +9,7 @@ import { makeActions, makeFetchThunk, makeAPIReducer } from './reduxeed';
 
 const productSingleActions = makeActions('PRODUCT_SINGLE', true);
 
-export function fetchProductSingle (id) {
+export function fetchProductSingle(id) {
   return makeFetchThunk({
     url: `${config.api}/products/${id}`,
     // cache: true,
@@ -27,7 +27,7 @@ const productSingleReducer = makeAPIReducer('PRODUCT_SINGLE', true);
 
 const productActions = makeActions('PRODUCT_LIST');
 
-export function fetchProductList () {
+export function fetchProductList() {
   return makeFetchThunk({
     url: `${config.api}/products`,
     cache: true,

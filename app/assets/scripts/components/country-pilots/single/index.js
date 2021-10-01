@@ -14,23 +14,23 @@ import {
   InpageTitle,
   InpageBody
 } from '../../../styles/inpage';
-import MbMap from '../../common/mb-map-explore/mb-map';
+import MbMap from '../../common/mb-map-country-pilots/mb-map';
 import UhOh from '../../uhoh';
 import DataLayersBlock from '../../common/data-layers-block';
 import Panel, { PanelHeadline, PanelTitle } from '../../common/panel';
 import MapMessage from '../../common/map-message';
 import Timeline from '../../common/timeline';
 import SecPanel from './sec-panel';
-import ExploreNavigation from '../../common/explore-navigation';
+import CountryPilotsNavigation from '../../common/country-pilots-navigation';
 
 import { themeVal } from '../../../styles/utils/general';
-import { fetchProductSingle as fetchProductSingleAction } from '../../../redux/product';
+import { fetchCountryPilotSingle as fetchCountryPilotSingleAction } from '../../../redux/country-pilot';
 import { wrapApiResult, getFromState } from '../../../redux/reduxeed';
 import {
   showGlobalLoading,
   hideGlobalLoading
 } from '../../common/global-loading';
-import { getSpotlightLayers } from '../../common/layers';
+import { getCountryPilotLayers } from '../../common/layers';
 import {
   setLayerState,
   getLayerState,
@@ -86,8 +86,8 @@ const PrimePanel = styled(Panel)`
   `}
 `;
 
-class SpotlightAreasSingle extends React.Component {
-  constructor (props) {
+class CountryPilotSingle extends React.Component {
+  constructor(props) {
     super(props);
     // Functions from helper file.
     this.setLayerState = setLayerState.bind(this);
@@ -104,22 +104,19 @@ class SpotlightAreasSingle extends React.Component {
 
     // Set query state definition for url state storing.
     const common = getCommonQsState(props);
-    
-    switch (props.match.params.spotlightId) {
-      case 'cci_biomass':
+
+    switch (props.match.params.countryPilotId) {
+      case 'wales':
         common.layers.default = 'cci_biomass';
         break;
-      case 'gedi_l4b':
+      case 'japan':
         common.layers.default = 'gedi_l4b';
         break;
-      case 'nasa_jpl':
+      case 'paraguay':
         common.layers.default = 'nasa_jpl';
         break;
-      case 'icesat2_boreal':
+      case 'peru':
         common.layers.default = 'icesat2_boreal';
-        break;
-      case 'nceo_africa':
-        common.layers.default = 'nceo_africa';
         break;
       default:
         break;
@@ -146,14 +143,14 @@ class SpotlightAreasSingle extends React.Component {
     };
   }
 
-  componentDidMount () {
-    this.requestProduct();
+  componentDidMount() {
+    this.requestCountryPilot();
   }
 
-  componentDidUpdate (prevProps, prevState) {
-    const { spotlightId } = this.props.match.params;
-    if (spotlightId !== prevProps.match.params.spotlightId) {
-      this.requestProduct();
+  componentDidUpdate(prevProps, prevState) {
+    const { countryPilotId } = this.props.match.params;
+    if (countryPilotId !== prevProps.match.params.countryPilotId) {
+      this.requestCountryPilotId();
       // Reset state on page change.
       this.setState({
         ...getInitialMapExploreState(),
@@ -163,27 +160,27 @@ class SpotlightAreasSingle extends React.Component {
     }
   }
 
-  onPanelChange (panel, revealed) {
+  onPanelChange(panel, revealed) {
     this.setState({ [panel]: revealed });
   }
 
-  updateUrlQS () {
+  updateUrlQS() {
     const qString = this.qsState.getQs(this.state);
     this.props.history.push({ search: qString });
   }
 
-  async requestProduct () {
+  async requestCountryPilot() {
     showGlobalLoading();
-    await this.props.fetchProductSingle(this.props.match.params.spotlightId);
+    await this.props.fetchCountryPilotSingle(this.props.match.params.countryPilotId);
     hideGlobalLoading();
   }
 
-  onPanelAction (action, payload) {
+  onPanelAction(action, payload) {
     // Returns true if the action was handled.
     handlePanelAction.call(this, action, payload);
   }
 
-  async onMapAction (action, payload) {
+  async onMapAction(action, payload) {
     // Returns true if the action was handled.
     handleMapAction.call(this, action, payload);
 
@@ -191,25 +188,25 @@ class SpotlightAreasSingle extends React.Component {
     switch (action) {
       case 'map.loaded':
         if (this.state.mapPos === null) {
-          const spotlightData = this.props.spotlight.getData();
-          this.mbMapRef.current.mbMap.fitBounds(spotlightData.bounding_box);
+          const countryPilotData = this.props.countryPilot.getData();
+          this.mbMapRef.current.mbMap.fitBounds(countryPilotData.bounding_box);
         }
         break;
     }
   }
 
-  toggleLayer (layer) {
+  toggleLayer(layer) {
     toggleLayerCommon.call(this, layer, () => {
       this.updateUrlQS();
     });
   }
 
-  render () {
-    const { spotlight, spotlightList, summary } = this.props;
+  render() {
+    const { countryPilot, countryPilotList, summary } = this.props;
 
-    if (spotlight.hasError()) return <UhOh />;
+    if (countryPilot.hasError()) return <UhOh />;
 
-    const spotlightAreas = spotlightList.isReady() && spotlightList.getData();
+    const countryPilots = countryPilotList.isReady() && countryPilotList.getData();
 
     const layers = this.getLayersWithState();
     const activeTimeseriesLayers = this.getActiveTimeseriesLayers();
@@ -236,7 +233,7 @@ class SpotlightAreasSingle extends React.Component {
               </InpageHeadline>
             </InpageHeaderInner>
           </InpageHeader>
-          {spotlight.isReady() && (
+          {countryPilot.isReady() && (
             <InpageBody>
               <ExploreCanvas panelPrime={this.state.panelPrime} panelSec={this.state.panelSec}>
                 <PrimePanel
@@ -254,7 +251,7 @@ class SpotlightAreasSingle extends React.Component {
                   }
                   bodyContent={
                     <>
-                      <ExploreNavigation spotlights={spotlightAreas || []} />
+                      <CountryPilotsNavigation countryPilots={countryPilots || []} />
                       <DataLayersBlock
                         layers={layers}
                         mapLoaded={this.state.mapLoaded}
@@ -307,34 +304,34 @@ class SpotlightAreasSingle extends React.Component {
   }
 }
 
-SpotlightAreasSingle.propTypes = {
-  fetchProductSingle: T.func,
-  spotlight: T.object,
-  spotlightList: T.object,
+CountryPilotSingle.propTypes = {
+  fetchCountryPilotSingle: T.func,
+  countryPilot: T.object,
+  countryPilotList: T.object,
   summary: T.node,
   match: T.object,
   location: T.object,
   history: T.object
 };
 
-function mapStateToProps (state, props) {
-  const { spotlightId } = props.match.params;
+function mapStateToProps(state, props) {
+  const { countryPilotId } = props.match.params;
 
   return {
-    summary: summaries[spotlightId],
-    mapLayers: getSpotlightLayers(spotlightId),
-    spotlightList: wrapApiResult(state.spotlight.list),
-    spotlight: wrapApiResult(
-      getFromState(state, ['spotlight', 'single', spotlightId])
+    summary: summaries[countryPilotId],
+    mapLayers: getCountryPilotLayers(countryPilotId),
+    countryPilotList: wrapApiResult(state.countryPilot.list),
+    countryPilot: wrapApiResult(
+      getFromState(state, ['country_pilot', 'single', countryPilotId])
     )
   };
 }
 
 const mapDispatchToProps = {
-  fetchProductSingle: fetchProductSingleAction
+  fetchCountryPilotSingle: fetchCountryPilotSingleAction
 };
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(SpotlightAreasSingle);
+)(CountryPilotSingle);

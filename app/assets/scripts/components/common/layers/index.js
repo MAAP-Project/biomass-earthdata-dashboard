@@ -18,6 +18,7 @@ import waterGlSpm from './layer-wq-gl-spm';
 import detectionPlane from './layer-detection-plane';
 import agTogo from './layer-togo-ag';
 
+// TODO: this can probably be removed
 const layerOverrides = [
   no2,
   no2Diff,
@@ -38,18 +39,18 @@ const layerOverrides = [
   agTogo
 ];
 
-// Store the layer data.
-const layersDataBySpotlight = {};
+// Store the Product layer data.
+const layersDataByProduct = {};
 
-export function getSpotlightLayers (spotlightId) {
-  return layersDataBySpotlight[spotlightId];
+export function getProductLayers(productId) {
+  return layersDataByProduct[productId];
 }
 
-export function getGlobalLayers () {
-  return layersDataBySpotlight.global;
+export function getProductGlobalLayers() {
+  return layersDataByProduct.global;
 }
 
-export const storeSpotlightLayers = (spotlightId, layers) => {
+export const storeProductLayers = (productId, layers) => {
   // Overrides to the layer settings.
   const spotLayers = layers
     .map((layer) => {
@@ -60,5 +61,26 @@ export const storeSpotlightLayers = (spotlightId, layers) => {
       return defaultsDeep({}, base, layer);
     });
 
-  layersDataBySpotlight[spotlightId] = spotLayers;
+  layersDataByProduct[productId] = spotLayers;
+};
+
+// Store the Product layer data.
+const layersDataByCountryPilot = {};
+
+export function getCountryPilotLayers(countryPilotId) {
+  return layersDataByCountryPilot[countryPilotId];
+}
+
+export const storeCountryPilotLayers = (countryPilotId, layers) => {
+  // Overrides to the layer settings.
+  const spotLayers = layers
+    .map((layer) => {
+      const base = layerOverrides.find(l => l.id === layer.id) || {};
+
+      // The local changes are the default, and are replaced by new properties
+      // that come from the api. The local updates will always take precedence.
+      return defaultsDeep({}, base, layer);
+    });
+
+  layersDataByCountryPilot[countryPilotId] = spotLayers;
 };

@@ -420,18 +420,18 @@ const propsToFilter = ['variation', 'size', 'hideText', 'useIcon', 'active'];
 const NavLinkFilter = filterComponentProps(NavLink, propsToFilter);
 
 class PageHeader extends React.Component {
-  constructor (props) {
+  constructor(props) {
     super(props);
     this.state = {
       panelOpen: false
     };
   }
 
-  render () {
-    const { spotlightList, isMediumDown } = this.props;
+  render() {
+    const { productList, countryPilotList, isMediumDown } = this.props;
 
-    const spotlightAreas = spotlightList.isReady() && spotlightList.getData();
-    const countryPilots = spotlightAreas; // TODO
+    const products = productList.isReady() && productList.getData();
+    const countryPilots = countryPilotList.isReady() && countryPilotList.getData();
 
     const url = window.location.toString();
 
@@ -511,8 +511,8 @@ class PageHeader extends React.Component {
                     <PrimeMenuBlock>
                       <PrimeMenuBlockTitle>Products</PrimeMenuBlockTitle>
                       <PrimeSubmenu aria-label='submenu'>
-                        {spotlightAreas &&
-                          spotlightAreas.map((ss) => (
+                        {products &&
+                          products.map((ss) => (
                             <li key={ss.id}>
                               <Button
                                 element={NavLinkFilter}
@@ -534,7 +534,7 @@ class PageHeader extends React.Component {
                   <li>
                     <Button
                       element={NavLinkFilter}
-                      to='/products'
+                      to='/country_pilots'
                       exact
                       variation='achromic-plain'
                       title='View the Country Pilots page'
@@ -552,7 +552,11 @@ class PageHeader extends React.Component {
                             <li key={ss.id}>
                               <Button
                                 element={NavLinkFilter}
+<<<<<<< HEAD
                                 to={`/country_pilots/peru`}
+=======
+                                to={`/country_pilots/${ss.id}`}
+>>>>>>> main
                                 variation={
                                   isMediumDown
                                     ? 'achromic-plain'
@@ -650,13 +654,15 @@ class PageHeader extends React.Component {
 }
 
 PageHeader.propTypes = {
-  spotlightList: T.object,
+  productList: T.object,
+  countryPilotList: T.object,
   isMediumDown: T.bool
 };
 
-function mapStateToProps (state, props) {
+function mapStateToProps(state, props) {
   return {
-    spotlightList: wrapApiResult(state.spotlight.list)
+    productList: wrapApiResult(state.product.list),
+    countryPilotList: wrapApiResult(state.countryPilot.list)
   };
 }
 
