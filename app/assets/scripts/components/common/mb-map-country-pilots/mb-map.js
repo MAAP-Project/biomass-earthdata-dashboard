@@ -7,7 +7,7 @@ import { NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import config from '../../../config';
-import { fetchProductSingle as fetchProductSingleAction } from '../../../redux/product';
+import { fetchCountryPilotSingle as fetchCountryPilotSingleAction } from '../../../redux/country-pilot';
 import { wrapApiResult } from '../../../redux/reduxeed';
 import { layerTypes } from '../layers/types';
 import { glsp } from '../../../styles/utils/theme-values';
@@ -89,7 +89,7 @@ const PopoverDetails = styled(Dl)`
   }
 `;
 
-const ProductNavLink = styled(NavLink)`
+const CountryPilotNavLink = styled(NavLink)`
   &,
   &:visited {
     color: inherit;
@@ -105,16 +105,16 @@ class MbMap extends React.Component {
 
     this.state = {
       overlayState: {
-        productMarkers: true
+        countryPilotMarkers: true
       },
       popover: {
         coords: null,
-        productId: null
+        countryPilotId: null
       }
     };
 
     // Store markers to be able to remove them.
-    this.productMarkersList = [];
+    this.countryPilotMarkersList = [];
 
     this.handleOverlayChange = this.handleOverlayChange.bind(this);
   }
@@ -131,7 +131,7 @@ class MbMap extends React.Component {
     this.overlayDropdownControlCompare &&
       this.overlayDropdownControlCompare.render(this.props, this.state);
 
-    const { activeLayers, comparing, productList } = this.props;
+    const { activeLayers, comparing, countryPilotList } = this.props;
 
     // Compare Maps
     if (comparing !== prevProps.comparing) {
@@ -212,13 +212,13 @@ class MbMap extends React.Component {
     }
 
     // Update mapLayers if changed
-    const productMarkers = this.state.overlayState;
-    if (prevState.overlayState.productMarkers !== productMarkers) {
-      if (productMarkers) {
-        this.updateProducts();
+    const countryPilotMarkers = this.state.overlayState;
+    if (prevState.overlayState.countryPilotMarkers !== countryPilotMarkers) {
+      if (countryPilotMarkers) {
+        this.updateCountryPilots();
       } else {
-        this.productMarkersList.forEach(m => m.remove());
-        this.productMarkersList = [];
+        this.countryPilotMarkersList.forEach(m => m.remove());
+        this.countryPilotMarkersList = [];
         this.setState({ popover: {} });
       }
     }
@@ -231,13 +231,13 @@ class MbMap extends React.Component {
       this.mbDraw.update(prevProps.aoiState, this.props.aoiState);
     }
 
-    // If productList is active and was made available, add it to the map
+    // If countryPilotList is active and was made available, add it to the map
     if (
-      productList &&
-      productList.isReady() &&
-      !prevProps.productList.isReady()
+      countryPilotList &&
+      countryPilotList.isReady() &&
+      !prevProps.countryPilotList.isReady()
     ) {
-      this.updateProducts();
+      this.updateCountryPilots();
     }
   }
 
@@ -251,42 +251,42 @@ class MbMap extends React.Component {
   }
 
   /**
-   * Adds product markers to mbMap and mbMapComparing. This functions uses
-   * component state to control products loading state, because maps will
+   * Adds countryPilot markers to mbMap and mbMapComparing. This functions uses
+   * component state to control countryPilots loading state, because maps will
    * finish loading at different times.
    */
-  updateProducts() {
-    // Check if products are available
-    const { productList } = this.props;
-    if (!productList || !productList.isReady()) return;
+  updateCountryPilots() {
+    // Check if countryPilots are available
+    const { countryPilotList } = this.props;
+    if (!countryPilotList || !countryPilotList.isReady()) return;
 
-    // Get products from API data
-    const products = productList.getData();
+    // Get countryPilots from API data
+    const countryPilots = countryPilotList.getData();
 
     // Define a common function to add markers
-    const addMarker = (product, map) => {
+    const addMarker = (countryPilot, map) => {
       return createMbMarker(map, { color: this.props.theme.color.primary })
-        .setLngLat(product.center)
+        .setLngLat(countryPilot.center)
         .addTo(map)
         .onClick((coords) => {
-          this.props.fetchProductSingle(product.id);
-          this.setState({ popover: { coords, productId: product.id } });
+          this.props.fetchCountryPilotSingle(countryPilot.id);
+          this.setState({ popover: { coords, countryPilotId: countryPilot.id } });
         });
     };
 
     // Add markers to mbMap, if not done yet
     if (this.mbMap) {
-      products.forEach((s) => {
+      countryPilots.forEach((s) => {
         const m = addMarker(s, this.mbMap);
-        this.productMarkersList.push(m);
+        this.countryPilotMarkersList.push(m);
       });
     }
 
     // Add markers to mbMapComparing, if not done yet
     if (this.mbMapComparing) {
-      products.forEach((s) => {
+      countryPilots.forEach((s) => {
         const m = addMarker(s, this.mbMapComparing);
-        this.productMarkersList.push(m);
+        this.countryPilotMarkersList.push(m);
       });
     }
   }
@@ -345,7 +345,7 @@ class MbMap extends React.Component {
     this.mbMapComparing.once('load', () => {
       this.mbMapComparingLoaded = true;
       this.updateActiveLayers(prevProps);
-      this.updateProducts();
+      this.updateCountryPilots();
     });
 
     this.compareControl = new CompareMbGL(
@@ -438,7 +438,7 @@ class MbMap extends React.Component {
 
     this.mbMap.on('load', () => {
       const allProps = this.props;
-      const { productList, comparing, onAction } = allProps;
+      const { countryPilotList, comparing, onAction } = allProps;
       onAction('map.loaded');
 
       if (comparing) {
@@ -449,9 +449,9 @@ class MbMap extends React.Component {
         });
       }
 
-      // If product list is available on map mount, add it to the map
-      if (productList && productList.isReady()) {
-        this.updateProducts(productList.getData());
+      // If countryPilot list is available on map mount, add it to the map
+      if (countryPilotList && countryPilotList.isReady()) {
+        this.updateCountryPilots(countryPilotList.getData());
       }
     });
 
@@ -479,13 +479,13 @@ class MbMap extends React.Component {
   }
 
   renderPopover() {
-    const { productId } = this.state.popover;
+    const { countryPilotId } = this.state.popover;
 
-    let product = {};
+    let countryPilot = {};
 
-    if (productId) {
-      const { getData, isReady } = this.props.product[productId];
-      product = isReady() ? getData() : {};
+    if (countryPilotId) {
+      const { getData, isReady } = this.props.countryPilot[countryPilotId];
+      countryPilot = isReady() ? getData() : {};
     }
 
     const truncateArray = (arr, count) => {
@@ -502,8 +502,8 @@ class MbMap extends React.Component {
       ];
     };
 
-    const productLayers = getProductLayers(productId);
-    const layersToShow = truncateArray(productLayers, 3);
+    const countryPilotLayers = getProductLayers(countryPilotId);
+    const layersToShow = truncateArray(countryPilotLayers, 3);
 
     return (
       <ReactPopoverGl
@@ -513,19 +513,19 @@ class MbMap extends React.Component {
         offset={[38, 3]}
         suptitle='Area'
         title={
-          product.id ? (
-            <ProductNavLink
-              to={`/products/${product.id}`}
-              title={`Visit ${product.label} page`}
+          countryPilot.id ? (
+            <CountryPilotNavLink
+              to={`/countryPilots/${countryPilot.id}`}
+              title={`Visit ${countryPilot.label} page`}
             >
-              {product.label}
-            </ProductNavLink>
+              {countryPilot.label}
+            </CountryPilotNavLink>
           ) : (
             'Loading'
           )
         }
         content={
-          product.id && (
+          countryPilot.id && (
             <Prose>
               <PopoverDetails>
                 <dt>Layers</dt>
@@ -540,8 +540,8 @@ class MbMap extends React.Component {
           <Button
             variation='primary-raised-dark'
             element={NavLink}
-            to={`/products/${productId}`}
-            title={`Visit ${product.label} page`}
+            to={`/countryPilots/${countryPilotId}`}
+            title={`Visit ${countryPilot.label} page`}
             useIcon={['chevron-right--small', 'after']}
           >
             Explore area
@@ -583,19 +583,19 @@ MbMap.propTypes = {
   enableLocateUser: T.bool,
   enableOverlayControls: T.bool,
   disableControls: T.bool,
-  productList: T.object,
-  product: T.object,
-  fetchProduct: T.func
+  countryPilotList: T.object,
+  countryPilot: T.object,
+  fetchCountryPilot: T.func
 };
 
 function mapStateToProps(state) {
   return {
-    product: wrapApiResult(state.product.single, true)
+    countryPilot: wrapApiResult(state.countryPilot.single, true)
   };
 }
 
 const mapDispatchToProps = {
-  fetchProductSingle: fetchProductSingleAction
+  fetchCountryPilotSingle: fetchCountryPilotSingleAction
 };
 
 export default connect(mapStateToProps, mapDispatchToProps, null, {

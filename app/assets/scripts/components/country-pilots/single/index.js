@@ -30,7 +30,7 @@ import {
   showGlobalLoading,
   hideGlobalLoading
 } from '../../common/global-loading';
-import { getProductLayers } from '../../common/layers';
+import { getCountryPilotLayers } from '../../common/layers';
 import {
   setLayerState,
   getLayerState,
@@ -319,7 +319,7 @@ function mapStateToProps(state, props) {
 
   return {
     summary: summaries[countryPilotId],
-    mapLayers: getProductLayers(countryPilotId),
+    mapLayers: getCountryPilotLayers(countryPilotId),
     countryPilotList: wrapApiResult(state.countryPilot.list),
     countryPilot: wrapApiResult(
       getFromState(state, ['country_pilot', 'single', countryPilotId])
