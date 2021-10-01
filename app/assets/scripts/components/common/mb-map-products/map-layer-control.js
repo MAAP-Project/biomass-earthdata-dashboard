@@ -91,12 +91,12 @@ export default class LayerControlDropdown extends React.Component {
         <LayersList>
           <li>
             <LayerSwitch
-              name='switch-product'
-              title='Toggle product markers on/off'
-              checked={overlaystate.productMarkers}
-              onChange={() => handleOverlayChange('productMarkers')}
+              name='switch-country-pilot'
+              title='Toggle Country Pilot markers on/off'
+              checked={overlaystate.countryPilotMarkers}
+              onChange={() => handleOverlayChange('countryPilotMarkers')}
             >
-              Product markers
+              Country Pilot markers
             </LayerSwitch>
           </li>
         </LayersList>

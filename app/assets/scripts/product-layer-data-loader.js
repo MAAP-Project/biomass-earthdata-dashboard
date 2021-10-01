@@ -23,13 +23,13 @@ import { storeProductLayers } from './components/common/layers';
 // significant refactor. This was decided taking into account that significant
 // development is planned for the near future.
 
-class LayerDataLoader extends React.Component {
+class ProductLayerDataLoader extends React.Component {
   componentDidMount() {
-    showGlobalLoadingMessage('Loading products');
+    showGlobalLoadingMessage('Loading data');
   }
 
   componentDidUpdate(prevProps) {
-    const { productList: productList } = this.props;
+    const { productList } = this.props;
     if (productList.isReady() && !prevProps.productList.isReady()) {
       this.requestProductData(productList.getData());
     }
@@ -46,7 +46,7 @@ class LayerDataLoader extends React.Component {
       })
     );
 
-    hideGlobalLoading();
+    hideGlobalLoading(); // todo
     this.props.onReady();
   }
 
@@ -55,7 +55,7 @@ class LayerDataLoader extends React.Component {
   }
 }
 
-LayerDataLoader.propTypes = {
+ProductLayerDataLoader.propTypes = {
   productList: T.object,
   onReady: T.func
 };
@@ -66,4 +66,4 @@ function mapStateToProps(state, props) {
   };
 }
 
-export default connect(mapStateToProps, {})(LayerDataLoader);
+export default connect(mapStateToProps, {})(ProductLayerDataLoader);

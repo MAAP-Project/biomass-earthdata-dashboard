@@ -17,7 +17,8 @@ import { fetchCountryPilotList } from './redux/country-pilot';
 import GlobalStyles from './styles/global';
 import ErrorBoundary from './fatal-error-boundary';
 import { GlobalLoading } from './components/common/global-loading';
-import LayerDataLoader from './layer-data-loader';
+import ProductLayerDataLoader from './product-layer-data-loader';
+import CountryPilotLayerDataLoader from './country-pilot-layer-data-loader';
 
 // Views
 import Home from './components/home';
@@ -79,12 +80,17 @@ class Root extends React.Component {
             <ErrorBoundary>
               <GlobalStyles innerHeight={this.state.windowHeight} />
 
-              {/* See note in ProductLayerDataLoader file */}
-              <LayerDataLoader
-                onReady={() => this.setState({ dataReady: true })}
+              {/* See note in LayerDataLoader file */}
+
+              <ProductLayerDataLoader
+                onReady={() => this.setState({ productLayersReady: true })}
               />
 
-              {this.state.dataReady && (
+              <CountryPilotLayerDataLoader
+                onReady={() => this.setState({ countryPilotLayersReady: true })}
+              />
+
+              {this.state.productLayersReady && this.state.countryPilotLayersReady && (
                 <Switch>
                   <Route exact path='/' component={Home} />
                   <Route exact path='/products' component={ProductHub} />

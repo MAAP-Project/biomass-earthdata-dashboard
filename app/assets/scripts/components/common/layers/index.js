@@ -63,3 +63,24 @@ export const storeProductLayers = (productId, layers) => {
 
   layersDataByProduct[productId] = spotLayers;
 };
+
+// Store the Product layer data.
+const layersDataByCountryPilot = {};
+
+export function getCountryPilotLayers(countryPilotId) {
+  return layersDataByCountryPilot[countryPilotId];
+}
+
+export const storeCountryPilotLayers = (countryPilotId, layers) => {
+  // Overrides to the layer settings.
+  const spotLayers = layers
+    .map((layer) => {
+      const base = layerOverrides.find(l => l.id === layer.id) || {};
+
+      // The local changes are the default, and are replaced by new properties
+      // that come from the api. The local updates will always take precedence.
+      return defaultsDeep({}, base, layer);
+    });
+
+  layersDataByCountryPilot[countryPilotId] = spotLayers;
+};
