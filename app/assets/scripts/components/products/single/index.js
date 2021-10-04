@@ -45,7 +45,6 @@ import {
 } from '../../../utils/map-explore-utils';
 import QsState from '../../../utils/qs-state';
 import media, { isLargeViewport } from '../../../styles/utils/media-queries';
-import summaries from './summaries';
 
 const ExploreCanvas = styled.div`
   display: grid;
@@ -205,7 +204,7 @@ class ProductSingle extends React.Component {
   }
 
   render() {
-    const { product, productList, summary } = this.props;
+    const { product, productList } = this.props;
 
     if (product.hasError()) return <UhOh />;
 
@@ -291,7 +290,7 @@ class ProductSingle extends React.Component {
                     this.resizeMap();
                     this.onPanelChange('panelSec', revealed);
                   }}
-                  summary={summary}
+                  summary={product.getData().summary}
                   selectedDate={
                     activeTimeseriesLayers.length
                       ? this.state.timelineDate
@@ -311,7 +310,6 @@ ProductSingle.propTypes = {
   fetchProductSingle: T.func,
   product: T.object,
   productList: T.object,
-  summary: T.node,
   match: T.object,
   location: T.object,
   history: T.object
@@ -321,7 +319,6 @@ function mapStateToProps(state, props) {
   const { productId } = props.match.params;
 
   return {
-    summary: summaries[productId],
     mapLayers: getProductLayers(productId),
     productList: wrapApiResult(state.product.list),
     product: wrapApiResult(
