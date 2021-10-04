@@ -515,7 +515,7 @@ class MbMap extends React.Component {
         title={
           countryPilot.id ? (
             <CountryPilotNavLink
-              to={`/countryPilots/${countryPilot.id}`}
+              to={`/country_pilots/${countryPilot.id}`}
               title={`Visit ${countryPilot.label} page`}
             >
               {countryPilot.label}
@@ -540,7 +540,7 @@ class MbMap extends React.Component {
           <Button
             variation='primary-raised-dark'
             element={NavLink}
-            to={`/countryPilots/${countryPilotId}`}
+            to={`/country_pilots/${countryPilotId}`}
             title={`Visit ${countryPilot.label} page`}
             useIcon={['chevron-right--small', 'after']}
           >
