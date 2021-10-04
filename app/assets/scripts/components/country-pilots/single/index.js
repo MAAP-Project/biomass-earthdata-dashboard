@@ -150,7 +150,7 @@ class CountryPilotSingle extends React.Component {
   componentDidUpdate(prevProps, prevState) {
     const { countryPilotId } = this.props.match.params;
     if (countryPilotId !== prevProps.match.params.countryPilotId) {
-      this.requestCountryPilotId();
+      this.requestCountryPilot();
       // Reset state on page change.
       this.setState({
         ...getInitialMapExploreState(),
@@ -322,7 +322,7 @@ function mapStateToProps(state, props) {
     mapLayers: getCountryPilotLayers(countryPilotId),
     countryPilotList: wrapApiResult(state.countryPilot.list),
     countryPilot: wrapApiResult(
-      getFromState(state, ['country_pilot', 'single', countryPilotId])
+      getFromState(state, ['countryPilot', 'single', countryPilotId])
     )
   };
 }

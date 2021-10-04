@@ -13,7 +13,7 @@ export function fetchCountryPilotSingle (id) {
   return makeFetchThunk({
     url: `${config.api}/country_pilots/${id}`,
     // cache: true,
-    statePath: ['country_pilot', 'single', id],
+    statePath: ['countryPilot', 'single', id],
     requestFn: countryPilotSingleActions.request.bind(null, id),
     receiveFn: countryPilotSingleActions.receive.bind(null, id)
   });

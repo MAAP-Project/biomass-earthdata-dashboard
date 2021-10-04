@@ -54,7 +54,8 @@ class Root extends React.Component {
 
     this.state = {
       windowHeight: window.innerHeight,
-      dataReady: false
+      productLayersReady: false,
+      countryPilotLayersReady: false,
     };
 
     window.addEventListener('resize', () => {
@@ -80,7 +81,7 @@ class Root extends React.Component {
             <ErrorBoundary>
               <GlobalStyles innerHeight={this.state.windowHeight} />
 
-              {/* See note in LayerDataLoader file */}
+              {/* See notes in LayerDataLoader files */}
 
               <ProductLayerDataLoader
                 onReady={() => this.setState({ productLayersReady: true })}
