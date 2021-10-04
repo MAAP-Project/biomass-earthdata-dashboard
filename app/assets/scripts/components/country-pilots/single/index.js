@@ -45,7 +45,6 @@ import {
 } from '../../../utils/map-explore-utils';
 import QsState from '../../../utils/qs-state';
 import media, { isLargeViewport } from '../../../styles/utils/media-queries';
-import summaries from './summaries';
 
 const ExploreCanvas = styled.div`
   display: grid;
@@ -202,7 +201,7 @@ class CountryPilotSingle extends React.Component {
   }
 
   render() {
-    const { countryPilot, countryPilotList, summary } = this.props;
+    const { countryPilot, countryPilotList } = this.props;
 
     if (countryPilot.hasError()) return <UhOh />;
 
@@ -288,7 +287,7 @@ class CountryPilotSingle extends React.Component {
                     this.resizeMap();
                     this.onPanelChange('panelSec', revealed);
                   }}
-                  summary={summary}
+                  summary={countryPilot.getData().summary}
                   selectedDate={
                     activeTimeseriesLayers.length
                       ? this.state.timelineDate
@@ -308,7 +307,6 @@ CountryPilotSingle.propTypes = {
   fetchCountryPilotSingle: T.func,
   countryPilot: T.object,
   countryPilotList: T.object,
-  summary: T.node,
   match: T.object,
   location: T.object,
   history: T.object
@@ -318,7 +316,6 @@ function mapStateToProps(state, props) {
   const { countryPilotId } = props.match.params;
 
   return {
-    summary: summaries[countryPilotId],
     mapLayers: getCountryPilotLayers(countryPilotId),
     countryPilotList: wrapApiResult(state.countryPilot.list),
     countryPilot: wrapApiResult(

@@ -23,6 +23,7 @@ import { utcDate } from '../../../utils/utils';
 import collecticon from '../../../styles/collecticons';
 import media, { isLargeViewport } from '../../../styles/utils/media-queries';
 import { getBandColor } from '../../common/common-chart-utils/data-highlight-bands.layer';
+import ReactHtmlParser from 'react-html-parser';
 
 const PanelSelf = styled(Panel)`
   ${media.largeUp`
@@ -206,12 +207,12 @@ class SecPanel extends React.Component {
         initialState={isLargeViewport()}
         headerContent={
           <PanelHeadline>
-            <PanelTitle>Biomass Product Sharing</PanelTitle>
+            <PanelTitle>Biomass Product</PanelTitle>
           </PanelHeadline>
         }
         bodyContent={
           <BodyScroll>
-            {summary && <SummaryExpandable initialExpanded={!groups.length}>{summary}</SummaryExpandable>}
+            {summary && <SummaryExpandable initialExpanded={!groups.length}>{ReactHtmlParser(summary)}</SummaryExpandable>}
 
             <Accordion allowMultiple initialState={[true]}>
               {({ checkExpanded, setExpanded }) =>
