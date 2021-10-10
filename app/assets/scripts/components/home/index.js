@@ -481,17 +481,16 @@ class Home extends React.Component {
               <IntroCopy>
                 <IntroTitle>Start exploring</IntroTitle>
                 <IntroWelcome>
-                  <IntroWelcomeTitle>Welcome</IntroWelcomeTitle>
+                  <IntroWelcomeTitle>The Biomass Harmonization Activity</IntroWelcomeTitle>
                   <Prose>
-                    <p>
-                      Project description goes here.
-                    </p>
+                    <p>Mapping aboveground biomass has been a priority for several new and upcoming NASA, ESA and JAXA missions, including GEDI, ICESat-2, BIOMASS, ALOS-4 and NISAR. One of the primary applications of these mission biomass products should be uptake for forest management toward climate mitigation, as current forest carbon reporting typically depends on either National Forest Inventories (NFIs) or sparse forest plot data.</p>
+                    <p>The EO biomass community is undertaking a global biomass product harmonization activity in an attempt to understand and communicate discrepancies between products, and produce a single estimate of biomass and uncertainty at a policy relevant, jurisdictional-level scale.</p>
                   </Prose>
                 </IntroWelcome>
                 <IntroStats>
                   <IntroStatsTitle>Some numbers</IntroStatsTitle>
                   <IntroStatsList>
-                    <dt>Areas</dt>
+                    <dt>Products</dt>
                     <dd><Link to='/products' title='Explore the areas'>{zeroPad(productsCount)}</Link></dd>
                   </IntroStatsList>
                 </IntroStats>
