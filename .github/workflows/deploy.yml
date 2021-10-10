@@ -5,14 +5,13 @@ on:
       - main
       - staging
       - production
-      - aimee
 
 env:
   AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
   AWS_REGION: ${{ secrets.AWS_REGION }}
   PRODUCTION_API_URL: ${{ secrets.PRODUCTION_API_URL }}
   STAGING_API_URL: ${{ secrets.STAGING_API_URL }}
-  DIT_API_URL: 'https://f5lwsxlvgi.execute-api.us-west-2.amazonaws.com/v1'
+  DIT_API_URL: ${{ secrets.DIT_API_URL }}
 
 jobs:
   fetch-branch:
