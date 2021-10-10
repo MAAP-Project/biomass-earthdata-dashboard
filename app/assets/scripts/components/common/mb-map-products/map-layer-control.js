@@ -93,7 +93,7 @@ export default class LayerControlDropdown extends React.Component {
             <LayerSwitch
               name='switch-country-pilot'
               title='Toggle Country Pilot markers on/off'
-              checked={overlaystate.countryPilotMarkers}
+              checked={overlayState.countryPilotMarkers}
               onChange={() => handleOverlayChange('countryPilotMarkers')}
             >
               Country Pilot markers

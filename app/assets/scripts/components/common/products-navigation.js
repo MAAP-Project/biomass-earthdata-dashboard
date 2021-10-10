@@ -103,14 +103,14 @@ class ProductsNavigation extends React.Component {
     return (
       <PanelBlockNav>
         <PanelBlockHeader>
-          <PanelBlockTitle>Areas</PanelBlockTitle>
+          <PanelBlockTitle>Products</PanelBlockTitle>
         </PanelBlockHeader>
         <PanelBlockBody>
           <PanelBlockScroll id='explore-nav'>
             <ul>
               <li>
                 <PanelNavLink to='/products/global' exact title='Explore global map'>
-                  Global
+                  All
                 </PanelNavLink>
               </li>
               {products.map((ss) => (

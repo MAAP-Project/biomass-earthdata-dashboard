@@ -75,7 +75,7 @@ class ProductHub extends React.Component {
               </HubFold>
               <HubFold>
                 <InpageHGroup
-                  title='Areas'
+                  title='Products'
                   dashColor={metadata.color}
                 />
                 <EntriesList>
@@ -84,7 +84,7 @@ class ProductHub extends React.Component {
                       to='/products/global'
                       title='Explore global'
                     >
-                      <EntryNavLinkTitle>Global</EntryNavLinkTitle>
+                      <EntryNavLinkTitle>All</EntryNavLinkTitle>
                       <EntryNavLinkMedia>
                         <img src={`${baseUrl}/assets/graphics/content/products/global.jpg`} width='960' height='480' alt='Area thumbnail' />
                       </EntryNavLinkMedia>
