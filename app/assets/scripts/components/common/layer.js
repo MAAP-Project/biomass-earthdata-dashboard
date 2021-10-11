@@ -151,19 +151,6 @@ class Layer extends React.Component {
               >
                 <span>Info</span>
               </Button>
-              <Button
-                variation={compareActive ? 'primary-plain' : 'base-plain'}
-                size='small'
-                useIcon='clock'
-                title='Enable/disable layer compare'
-                hideText
-                disabled={disabled || !compareEnabled || !active}
-                data-tip={compareHelp}
-                active={compareActive}
-                onClick={onCompareClick}
-              >
-                <span>Compare</span>
-              </Button>
               <FormSwitch
                 hideText
                 name={`toggle-${id}`}
