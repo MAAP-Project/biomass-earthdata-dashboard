@@ -86,16 +86,6 @@ export default class Development extends React.Component {
                 >
                   Github
                 </Button>
-                <Button
-                  size='large'
-                  variation='primary-raised-dark'
-                  useIcon={['speech-balloon', 'after']}
-                  onClick={() => {
-                    window.feedback.showForm();
-                  }}
-                >
-                  Feedback
-                </Button>
               </ContributeCta>
             </PageConstrainer>
           </InpageBody>
