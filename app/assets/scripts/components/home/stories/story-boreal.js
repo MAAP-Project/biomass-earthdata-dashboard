@@ -1,6 +1,6 @@
 export default {
   productId: 'icesat2_boreal',
-  prose: 'NASA\'s Land, Vegetation, and Ice Sensor or "LVIS", is an airborne, wide-swath imaging laser altimeter system that is flown over target areas to collect data on surface topography and 3-d structure. In Feb-Mar, 2016, LVIS was mounted in the Langley King Air and flown over selected sites in Gabon, Africa, as part of the joint NASA/ESA/DLR/AGEOS Afrisar Campaign.',
+  prose: 'The Advanced Topographic Laser Altimeter System (ATLAS) instrument on-board ICESat-2 will utilize photon counting technology for the altimetry observations. Photon counting technology is relatively new to the vegetation mapping community thus requires development of new algorithm approaches for terrain surface and canopy height retrievals. The algorithm developed specifically for the extraction of terrain and canopy heights from the ATLAS point clouds produces the ATL08 geophysical data product (source: https://www.sciencedirect.com/science/article/abs/pii/S0034425718305066).',
   layers: [''],
   link: '/products/icesat2_boreal'
 };

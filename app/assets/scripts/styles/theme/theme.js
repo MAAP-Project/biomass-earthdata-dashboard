@@ -3,7 +3,7 @@ import { rgba } from 'polished';
 let color = {
   baseLight: '#FFFFFF',
   baseDark: '#323232', // "Black"
-  primary: '#2276AC', // Ocean Blue
+  primary: '#16917F', // Soft Green
   secondary: '#2C3E50', // Midnight Blue
   tertiary: '#673285' // Royal Purple
 };
