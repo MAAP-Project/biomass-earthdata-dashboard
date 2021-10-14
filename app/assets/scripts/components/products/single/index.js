@@ -101,30 +101,8 @@ class ProductSingle extends React.Component {
     // are shown/hidden.
     this.mbMapRef = React.createRef();
 
-    // Set query state definition for url state storing.
-    const common = getCommonQsState(props);
-
-    switch (props.match.params.productId) {
-      case 'cci_biomass':
-        common.layers.default = 'cci_biomass';
-        break;
-      case 'gedi_l4b':
-        common.layers.default = 'gedi_l4b';
-        break;
-      case 'nasa_jpl':
-        common.layers.default = 'nasa_jpl';
-        break;
-      case 'icesat2_boreal':
-        common.layers.default = 'icesat2_boreal';
-        break;
-      case 'nceo_africa':
-        common.layers.default = 'nceo_africa';
-        break;
-      default:
-        break;
-    }
-
-    this.qsState = new QsState(common);
+    const { productId } = this.props.match.params;
+    this.selectDefaultLayers(productId, getCommonQsState(this.props));
 
     // The active layers can only be enabled once the map loads. The toggle
     // layer method checks the state to see what layers are enabled so we can't
@@ -154,6 +132,7 @@ class ProductSingle extends React.Component {
     if (productId !== prevProps.match.params.productId) {
       this.requestProduct();
       // Reset state on page change.
+      this.selectDefaultLayers(productId, getCommonQsState(this.props));
       this.setState({
         ...getInitialMapExploreState(),
         panelPrime: false,
@@ -303,6 +282,29 @@ class ProductSingle extends React.Component {
         </Inpage>
       </App>
     );
+  }
+
+  selectDefaultLayers(productId, common) {
+    switch (productId) {
+      case 'cci_biomass':
+        common.layers.default = 'cci_biomass';
+        break;
+      case 'gedi_l4b':
+        common.layers.default = 'gedi_l4b';
+        break;
+      case 'nasa_jpl':
+        common.layers.default = 'nasa_jpl';
+        break;
+      case 'above_boreal':
+        common.layers.default = 'above_biomass';
+        break;
+      case 'nceo_africa':
+        common.layers.default = 'nceo_africa';
+        break;
+      default:
+        break;
+    }
+    this.qsState = new QsState(common);
   }
 }
 
