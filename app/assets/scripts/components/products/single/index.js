@@ -111,7 +111,7 @@ class ProductSingle extends React.Component {
     // They get temporarily stored in another property and once the map loads
     // the layers are enabled and stored in the correct property.
     const { activeLayers, ...urlState } = this.qsState.getState(
-      props.location.search.substr(1)
+      this.props.location.search.substr(1)
     );
 
     this.state = {
@@ -131,10 +131,14 @@ class ProductSingle extends React.Component {
     const { productId } = this.props.match.params;
     if (productId !== prevProps.match.params.productId) {
       this.requestProduct();
-      // Reset state on page change.
       this.selectDefaultLayers(productId, getCommonQsState(this.props));
+      const { activeLayers } = this.qsState.getState(
+        this.props.location.search.substr(1)
+      )
+      // Reset state on page change.
       this.setState({
         ...getInitialMapExploreState(),
+        _urlActiveLayers: activeLayers,
         panelPrime: false,
         panelSec: false
       });

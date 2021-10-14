@@ -111,7 +111,7 @@ class CountryPilotSingle extends React.Component {
     // They get temporarily stored in another property and once the map loads
     // the layers are enabled and stored in the correct property.
     const { activeLayers, ...urlState } = this.qsState.getState(
-      props.location.search.substr(1)
+      this.props.location.search.substr(1)
     );
 
     this.state = {
@@ -131,9 +131,14 @@ class CountryPilotSingle extends React.Component {
     const { countryPilotId } = this.props.match.params;
     if (countryPilotId !== prevProps.match.params.countryPilotId) {
       this.requestCountryPilot();
+      this.selectDefaultLayers(countryPilotId, getCommonQsState(this.props));
+      const { activeLayers } = this.qsState.getState(
+        this.props.location.search.substr(1)
+      )
       // Reset state on page change.
       this.setState({
         ...getInitialMapExploreState(),
+        _urlActiveLayers: activeLayers,
         panelPrime: false,
         panelSec: false
       });
