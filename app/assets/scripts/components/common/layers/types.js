@@ -63,6 +63,7 @@ const toggleOrAddLayer = (mbMap, id, source, type, paint, beforeId) => {
     mbMap.setLayoutProperty(id, 'visibility', 'visible');
   } else {
     mbMap.addSource(id, source);
+    console.log(source);
     mbMap.addLayer(
       {
         id: id,
@@ -354,9 +355,6 @@ export const layerTypes = {
       }
     },
     show: (ctx, layerInfo) => {
-      console.log('in vector case');
-      console.log(layerInfo);
-
       const { mbMap } = ctx;
       const { id, source, paint } = layerInfo;
       const vecId = `${id}-vector`;
@@ -366,13 +364,30 @@ export const layerTypes = {
         data: source.data
       };
 
-      toggleOrAddLayer(
-        mbMap,
-        vecId,
-        vectorL,
-        'circle',
-        paint
-      );
+      mbMap.addSource(vecId, {
+        type: 'geojson',
+        // Use a URL for the value for the `data` property.
+        data: layerInfo.source.tiles[0]
+      });
+
+      mbMap.addLayer({
+        'id': vecId,
+        'type': 'circle',
+        'source': vecId,
+        'paint': {
+        'circle-radius': 8,
+        'circle-stroke-width': 2,
+        'circle-color': 'red',
+        'circle-stroke-color': 'white'
+        }
+      });
+      // toggleOrAddLayer(
+      //   mbMap,
+      //   vecId,
+      //   vectorL,
+      //   'circle',
+      //   paint
+      // );
     }
   }
 };
