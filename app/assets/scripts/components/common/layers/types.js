@@ -68,7 +68,6 @@ const toggleOrAddLayer = (mbMap, id, source, type, paint, beforeId) => {
         id: id,
         type: type,
         source: id,
-        // 'source-layer': source['source_layer'],
         layout: {},
         paint
       }
