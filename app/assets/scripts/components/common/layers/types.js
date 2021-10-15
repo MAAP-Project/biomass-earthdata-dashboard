@@ -356,7 +356,6 @@ export const layerTypes = {
       const { mbMap } = ctx;
       const { id, source, paint } = layerInfo;
       const geojsonId = `${id}-geojson`;
-      console.log(source)
 
       const geojsonL = {
         ...source,
