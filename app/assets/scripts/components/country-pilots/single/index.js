@@ -101,27 +101,8 @@ class CountryPilotSingle extends React.Component {
     // are shown/hidden.
     this.mbMapRef = React.createRef();
 
-    // Set query state definition for url state storing.
-    const common = getCommonQsState(props);
-
-    switch (props.match.params.countryPilotId) {
-      case 'wales':
-        common.layers.default = 'cci_biomass';
-        break;
-      case 'japan':
-        common.layers.default = 'gedi_l4b';
-        break;
-      case 'paraguay':
-        common.layers.default = 'nasa_jpl';
-        break;
-      case 'peru':
-        common.layers.default = 'icesat2_boreal';
-        break;
-      default:
-        break;
-    }
-
-    this.qsState = new QsState(common);
+    const { countryPilotId } = this.props.match.params;
+    this.selectDefaultLayers(countryPilotId, getCommonQsState(this.props));
 
     // The active layers can only be enabled once the map loads. The toggle
     // layer method checks the state to see what layers are enabled so we can't
@@ -130,7 +111,7 @@ class CountryPilotSingle extends React.Component {
     // They get temporarily stored in another property and once the map loads
     // the layers are enabled and stored in the correct property.
     const { activeLayers, ...urlState } = this.qsState.getState(
-      props.location.search.substr(1)
+      this.props.location.search.substr(1)
     );
 
     this.state = {
@@ -150,9 +131,14 @@ class CountryPilotSingle extends React.Component {
     const { countryPilotId } = this.props.match.params;
     if (countryPilotId !== prevProps.match.params.countryPilotId) {
       this.requestCountryPilot();
+      this.selectDefaultLayers(countryPilotId, getCommonQsState(this.props));
+      const { activeLayers } = this.qsState.getState(
+        this.props.location.search.substr(1)
+      )
       // Reset state on page change.
       this.setState({
         ...getInitialMapExploreState(),
+        _urlActiveLayers: activeLayers,
         panelPrime: false,
         panelSec: false
       });
@@ -300,6 +286,26 @@ class CountryPilotSingle extends React.Component {
         </Inpage>
       </App>
     );
+  }
+
+  selectDefaultLayers(countryPilotId, common) {
+    switch (countryPilotId) {
+      case 'wales':
+        common.layers.default = 'TODO';
+        break;
+      case 'japan':
+        common.layers.default = 'TODO';
+        break;
+      case 'paraguay':
+        common.layers.default = 'paraguay-forest-mask';
+        break;
+      case 'peru':
+        common.layers.default = 'TODO';
+        break;
+      default:
+        break;
+    }
+    this.qsState = new QsState(common);
   }
 }
 
