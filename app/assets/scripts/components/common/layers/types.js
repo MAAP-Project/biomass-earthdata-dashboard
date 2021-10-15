@@ -63,13 +63,12 @@ const toggleOrAddLayer = (mbMap, id, source, type, paint, beforeId) => {
     mbMap.setLayoutProperty(id, 'visibility', 'visible');
   } else {
     mbMap.addSource(id, source);
-    console.log(source);
     mbMap.addLayer(
       {
         id: id,
         type: type,
         source: id,
-        'source-layer': source['source_layer'],
+        // 'source-layer': source['source_layer'],
         layout: {},
         paint
       }
@@ -343,6 +342,36 @@ export const layerTypes = {
         });
     }
   },
+  'geojson': {
+    hide: (ctx, layerInfo) => {
+      const { mbMap } = ctx;
+      const { id } = layerInfo;
+
+      const geojsonId = `${id}-geojson`;
+
+      if (mbMap.getSource(geojsonId)) {
+        mbMap.setLayoutProperty(geojsonId, 'visibility', 'none');
+      }
+    },
+    show: (ctx, layerInfo) => {
+      const { mbMap } = ctx;
+      const { id, source, paint } = layerInfo;
+      const geojsonId = `${id}-geojson`;
+      console.log(source)
+
+      const geojsonL = {
+        ...source,
+        data: source.data
+      };
+      toggleOrAddLayer(
+        mbMap,
+        geojsonId,
+        geojsonL,
+        'circle',
+        paint
+      );
+    }
+  },
   'vector': {
     hide: (ctx, layerInfo) => {
       const { mbMap } = ctx;
@@ -363,31 +392,13 @@ export const layerTypes = {
         ...source,
         data: source.data
       };
-
-      mbMap.addSource(vecId, {
-        type: 'geojson',
-        // Use a URL for the value for the `data` property.
-        data: layerInfo.source.tiles[0]
-      });
-
-      mbMap.addLayer({
-        'id': vecId,
-        'type': 'circle',
-        'source': vecId,
-        'paint': {
-        'circle-radius': 8,
-        'circle-stroke-width': 2,
-        'circle-color': 'red',
-        'circle-stroke-color': 'white'
-        }
-      });
-      // toggleOrAddLayer(
-      //   mbMap,
-      //   vecId,
-      //   vectorL,
-      //   'circle',
-      //   paint
-      // );
+      toggleOrAddLayer(
+        mbMap,
+        vecId,
+        vectorL,
+        'circle',
+        paint
+      );
     }
   }
 };
