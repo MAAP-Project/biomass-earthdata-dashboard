@@ -101,32 +101,8 @@ class CountryPilotSingle extends React.Component {
     // are shown/hidden.
     this.mbMapRef = React.createRef();
 
-<<<<<<< HEAD
-    // Set query state definition for url state storing.
-    const common = getCommonQsState(props);
-
-    switch (props.match.params.countryPilotId) {
-      case 'wales':
-        common.layers.default = 'cci_biomass';
-        break;
-      case 'japan':
-        common.layers.default = 'gedi_l4b';
-        break;
-      case 'paraguay':
-        common.layers.default = 'nasa_jpl';
-        break;
-      case 'peru':
-        common.layers.default = 'above_boreal';
-        break;
-      default:
-        break;
-    }
-
-    this.qsState = new QsState(common);
-=======
     const { countryPilotId } = this.props.match.params;
     this.selectDefaultLayers(countryPilotId, getCommonQsState(this.props));
->>>>>>> main
 
     // The active layers can only be enabled once the map loads. The toggle
     // layer method checks the state to see what layers are enabled so we can't
