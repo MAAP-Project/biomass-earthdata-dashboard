@@ -115,7 +115,7 @@ class CountryPilotSingle extends React.Component {
         common.layers.default = 'nasa_jpl';
         break;
       case 'peru':
-        common.layers.default = 'above_biomass';
+        common.layers.default = 'above_boreal';
         break;
       default:
         break;
