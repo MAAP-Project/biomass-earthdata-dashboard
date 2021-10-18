@@ -44,7 +44,7 @@ class CountryPilotHub extends React.Component {
           <InpageHeader>
             <InpageHeaderInner>
               <InpageHeadline>
-                <InpageTitle>Understanding Country Pilot Areas</InpageTitle>
+                <InpageTitle>Understanding Country Pilots</InpageTitle>
               </InpageHeadline>
             </InpageHeaderInner>
           </InpageHeader>
