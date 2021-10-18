@@ -123,7 +123,7 @@ yarn deploy
 
 The dashboard is a single page app (SPA) and is deployed as an S3 website. In order to allow relative links with parameters in the SPA to redirect to the right content in the SPA, the server must return the index page (index.html) whenever SPA with path and parameters is requested. To do this, we create a CloudFront distribution in front of the S3 website. 
 
-Configure this distribution 
+Configure this distribution:
 
 - set the "Alternate domain names" to the custom domain name you will configure in DNS, e.g., biomass.dit.maap-project.org
 - choose the "Custom SSL Certificate" that matches the hostname you will give the CloudFront distribution. 
