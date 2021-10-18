@@ -123,19 +123,23 @@ yarn deploy
 
 The dashboard is a single page app (SPA) and is deployed as an S3 website. In order to allow relative links with parameters in the SPA to redirect to the right content in the SPA, the server must return the index page (index.html) whenever SPA with path and parameters is requested. To do this, we create a CloudFront distribution in front of the S3 website. 
 
-Configure this distribution:
+To create this distribution:
 
-- set the "Alternate domain names" to the custom domain name you will configure in DNS, e.g., biomass.dit.maap-project.org
-- choose the "Custom SSL Certificate" that matches the hostname you will give the CloudFront distribution. 
-- set the "Default root object" to `index.html`
-- change the Behavior for the Path pattern `Default (*)` to `Managed-CachingDisabled` (otherwise, changes to the S3 bucket will only be reflected in the website once per day)
-- add Error Pages for both 403 and 404 that direct to `/index.html` (this enables the deep linking capability)
+- In the AWS Console CloudFront page, click "Create distribution"
+- If you know what the custom domain name for your dashboard will be, set the "Alternate domain names" to the custom domain name you will configure in DNS, e.g., biomass.dit.maap-project.org. This setting is only for informational purposes in the AWS Console, so this can be left blank.
+- Choose the "Custom SSL Certificate" that matches the hostname you will give the CloudFront distribution. 
+- Set the "Default root object" to `index.html`
+- Change the Behavior for the Path pattern `Default (*)` to `Managed-CachingDisabled` (otherwise, changes to the S3 bucket will only be reflected in the website once per day)
+- Add Error Pages for both 403 and 404 that direct to `/index.html` (this enables the deep linking capability)
 
-After the Cloudfront distribution has been created, create a DNS entry in Route53 for it. This should look like:
+After the Cloudfront distribution has been created, you can either use the distribution directly from it's default URL (e.g., x1qwy4ijnynb5b.cloudfront.net) or create a DNS alias in Route53 for it. 
 
-- record name should be the same as used for the "Alternate domain names" in Route53
-- A record, of type alias
-- value should be the cloudfront name, e.g., xzwr27jkat7fy.cloudfront.net.
+To create a DNS alias to the CloudFront distribution:
+
+- In the AWS Console Route53 Dashboard, choose the Hosted Zone you wish to create the record for and click "Create record"
+- The ecord name should be the same as used for the "Alternate domain names" in Route53
+- Select "A" record, of type alias
+- The value should be the CloudFront name, e.g., xzwr27jkat7fy.cloudfront.net.
 
 ## Troubleshooting
 
