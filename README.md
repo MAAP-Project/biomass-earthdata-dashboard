@@ -121,7 +121,7 @@ yarn deploy
 
 ## Configuring CloudFront
 
-The Dashboard is a single page app (SPA) and is deployed as an S3 website. In order to allow "deep links" in the SPA to function correctly, the server must return the index page (index.html) whenever a deep link is requested. To do this, we create a CloudFront distribution in front of the S3 website. 
+The dashboard is a single page app (SPA) and is deployed as an S3 website. In order to allow relative links with parameters in the SPA to redirect to the right content in the SPA, the server must return the index page (index.html) whenever SPA with path and parameters is requested. To do this, we create a CloudFront distribution in front of the S3 website. 
 
 Configure this distribution 
 
