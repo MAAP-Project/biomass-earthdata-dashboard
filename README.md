@@ -137,7 +137,7 @@ After the Cloudfront distribution has been created, you can either use the distr
 To create a DNS alias to the CloudFront distribution:
 
 - In the AWS Console Route53 Dashboard, choose the Hosted Zone you wish to create the record for and click "Create record"
-- The ecord name should be the same as used for the "Alternate domain names" in Route53
+- The record name should be the same as used for the "Alternate domain names" in Route53
 - Select "A" record, of type alias
 - The value should be the CloudFront name, e.g., xzwr27jkat7fy.cloudfront.net.
 
