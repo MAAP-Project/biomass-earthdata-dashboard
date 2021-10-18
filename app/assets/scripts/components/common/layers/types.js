@@ -68,7 +68,6 @@ const toggleOrAddLayer = (mbMap, id, source, type, paint, beforeId) => {
         id: id,
         type: type,
         source: id,
-        'source-layer': source['source_layer'],
         layout: {},
         paint
       }
@@ -342,6 +341,35 @@ export const layerTypes = {
         });
     }
   },
+  'geojson': {
+    hide: (ctx, layerInfo) => {
+      const { mbMap } = ctx;
+      const { id } = layerInfo;
+
+      const geojsonId = `${id}-geojson`;
+
+      if (mbMap.getSource(geojsonId)) {
+        mbMap.setLayoutProperty(geojsonId, 'visibility', 'none');
+      }
+    },
+    show: (ctx, layerInfo) => {
+      const { mbMap } = ctx;
+      const { id, source, paint } = layerInfo;
+      const geojsonId = `${id}-geojson`;
+
+      const geojsonL = {
+        ...source,
+        data: source.data
+      };
+      toggleOrAddLayer(
+        mbMap,
+        geojsonId,
+        geojsonL,
+        'circle',
+        paint
+      );
+    }
+  },
   'vector': {
     hide: (ctx, layerInfo) => {
       const { mbMap } = ctx;
@@ -354,9 +382,6 @@ export const layerTypes = {
       }
     },
     show: (ctx, layerInfo) => {
-      console.log('in vector case');
-      console.log(layerInfo);
-
       const { mbMap } = ctx;
       const { id, source, paint } = layerInfo;
       const vecId = `${id}-vector`;
@@ -365,7 +390,6 @@ export const layerTypes = {
         ...source,
         data: source.data
       };
-
       toggleOrAddLayer(
         mbMap,
         vecId,
