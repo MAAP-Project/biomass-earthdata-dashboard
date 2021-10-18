@@ -44,7 +44,7 @@ class ProductHub extends React.Component {
           <InpageHeader>
             <InpageHeaderInner>
               <InpageHeadline>
-                <InpageTitle>Understanding Products Areas</InpageTitle>
+                <InpageTitle>Understanding Products</InpageTitle>
               </InpageHeadline>
             </InpageHeaderInner>
           </InpageHeader>

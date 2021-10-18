@@ -103,7 +103,7 @@ class CountryPilotsNavigation extends React.Component {
     return (
       <PanelBlockNav>
         <PanelBlockHeader>
-          <PanelBlockTitle>Areas</PanelBlockTitle>
+          <PanelBlockTitle>Country Pilots</PanelBlockTitle>
         </PanelBlockHeader>
         <PanelBlockBody>
           <PanelBlockScroll id='explore-nav'>
