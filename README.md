@@ -126,8 +126,7 @@ The dashboard is a single page app (SPA) and is deployed as an S3 website. In or
 To create this distribution:
 
 - In the AWS Console CloudFront page, click "Create distribution"
-- If you know what the custom domain name for your dashboard will be, set the "Alternate domain names" to the custom domain name you will configure in DNS, e.g., biomass.dit.maap-project.org. This setting is only for informational purposes in the AWS Console, so this can be left blank.
-- Choose the "Custom SSL Certificate" that matches the hostname you will give the CloudFront distribution. 
+- If you know what the custom domain name for your dashboard will be, set the "Alternate domain names" to the custom domain name you will configure in DNS, e.g., biomass.dit.maap-project.org. This setting is only for informational purposes in the AWS Console, so this can be left blank. Choose the "Custom SSL Certificate" that matches the custom domain.
 - Set the "Default root object" to `index.html`
 - Change the Behavior for the Path pattern `Default (*)` to `Managed-CachingDisabled` (otherwise, changes to the S3 bucket will only be reflected in the website once per day)
 - Add Error Pages for both 403 and 404 that direct to `/index.html` (this enables the deep linking capability)
