@@ -134,7 +134,7 @@ To create this distribution:
 
 After the Cloudfront distribution has been created, you can either use the distribution directly from it's default URL (e.g., x1qwy4ijnynb5b.cloudfront.net) or create a DNS alias in Route53 for it. 
 
-To create a DNS alias to the CloudFront distribution:
+To create a DNS alias to the CloudFront distribution (optional):
 
 - In the AWS Console Route53 Dashboard, choose the Hosted Zone you wish to create the record for and click "Create record"
 - The record name should be the same as used for the "Alternate domain names" in Route53
