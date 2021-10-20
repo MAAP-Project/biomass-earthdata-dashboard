@@ -79,17 +79,6 @@ class ProductHub extends React.Component {
                   dashColor={metadata.color}
                 />
                 <EntriesList>
-                  <li>
-                    <EntryNavLink
-                      to='/products/global'
-                      title='Explore global'
-                    >
-                      <EntryNavLinkTitle>All</EntryNavLinkTitle>
-                      <EntryNavLinkMedia>
-                        <img src={`${baseUrl}/assets/graphics/content/products/global.jpg`} width='960' height='480' alt='Area thumbnail' />
-                      </EntryNavLinkMedia>
-                    </EntryNavLink>
-                  </li>
                   {products &&
                     products.map((item) => (
                       <li key={item.id}>
@@ -99,7 +88,7 @@ class ProductHub extends React.Component {
                         >
                           <EntryNavLinkTitle>{item.label}</EntryNavLinkTitle>
                           <EntryNavLinkMedia>
-                            <img src={`${baseUrl}/assets/graphics/content/products/thumb-${item.id}.jpeg`} width='960' height='480' alt='Area thumbnail' />
+                            <img src={`${baseUrl}/assets/graphics/content/products/thumb-${item.id}.jpg`} width='280' alt='Area thumbnail' />
                           </EntryNavLinkMedia>
                         </EntryNavLink>
                       </li>
