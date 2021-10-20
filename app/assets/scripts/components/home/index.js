@@ -383,8 +383,16 @@ class Home extends React.Component {
                 <IntroWelcome>
                   <IntroWelcomeTitle>The Biomass Harmonization Activity</IntroWelcomeTitle>
                   <Prose>
-                    <p>Mapping aboveground biomass has been a priority for several new and upcoming NASA, ESA and JAXA missions, including GEDI, ICESat-2, BIOMASS, ALOS-4 and NISAR. One of the primary applications of these mission biomass products should be uptake for forest management toward climate mitigation, as current forest carbon reporting typically depends on either National Forest Inventories (NFIs) or sparse forest plot data.</p>
-                    <p>The EO biomass community is undertaking a global biomass product harmonization activity in an attempt to understand and communicate discrepancies between products, and produce a single estimate of biomass and uncertainty at a policy relevant, jurisdictional-level scale.</p>
+                    <p>
+                      <b>Biomass, the living part of vegetation systems, plays a crucial role in climate.</b> Around half of biomass is carbon, so destruction of vegetation, as in deforestation, releases carbon dioxide to the atmosphere. This carbon source is huge (about 6 billion tons of carbon dioxide per year). At the same time, vegetation growth pulls carbon dioxide out of the atmosphere and stores it as biomass. Hence biomass and its change, especially forest biomass, is a key part of both the climate <i>problem</i> and its <i>solution</i>.
+                    </p>
+                    <p>
+                      <b>Mapping aboveground biomass is therefore a priority of several new and upcoming NASA, ESA and JAXA missions, including GEDI, ICESat-2, BIOMASS, ALOS-4 and NISAR.</b>
+                    </p>
+                    <p>
+                      A primary purpose of these missions is to provide biomass density maps that can be used in forest carbon estimation and reporting, and forest and land use management for climate mitigation purposes. Currently, national GHG estimation and reporting depends on either National Forest Inventories (NFIs) or other sparse forest plot data. While the IPCC 2017 AFOLU GPG  provides guidance on using biomass density maps for country purposes, there are very few concrete country examples because it is only recently that space-based data have become available at the level of detail and quality useful for such purposes. There are, however, different space missions using different sensors and technologies (radar, lidar) and thus produce different estimates of biomass. Such disparities are a potential source of confusion for users, so it is highly desirable to produce a single most accurate biomass dataset by combining the strengths of the individual sensors. This dataset must have undergone rigorous, consistent and transparent validation if it is to be used with confidence by the policy community. This issue is pressing as the world prepares for the United Nations Framework Convention on Climate Change's first ‘Global Stocktake' (GST); this will take place in 2023, with repetitions every five years. For space-based biomass information to become a key input to future GSTs, it is essential that it be included in the baseline methods established in the 2023 GST.
+                    </p>
+                    <p><Link to='/about' title='About'>Learn More</Link></p>
                   </Prose>
                 </IntroWelcome>
                 <IntroStats>
