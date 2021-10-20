@@ -10,8 +10,6 @@ import { visuallyHidden } from '../../styles/helpers';
 import { Link } from 'react-router-dom';
 
 import App from '../common/app';
-import Button from '../../styles/button/button';
-import collecticon from '../../styles/collecticons';
 import {
   Inpage,
   InpageHeader,
@@ -36,11 +34,9 @@ import {
   getActiveTimeseriesLayers
 } from '../../utils/map-explore-utils';
 
-// import { filterComponentProps } from '../../utils/utils';
 import { glsp } from '../../styles/utils/theme-values';
 import { surfaceElevatedD } from '../../styles/skins';
 import media from '../../styles/utils/media-queries';
-import { zeroPad } from '../../utils/format';
 
 import stories from './stories';
 import { getProductLayers } from '../common/layers';
@@ -204,103 +200,6 @@ const grow = keyframes`
   }
 `;
 
-const IntroStories = styled.section`
-  position: relative;
-  background: ${themeVal('color.primary')};
-  color: ${themeVal('color.surface')};
-  padding: ${glsp(0.75, 1, 1.25, 1)};
-
-  ${media.smallUp`
-    min-height: 7.5rem;
-  `}
-  
-  ${media.mediumUp`
-    padding: ${glsp(1.25, 2, 1.75, 2)};
-    min-height: auto;
-  `}
-
-  &::before {
-    ${collecticon('chart-bars')}
-    font-size: 6rem;
-    line-height: 1;
-    opacity: 0.16;
-    position: absolute;
-    bottom: ${glsp()};
-    right: ${glsp()};
-    z-index: 1;
-
-    ${media.mediumUp`
-      bottom: ${glsp(1.5)};
-      right: ${glsp(1.5)};
-    `}
-  }
-
-  > * {
-    position: relative;
-    z-index: 2;
-  }
-`;
-
-const IntroStoriesHeader = styled.header`
-  display: flex;
-  flex-flow: row nowrap;
-  align-items: center;
-`;
-
-const IntroStoriesTitle = styled.h1`
-  ${headingAlt()}
-  margin: 0 auto 0 0;
-  padding-right: ${glsp()};
-`;
-
-const IntroStoriesToolbar = styled.div`
-  display: flex;
-  flex-flow: row nowrap;
-  margin-right: -${glsp(0.5)};
-
-  ${media.mediumUp`
-    margin-right: -${glsp(1)};
-  `}
-
-  > * {
-    vertical-align: top;
-  }
-`;
-
-const CycleProgressBar = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 0.25rem;
-  background-color: rgba(255, 255, 255, 0.16);
-  animation: ${grow} ${CYCLE_TIME}ms linear forwards;
-`;
-
-const Story = styled.article`
-  display: flex;
-`;
-
-const StoryContent = styled(Link)`
-  display: flex;
-  flex-flow: row nowrap;
-  align-items: center;
-
-  &,
-  &:visited {
-    color: inherit;
-  }
-`;
-
-const StoryCopy = styled.div`
-  display: grid;
-  grid-gap: ${glsp()} 0;
-`;
-
-const StoryProse = styled(Prose)`
-  display: grid;
-  grid-gap: ${glsp()} 0;
-`;
-
 class Home extends React.Component {
   constructor(props) {
     super(props);
@@ -455,8 +354,6 @@ class Home extends React.Component {
     const {
       storyIndex,
       mapLayers,
-      storiesCycling,
-      storiesCyclingIteration,
       activeLayers
     } = this.state;
     const currentStory = stories[storyIndex];
@@ -465,6 +362,9 @@ class Home extends React.Component {
 
     const { isReady, getData } = this.props.productList;
     const productsCount = isReady() ? getData().length : 0;
+
+    const { isReady: isReadyCp, getData: getDataCp } = this.props.countryPilotList;
+    const countryPilotsCount = isReadyCp() ? getDataCp().length : 0;
 
     return (
       <App pageTitle='Home'>
@@ -491,57 +391,11 @@ class Home extends React.Component {
                   <IntroStatsTitle>Some numbers</IntroStatsTitle>
                   <IntroStatsList>
                     <dt>Products</dt>
-                    <dd><Link to='/products' title='Explore the areas'>{zeroPad(productsCount)}</Link></dd>
+                    <dd><Link to='/products' title='Explore the products'>{productsCount - 1}</Link></dd>
+                    <dt>Country Pilots</dt>
+                    <dd><Link to='/country_pilots' title='Explore the country pilots'>{countryPilotsCount}</Link></dd>
                   </IntroStatsList>
                 </IntroStats>
-                <IntroStories>
-                  {storiesCycling && !!storiesCyclingIteration && <CycleProgressBar key={storiesCyclingIteration} />}
-                  <IntroStoriesHeader>
-                    <IntroStoriesTitle>Did you know?</IntroStoriesTitle>
-                    <IntroStoriesToolbar>
-                      <Button
-                        title={storiesCycling ? 'Stop cycling through stories' : 'Start cycling through stories'}
-                        variation='achromic-plain'
-                        useIcon={storiesCycling ? 'circle-pause' : 'circle-play'}
-                        hideText
-                        onClick={this.toggleStoriesCycling}
-                      >
-                        {storiesCycling ? 'Stop' : 'Start'}
-                      </Button>
-                      <Button
-                        element='a'
-                        title='View previous story'
-                        href='#'
-                        variation='achromic-plain'
-                        useIcon='chevron-left--small'
-                        hideText
-                        onClick={this.prevStory}
-                      >
-                        Previous
-                      </Button>
-                      <Button
-                        element='a'
-                        title='View next story'
-                        href='#'
-                        variation='achromic-plain'
-                        useIcon='chevron-right--small'
-                        hideText
-                        onClick={this.nextStory}
-                      >
-                        Next
-                      </Button>
-                    </IntroStoriesToolbar>
-                  </IntroStoriesHeader>
-                  <Story>
-                    <StoryContent title='Explore the data' to={currentStory.link}>
-                      <StoryCopy>
-                        <StoryProse>
-                          <p>{currentStory.prose}</p>
-                        </StoryProse>
-                      </StoryCopy>
-                    </StoryContent>
-                  </Story>
-                </IntroStories>
               </IntroCopy>
               <IntroMedia>
                 <MbMap
@@ -566,12 +420,14 @@ class Home extends React.Component {
 Home.propTypes = {
   fetchProductSingle: T.func,
   productList: T.object,
+  countryPilotList: T.object,
   product: T.object
 };
 
 function mapStateToProps(state, props) {
   return {
     productList: wrapApiResult(state.product.list),
+    countryPilotList: wrapApiResult(state.countryPilot.list),
     product: wrapApiResult(state.product.single, true)
   };
 }

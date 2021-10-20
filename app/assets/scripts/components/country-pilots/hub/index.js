@@ -44,7 +44,7 @@ class CountryPilotHub extends React.Component {
           <InpageHeader>
             <InpageHeaderInner>
               <InpageHeadline>
-                <InpageTitle>Understanding Country Pilot Areas</InpageTitle>
+                <InpageTitle>Understanding Country Pilots</InpageTitle>
               </InpageHeadline>
             </InpageHeaderInner>
           </InpageHeader>
@@ -88,7 +88,7 @@ class CountryPilotHub extends React.Component {
                         >
                           <EntryNavLinkTitle>{item.label}</EntryNavLinkTitle>
                           <EntryNavLinkMedia>
-                            <img src={`${baseUrl}/assets/graphics/content/country_pilots/${item.id}.jpg`} width='960' height='480' alt='Area thumbnail' />
+                            <img src={`${baseUrl}/assets/graphics/content/country_pilots/thumb-${item.id}.jpg`} width='280' alt='Area thumbnail' />
                           </EntryNavLinkMedia>
                         </EntryNavLink>
                       </li>

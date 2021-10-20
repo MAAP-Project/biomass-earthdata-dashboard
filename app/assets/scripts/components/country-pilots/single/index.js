@@ -290,17 +290,8 @@ class CountryPilotSingle extends React.Component {
 
   selectDefaultLayers(countryPilotId, common) {
     switch (countryPilotId) {
-      case 'wales':
-        common.layers.default = 'TODO';
-        break;
-      case 'japan':
-        common.layers.default = 'TODO';
-        break;
       case 'paraguay':
-        common.layers.default = 'paraguay-forest-mask';
-        break;
-      case 'peru':
-        common.layers.default = 'TODO';
+        common.layers.default = 'paraguay_forest_mask';
         break;
       default:
         break;

@@ -108,11 +108,6 @@ class ProductsNavigation extends React.Component {
         <PanelBlockBody>
           <PanelBlockScroll id='explore-nav'>
             <ul>
-              <li>
-                <PanelNavLink to='/products/global' exact title='Explore global map'>
-                  All
-                </PanelNavLink>
-              </li>
               {products.map((ss) => (
                 <li key={ss.id}>
                   <PanelNavLink
