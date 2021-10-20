@@ -39,7 +39,7 @@ class CountryPilotHub extends React.Component {
     const countryPilotsCount = converter.toWords(countryPilots ? countryPilots.length : 0);
 
     return (
-      <App pageTitle='Country Pilot areas'>
+      <App pageTitle='Country Pilots'>
         <Inpage>
           <InpageHeader>
             <InpageHeaderInner>
@@ -53,20 +53,21 @@ class CountryPilotHub extends React.Component {
               <HubFold>
                 <Prose>
                   <p>
-                    The global trajectory of the global phenomena have led to regional
-                    changes in air and water quality, night lights, and other
-                    economic factors.
-                  </p>
-                  <p>
-                    This dashboard highlights {countryPilotsCount} country pilot areas around the
-                    world, allowing you to explore how a specific location&apos;s
-                    response to global phenomena has influenced local
-                    environmental signals.
-                  </p>
-                  <p>
-                    The {countryPilotsCount} country pilot areas were chosen based on their large
-                    populations and high level of economic activity, which
-                    reveal significant changes in response to global phenomena.
+                    Improving and integrating national and global data sources is an important task
+                    of the UNFCCC Global Stocktake and this aim is also central to the biomass 
+                    harmonization work. Combining global Earth Observation with country data should 
+                    help to reconcile any differences between country and global estimates, fill national 
+                    data gaps, and improve the precision of biomass estimation and potentially emission 
+                    factors. The biomass harmonization effort aims to demonstrate, in selected countries 
+                    as case studies, the practical implementation of the refined 2019 IPCC Good Practice 
+                    Guidance (GPG) with a new section on the use of biomass density maps for GHG 
+                    inventories. This effort will engage countries with established national inventory 
+                    data (NFI) to compare and enhance their forest biomass estimates with best-available 
+                    satellite-based data products, and will assess the extent to which countries without 
+                    NFI data benefit from evolving remote sensing estimates of forest biomass in their 
+                    national carbon assessment.  We rely strongly on working with national representatives 
+                    to develop synergistic approaches and bridge any gaps between evolving space-based 
+                    techniques for biomass estimation and the diverse demands and practices of countries.
                   </p>
                   <p>
                     Click below to visit a country pilot area.
@@ -75,7 +76,7 @@ class CountryPilotHub extends React.Component {
               </HubFold>
               <HubFold>
                 <InpageHGroup
-                  title='Areas'
+                  title='Country Pilots'
                   dashColor={metadata.color}
                 />
                 <EntriesList>
