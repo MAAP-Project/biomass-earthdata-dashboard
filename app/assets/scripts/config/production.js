@@ -15,7 +15,7 @@ module.exports = {
       zoom: 2,
       minZoom: 1,
       maxZoom: 20,
-      styleUrl: 'mapbox://styles/covid-nasa/ckb01h6f10bn81iqg98ne0i2y'
+      styleUrl: 'mapbox://styles/mapbox/light-v10'
     }
   }
 };
