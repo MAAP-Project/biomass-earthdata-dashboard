@@ -282,22 +282,6 @@ class MbMap extends React.Component {
           this.setState({ popover: { coords, productId: product.id } });
         });
     };
-
-    // Add markers to mbMap, if not done yet
-    if (this.mbMap) {
-      products.forEach((s) => {
-        const m = addMarker(s, this.mbMap);
-        this.productMarkersList.push(m);
-      });
-    }
-
-    // Add markers to mbMapComparing, if not done yet
-    if (this.mbMapComparing) {
-      products.forEach((s) => {
-        const m = addMarker(s, this.mbMapComparing);
-        this.productMarkersList.push(m);
-      });
-    }
   }
 
   enableCompare(prevProps) {

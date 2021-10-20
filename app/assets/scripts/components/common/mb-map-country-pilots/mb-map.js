@@ -273,22 +273,6 @@ class MbMap extends React.Component {
           this.setState({ popover: { coords, countryPilotId: countryPilot.id } });
         });
     };
-
-    // Add markers to mbMap, if not done yet
-    if (this.mbMap) {
-      countryPilots.forEach((s) => {
-        const m = addMarker(s, this.mbMap);
-        this.countryPilotMarkersList.push(m);
-      });
-    }
-
-    // Add markers to mbMapComparing, if not done yet
-    if (this.mbMapComparing) {
-      countryPilots.forEach((s) => {
-        const m = addMarker(s, this.mbMapComparing);
-        this.countryPilotMarkersList.push(m);
-      });
-    }
   }
 
   enableCompare(prevProps) {
