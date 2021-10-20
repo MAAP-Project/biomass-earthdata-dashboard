@@ -99,7 +99,7 @@ class ProductHub extends React.Component {
                         >
                           <EntryNavLinkTitle>{item.label}</EntryNavLinkTitle>
                           <EntryNavLinkMedia>
-                            <img src={`${baseUrl}/assets/graphics/content/products/thumb-${item.id}.jpeg`} width='960' height='480' alt='Area thumbnail' />
+                            <img src={`${baseUrl}/assets/graphics/content/products/thumb-${item.id}.jpg`} width='960' height='480' alt='Area thumbnail' />
                           </EntryNavLinkMedia>
                         </EntryNavLink>
                       </li>
