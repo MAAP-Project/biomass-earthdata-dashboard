@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { themeVal } from '../../styles/utils/general';
 import { visuallyHidden, truncated } from '../../styles/helpers';
 import { glsp } from '../../styles/utils/theme-values';
-import { headingAlt } from '../../styles/type/heading';
+import { headingAltPreserveCase } from '../../styles/type/heading';
 import { formatThousands } from '../../utils/format';
 
 import GradientChart from './gradient-legend-chart/chart';
@@ -35,6 +35,7 @@ const LegendList = styled.dl`
   }
 
   dd {
+    ${headingAltPreserveCase()}
     font-size: 0.75rem;
     line-height: 1rem;
     grid-row: 2;
