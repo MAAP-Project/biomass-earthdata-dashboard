@@ -35,7 +35,6 @@ const LegendList = styled.dl`
   }
 
   dd {
-    ${headingAlt()}
     font-size: 0.75rem;
     line-height: 1rem;
     grid-row: 2;
@@ -169,7 +168,7 @@ function LayerLegend (props) {
           <dd>
             <span>{printLegendVal(legend.min)}</span>
             <i> – </i>
-            <span>{printLegendVal(legend.max)}</span>
+            <span>{printLegendVal(legend.max)} {legend.units}</span>
           </dd>
         </LegendList>
       </LayerLegendSelf>
@@ -188,7 +187,7 @@ function LayerLegend (props) {
         <dd>
           <span>{printLegendVal(legend.min)}</span>
           <i> – </i>
-          <span>{printLegendVal(legend.max)}</span>
+          <span>{printLegendVal(legend.max)} {legend.units}</span>
         </dd>
       </LegendList>
     </LayerLegendSelf>
@@ -202,6 +201,7 @@ LayerLegend.propTypes = {
   legend: T.shape({
     min: T.oneOfType([T.number, T.string]),
     max: T.oneOfType([T.number, T.string]),
+    units: T.string,
     type: T.string,
     stops: T.array
   }),
