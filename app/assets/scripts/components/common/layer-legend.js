@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { themeVal } from '../../styles/utils/general';
 import { visuallyHidden, truncated } from '../../styles/helpers';
 import { glsp } from '../../styles/utils/theme-values';
-import { headingAlt } from '../../styles/type/heading';
+import { headingAltPreserveCase } from '../../styles/type/heading';
 import { formatThousands } from '../../utils/format';
 
 import GradientChart from './gradient-legend-chart/chart';
@@ -35,7 +35,7 @@ const LegendList = styled.dl`
   }
 
   dd {
-    ${headingAlt()}
+    ${headingAltPreserveCase()}
     font-size: 0.75rem;
     line-height: 1rem;
     grid-row: 2;
@@ -169,7 +169,7 @@ function LayerLegend (props) {
           <dd>
             <span>{printLegendVal(legend.min)}</span>
             <i> – </i>
-            <span>{printLegendVal(legend.max)}</span>
+            <span>{printLegendVal(legend.max)} {legend.units}</span>
           </dd>
         </LegendList>
       </LayerLegendSelf>
@@ -188,7 +188,7 @@ function LayerLegend (props) {
         <dd>
           <span>{printLegendVal(legend.min)}</span>
           <i> – </i>
-          <span>{printLegendVal(legend.max)}</span>
+          <span>{printLegendVal(legend.max)} {legend.units}</span>
         </dd>
       </LegendList>
     </LayerLegendSelf>
@@ -202,6 +202,7 @@ LayerLegend.propTypes = {
   legend: T.shape({
     min: T.oneOfType([T.number, T.string]),
     max: T.oneOfType([T.number, T.string]),
+    units: T.string,
     type: T.string,
     stops: T.array
   }),

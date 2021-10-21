@@ -70,3 +70,14 @@ export const headingAlt = () => css`
   font-weight: ${themeVal('type.heading.regular')};
   text-transform: uppercase;
 `;
+
+export const headingAltPreserveCase = () => css`
+  opacity: 0.64;
+  color: inherit;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-feature-settings: "pnum" 0; /* Use proportional numbers */
+  font-family: ${themeVal('type.base.family')};
+  font-weight: ${themeVal('type.heading.regular')};
+  text-transform: none;
+`;
