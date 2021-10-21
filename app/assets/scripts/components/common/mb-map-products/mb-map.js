@@ -28,7 +28,7 @@ const { center, zoom: defaultZoom, minZoom, maxZoom, styleUrl } = config.map;
 
 const MOSAICJSON = 'mosaicjson';
 const COG = 'cog';
-const MOSAICS = 'mosaics/';
+const MOSAICS = '/mosaics/';
 
 // Set mapbox token.
 mapboxgl.accessToken = config.mbToken;

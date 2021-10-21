@@ -1,6 +1,7 @@
 import React from 'react';
 import T from 'prop-types';
 import styled, { withTheme, ThemeProvider } from 'styled-components';
+import axios from 'axios';
 import mapboxgl from 'mapbox-gl';
 import CompareMbGL from 'mapbox-gl-compare';
 import { NavLink } from 'react-router-dom';
@@ -24,6 +25,10 @@ import Dl from '../../../styles/type/definition-list';
 import LayerControlDropdown from './map-layer-control';
 
 const { center, zoom: defaultZoom, minZoom, maxZoom, styleUrl } = config.map;
+
+const MOSAICJSON = 'mosaicjson';
+const COG = 'cog';
+const MOSAICS = '/mosaics/';
 
 // Set mapbox token.
 mapboxgl.accessToken = config.mbToken;
@@ -110,6 +115,10 @@ class MbMap extends React.Component {
       popover: {
         coords: null,
         countryPilotId: null
+      },
+      pointDetails: {
+        coords: null,
+        values: {}
       }
     };
 
@@ -449,6 +458,11 @@ class MbMap extends React.Component {
         zoom: round(this.mbMap.getZoom(), 2)
       });
     });
+
+    this.mbMap.on('click', (e) => {
+      this.setState({ pointDetails: { coords: e.lngLat.toArray() } });
+      this.getPointValues(e.lngLat.toArray());
+    });
   }
 
   renderOverlayDropdown(props, state) {
@@ -535,10 +549,90 @@ class MbMap extends React.Component {
     );
   }
 
+  getPointValues (longlat) {
+    const lon = longlat[0];
+    const lat = longlat[1];
+
+    this.props.activeLayers.forEach(activeLayer => {
+      const layerInfo = this.props.layers.find(layer => layer.id === activeLayer);
+      const tileUrl = new URL(layerInfo?.source.tiles[0]);
+      let url = tileUrl.searchParams.get('url');
+      const bidx = tileUrl.searchParams.get('bidx') || 1;
+      let href = tileUrl.href.split('/tiles')[0];
+      const dataType = href.split('/')[3];
+
+      if (dataType === MOSAICJSON) {
+        if (href.includes(MOSAICS)) { // in case of dynamodb hosted mosaicjson
+          const newHref = href.split(MOSAICS)[0];
+          url = `${href}/${MOSAICJSON}`;
+          href = newHref;
+        }
+      }
+      const getValueUrl = `${href}/point/${lon},${lat}?url=${url}`;
+      axios.get(getValueUrl).then(response => {
+        if (response.status === 200) {
+          let datasetValue;
+          if (dataType === COG) {
+            datasetValue = response.data.values[bidx - 1];
+          } else if (dataType === MOSAICJSON) {
+            datasetValue = response.data.values[0][1][bidx - 1];
+          } else {
+            datasetValue = null;
+          }
+          if (datasetValue != null) {
+            this.setState(state => {
+              return {
+                ...state,
+                pointDetails: {
+                  ...state.pointDetails,
+                  values: {
+                    ...state.pointDetails.values,
+                    [layerInfo.name]: datasetValue
+                  }
+                }
+              };
+            });
+          }
+        }
+      }).catch(err =>
+        /* eslint-disable-next-line no-console */
+        console.log(err));
+    });
+  }
+
+  renderPointDetails () {
+    const dataValues = this.state.pointDetails.values;
+    if (!dataValues) return null;
+    return (
+      <ReactPopoverGl
+        mbMap={this.mbMap}
+        lngLat={this.state.pointDetails.coords}
+        onClose={() => this.setState({ pointDetails: {} })}
+        offset={[0, 0]}
+        title='Point value'
+        content={
+          <Prose>
+            <PopoverDetails>
+              <dt>Layers</dt>
+              {
+                Object.entries(this.state.pointDetails.values).map((val) => (
+                  <div key={val[0]} style={{ fontSize: '12px' }}>
+                    <span><b>{val[0]}: </b></span>
+                    <span>{parseFloat(val[1]).toFixed(4)}</span>
+                  </div>
+                ))
+              }
+            </PopoverDetails>
+          </Prose>
+        }
+      />
+    );
+  }
+
   render() {
     return (
       <>
-        {this.mbMap && this.renderPopover()}
+        {this.mbMap && this.renderPopover() && this.renderPointDetails()}
         <MapsContainer id='container'>
           <SingleMapContainer
             ref={(el) => {
