@@ -299,7 +299,7 @@ class ProductSingle extends React.Component {
       case 'nasa_jpl':
         common.layers.default = 'nasa_jpl';
         break;
-      case 'above_boreal':
+      case 'icesat2_boreal':
         common.layers.default = 'above_biomass';
         break;
       case 'nceo_africa':
