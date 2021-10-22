@@ -320,16 +320,6 @@ class MbMap extends React.Component {
       );
     }
 
-    /*if (this.props.enableOverlayControls) {
-      this.overlayDropdownControlCompare = new MapboxControl(
-        (props, state) => this.renderOverlayDropdown(props, state)
-      );
-
-      this.mbMapComparing.addControl(this.overlayDropdownControlCompare, 'top-left');
-      // Initial rendering.
-      this.overlayDropdownControlCompare.render(this.props, this.state);
-    }*/
-
     // Style attribution.
     this.mbMapComparing.addControl(
       new mapboxgl.AttributionControl({ compact: true })
@@ -404,15 +394,6 @@ class MbMap extends React.Component {
         );
       }
 
-      /*if (this.props.enableOverlayControls) {
-        this.overlayDropdownControl = new MapboxControl(
-          (props, state) => this.renderOverlayDropdown(props, state)
-        );
-
-        this.mbMap.addControl(this.overlayDropdownControl, 'top-left');
-        // Initial rendering.
-        this.overlayDropdownControl.render(this.props, this.state);
-      }*/
     }
 
     // Style attribution
