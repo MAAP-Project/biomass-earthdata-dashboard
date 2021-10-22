@@ -21,7 +21,7 @@ export class CdkStack extends cdk.Stack {
     new s3Deployment.BucketDeployment(this, "deployStaticWebsiteSubDir", {
       sources: [s3Deployment.Source.asset("../dist")],
       destinationBucket: myBucket,
-      destinationKeyPrefix: "biomass/"
+      destinationKeyPrefix: "maap-biomass/"
     });
   }
 }
