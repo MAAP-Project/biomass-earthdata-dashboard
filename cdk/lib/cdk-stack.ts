@@ -9,13 +9,19 @@ export class CdkStack extends cdk.Stack {
     // The code that defines your stack goes here
     const myBucket = new s3.Bucket(this, `${process.env.STAGE}-${process.env.PROJECT}-earthdata-dashboard`, {
       publicReadAccess: true,
-      removalPolicy: cdk.RemovalPolicy.DESTROY,        
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
       websiteIndexDocument: "index.html"
-   });
+    });
 
-   const deployment = new s3Deployment.BucketDeployment(this, "deployStaticWebsite", {
-     sources: [s3Deployment.Source.asset("../dist")],
-     destinationBucket: myBucket
-    });   
+    new s3Deployment.BucketDeployment(this, "deployStaticWebsite", {
+      sources: [s3Deployment.Source.asset("../dist")],
+      destinationBucket: myBucket
+    });
+
+    new s3Deployment.BucketDeployment(this, "deployStaticWebsiteSubDir", {
+      sources: [s3Deployment.Source.asset("../dist")],
+      destinationBucket: myBucket,
+      destinationKeyPrefix: "maap-biomass/"
+    });
   }
 }
