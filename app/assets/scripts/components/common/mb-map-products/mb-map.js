@@ -26,6 +26,10 @@ import LayerControlDropdown from './map-layer-control';
 
 const { center, zoom: defaultZoom, minZoom, maxZoom, styleUrl } = config.map;
 
+const MOSAICJSON = 'mosaicjson';
+const COG = 'cog';
+const MOSAICS = 'mosaics/';
+
 // Set mapbox token.
 mapboxgl.accessToken = config.mbToken;
 localStorage.setItem('MapboxAccessToken', config.mbToken);
@@ -278,22 +282,6 @@ class MbMap extends React.Component {
           this.setState({ popover: { coords, productId: product.id } });
         });
     };
-
-    // Add markers to mbMap, if not done yet
-    if (this.mbMap) {
-      products.forEach((s) => {
-        const m = addMarker(s, this.mbMap);
-        this.productMarkersList.push(m);
-      });
-    }
-
-    // Add markers to mbMapComparing, if not done yet
-    if (this.mbMapComparing) {
-      products.forEach((s) => {
-        const m = addMarker(s, this.mbMapComparing);
-        this.productMarkersList.push(m);
-      });
-    }
   }
 
   enableCompare(prevProps) {
@@ -568,17 +556,25 @@ class MbMap extends React.Component {
     this.props.activeLayers.forEach(activeLayer => {
       const layerInfo = this.props.layers.find(layer => layer.id === activeLayer);
       const tileUrl = new URL(layerInfo?.source.tiles[0]);
-      const url = tileUrl.searchParams.get('url');
+      let url = tileUrl.searchParams.get('url');
       const bidx = tileUrl.searchParams.get('bidx') || 1;
-      const href = tileUrl.href.split('/tiles')[0];
+      let href = tileUrl.href.split('/tiles')[0];
       const dataType = href.split('/')[3];
+
+      if (dataType === MOSAICJSON) {
+        if (href.includes(MOSAICS)) { // in case of dynamodb hosted mosaicjson
+          const newHref = href.split(MOSAICS)[0];
+          url = `${href}/${MOSAICJSON}`;
+          href = newHref;
+        }
+      }
       const getValueUrl = `${href}/point/${lon},${lat}?url=${url}`;
       axios.get(getValueUrl).then(response => {
         if (response.status === 200) {
           let datasetValue;
-          if (dataType === 'cog') {
+          if (dataType === COG) {
             datasetValue = response.data.values[bidx - 1];
-          } else if (dataType === 'mosaicjson') {
+          } else if (dataType === MOSAICJSON) {
             datasetValue = response.data.values[0][1][bidx - 1];
           } else {
             datasetValue = null;

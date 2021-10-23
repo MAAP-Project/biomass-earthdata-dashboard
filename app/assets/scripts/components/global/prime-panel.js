@@ -4,13 +4,6 @@ import styled from 'styled-components';
 
 import Panel, { PanelHeadline, PanelTitle } from '../common/panel';
 import DataLayersBlock from '../common/data-layers-block';
-import {
-  PanelBlock,
-  PanelBlockHeader,
-  PanelBlockTitle,
-  PanelBlockBody
-} from '../common/panel-block';
-import FilterAoi from './filter-aoi';
 import ProductsNavigation from '../common/products-navigation';
 
 import media, { isLargeViewport } from '../../styles/utils/media-queries';
@@ -28,7 +21,6 @@ class ExpMapPrimePanel extends React.Component {
       onAction,
       onPanelChange,
       mapLoaded,
-      aoiState,
       productList
     } = this.props;
 
@@ -53,15 +45,6 @@ class ExpMapPrimePanel extends React.Component {
               mapLoaded={mapLoaded}
               onAction={onAction}
             />
-
-            <PanelBlock>
-              <PanelBlockHeader>
-                <PanelBlockTitle>Tools</PanelBlockTitle>
-              </PanelBlockHeader>
-              <PanelBlockBody>
-                <FilterAoi onAction={onAction} aoiState={aoiState} />
-              </PanelBlockBody>
-            </PanelBlock>
           </>
         }
       />
@@ -74,7 +57,6 @@ ExpMapPrimePanel.propTypes = {
   onAction: T.func,
   layers: T.array,
   mapLoaded: T.bool,
-  aoiState: T.object,
   productList: T.object
 };
 

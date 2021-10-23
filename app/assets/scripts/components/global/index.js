@@ -424,7 +424,6 @@ class GlobalExplore extends React.Component {
               <ExpMapPrimePanel
                 layers={layers}
                 mapLoaded={this.state.mapLoaded}
-                aoiState={this.state.aoi}
                 onAction={this.onPanelAction}
                 onPanelChange={({ revealed }) => {
                   this.resizeMap();
