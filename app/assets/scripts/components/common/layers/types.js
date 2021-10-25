@@ -63,15 +63,17 @@ const toggleOrAddLayer = (mbMap, id, source, type, paint, beforeId) => {
     mbMap.setLayoutProperty(id, 'visibility', 'visible');
   } else {
     mbMap.addSource(id, source);
-    mbMap.addLayer(
-      {
-        id: id,
-        type: type,
-        source: id,
-        layout: {},
-        paint
-      }
-    );
+    const layer_data = {
+      id: id,
+      type: type,
+      source: id,
+      layout: {},
+      paint
+    };
+    if (source['source_layer']) {
+      layer_data['source-layer'] = source['source_layer']
+    };
+    mbMap.addLayer(layer_data);
   }
 };
 
