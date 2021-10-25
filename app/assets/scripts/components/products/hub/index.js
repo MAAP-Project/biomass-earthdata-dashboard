@@ -55,7 +55,7 @@ class ProductHub extends React.Component {
                   <p>
                     Several current projects are producing continental to global biomass maps. These include 
                     ESA’s CCI-Biomass global maps at a scale of 100 m for 2010, 2017, 2018, 2020; JPL’s global 
-                    100 m map for 2020, and a time series of 10 km (global?) biomass maps from 2000-2020; 
+                    100 m map for 2020, and a time series of 10 km biomass maps from 2000-2020; 
                     NASA GEDI’s 1 km map for 2020 covering latitudes between ~52° N and 52° S; the NASA 
                     ICESat-2 30 m boreal map for 2020; and the UK National Centre for Earth Observation (EO) 
                     100 m time series of maps for Africa from 2007 to 2017.
