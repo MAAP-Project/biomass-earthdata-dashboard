@@ -22,7 +22,6 @@ import ReactPopoverGl from './mb-popover';
 import Button from '../../../styles/button/button';
 import Prose from '../../../styles/type/prose';
 import Dl from '../../../styles/type/definition-list';
-import LayerControlDropdown from './map-layer-control';
 
 const { center, zoom: defaultZoom, minZoom, maxZoom, styleUrl } = config.map;
 
@@ -320,16 +319,6 @@ class MbMap extends React.Component {
       );
     }
 
-    if (this.props.enableOverlayControls) {
-      this.overlayDropdownControlCompare = new MapboxControl(
-        (props, state) => this.renderOverlayDropdown(props, state)
-      );
-
-      this.mbMapComparing.addControl(this.overlayDropdownControlCompare, 'top-left');
-      // Initial rendering.
-      this.overlayDropdownControlCompare.render(this.props, this.state);
-    }
-
     // Style attribution.
     this.mbMapComparing.addControl(
       new mapboxgl.AttributionControl({ compact: true })
@@ -404,15 +393,6 @@ class MbMap extends React.Component {
         );
       }
 
-      if (this.props.enableOverlayControls) {
-        this.overlayDropdownControl = new MapboxControl(
-          (props, state) => this.renderOverlayDropdown(props, state)
-        );
-
-        this.mbMap.addControl(this.overlayDropdownControl, 'top-left');
-        // Initial rendering.
-        this.overlayDropdownControl.render(this.props, this.state);
-      }
     }
 
     // Style attribution
@@ -463,17 +443,6 @@ class MbMap extends React.Component {
       this.setState({ pointDetails: { coords: e.lngLat.toArray() } });
       this.getPointValues(e.lngLat.toArray());
     });
-  }
-
-  renderOverlayDropdown(props, state) {
-    return (
-      <ThemeProvider theme={props.theme}>
-        <LayerControlDropdown
-          overlayState={state.overlayState}
-          handleOverlayChange={this.handleOverlayChange}
-        />
-      </ThemeProvider>
-    );
   }
 
   renderPopover() {
