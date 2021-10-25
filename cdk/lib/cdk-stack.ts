@@ -13,15 +13,19 @@ export class CdkStack extends cdk.Stack {
       websiteIndexDocument: "index.html"
     });
 
-    new s3Deployment.BucketDeployment(this, "deployStaticWebsite", {
+    const root = new s3Deployment.BucketDeployment(this, "deployStaticWebsite", {
       sources: [s3Deployment.Source.asset("../dist")],
-      destinationBucket: myBucket
+      destinationBucket: myBucket,
+      retainOnDelete: true
     });
 
-    new s3Deployment.BucketDeployment(this, "deployStaticWebsiteSubDir", {
+    const maap_biomass = new s3Deployment.BucketDeployment(this, "deployStaticWebsiteSubDir", {
       sources: [s3Deployment.Source.asset("../dist")],
       destinationBucket: myBucket,
       destinationKeyPrefix: "maap-biomass/"
     });
+
+    maap_biomass.node.addDependency(root);
+
   }
 }
