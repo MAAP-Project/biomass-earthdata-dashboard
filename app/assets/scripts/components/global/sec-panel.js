@@ -144,7 +144,9 @@ class ExpMapSecPanel extends React.Component {
         bodyContent={
           <BodyScroll>
             <SummaryExpandable>
-              <p>The Multi-Mission Algorithm and Analysis Platform (MAAP) is a collaborative science platform for biomass research. The platform is a collaboration between science and engineering teams at NASA and ESA. This experimental dashboard enables exploration of the data made available in the platform.</p>
+              <p>
+              The products highlighted here are inputs to a global forest biomass harmonization activity, with inputs from NASA, ESA, JAXA, and NCEO. This dashboard provides a tool to explore and compare new biomass products, both for product producers and users. The biomass harmonization activity is working to validate and harmonize these products on a new open science platform, the NASA-ESA Multi Mission Algorithm and Analysis Platform (scimaap.net).  For more information on these products please visit: <a href="https://ceos.org/gst/biomass.html">https://ceos.org/gst/biomass.html</a>.
+              </p>
             </SummaryExpandable>
             <InsightsBlock>
               {this.renderContent()}
