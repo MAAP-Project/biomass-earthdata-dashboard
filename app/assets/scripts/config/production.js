@@ -5,11 +5,7 @@ module.exports = {
     appDescription: 'Explore the Biomass datasets.',
     // twitterHandle: '@NASAEarthData',
     mbToken: 'pk.eyJ1IjoiY292aWQtbmFzYSIsImEiOiJja2F6eHBobTUwMzVzMzFueGJuczF6ZzdhIn0.8va1fkyaWgM57_gZ2rBMMg',
-    api: process.env.STAGE == "production" ?
-            process.env.PRODUCTION_API_URL : (
-              process.env.STAGE == "staging" ?
-              process.env.STAGING_API_URL :
-                (process.env.DIT_API_URL || 'http://localhost:8000/v1')),
+    api: process.env.API_URL || 'http://localhost:8000/v1',
     map: {
       center: [0, 0],
       zoom: 2,

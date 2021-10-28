@@ -26,7 +26,7 @@ const {
 
 const bs = browserSync.create();
 
-const baseurl = process.env.BASEURL || '';
+const baseurl = process.env.BASE_URL || '';
 
 // Environment
 // Set the correct environment, which controls what happens in config.js
@@ -57,11 +57,11 @@ process.env.APP_VERSION = readPackage().version;
 // ------------------------- Callable tasks ----------------------------------//
 // ---------------------------------------------------------------------------//
 
-function clean () {
+function clean() {
   return del(['.tmp', 'dist']);
 }
 
-function serve () {
+function serve() {
   bs.init({
     port: 9000,
     server: {
@@ -120,7 +120,7 @@ module.exports.default = gulp.series(
 // Compiles the user's script files to bundle.js.
 // When including the file in the index.html we need to refer to bundle.js not
 // main.js
-function javascript () {
+function javascript() {
   var brs = browserify({
     entries: ['./app/assets/scripts/main.js'],
     debug: true,
@@ -138,7 +138,7 @@ function javascript () {
       .on('update', bundler);
   }
 
-  function bundler () {
+  function bundler() {
     var b = brs.bundle();
 
     if (!isDev()) {
@@ -168,7 +168,7 @@ function javascript () {
 
 // Vendor scripts. Basically all the dependencies in the package.js.
 // Therefore be careful and keep the dependencies clean.
-function vendorScripts () {
+function vendorScripts() {
   // Ensure package is updated.
   const pkg = readPackage();
   // Note on how this works:
@@ -209,7 +209,7 @@ function vendorScripts () {
 // ------------------------- Collecticon tasks -------------------------------//
 // --------------------- (Font generation related) ---------------------------//
 // ---------------------------------------------------------------------------//
-function collecticons () {
+function collecticons() {
   return collecticonsCompile({
     dirPath: 'app/assets/icons/collecticons/',
     fontName: 'Collecticons',
@@ -226,12 +226,12 @@ function collecticons () {
 // --------------------------- Helper tasks -----------------------------------//
 // ----------------------------------------------------------------------------//
 
-function finish () {
+function finish() {
   return gulp.src('dist/**/*').pipe($.size({ title: 'build', gzip: true }));
 }
 
 // After being rendered by jekyll process the html files. (merge css files, etc)
-function html () {
+function html() {
   return gulp
     .src('app/*.html')
     .pipe($.useref({ searchPath: ['.tmp', 'app', '.'] }))
@@ -248,7 +248,7 @@ function html () {
     .pipe(gulp.dest('dist'));
 }
 
-function imagesImagemin () {
+function imagesImagemin() {
   return gulp
     .src(['app/assets/graphics/**/*'])
     .pipe(
@@ -269,7 +269,7 @@ function imagesImagemin () {
  * Avoid sending repeated js and css files through the minification pipeline.
  * This happens when there are multiple html pages to process.
  */
-function cacheUseref () {
+function cacheUseref() {
   /* eslint-disable-next-line prefer-const */
   let files = {
     // path: content
