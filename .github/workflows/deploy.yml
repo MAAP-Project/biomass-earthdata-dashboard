@@ -52,6 +52,7 @@ jobs:
         env:
           STAGE: ${{ needs.fetch-branch.outputs.branch }}
           PROJECT: biomass
+          BASEURL: https://earthdata.nasa.gov/maap-biomass
         run: yarn deploy
 
       - run: echo "Successfully deployed."
