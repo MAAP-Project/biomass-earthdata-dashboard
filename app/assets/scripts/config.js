@@ -30,7 +30,7 @@ if (process.env.NODE_ENV === 'development') {
   config = defaultsDeep(configurations.local || {}, config);
 }
 
-config.default.baseUrl = process.env.BASEURL || '';
+config.default.baseUrl = process.env.BASE_URL || '';
 config.default.appVersion = process.env.APP_VERSION || '0.0.0';
 
 // The require doesn't play super well with es6 imports. It creates an internal

@@ -84,11 +84,14 @@ These GitHub Secrets should be configured for the repository:
 
 - AWS_ACCOUNT_ID
 - AWS_REGION
-- PRODUCTION_API_URL
-- STAGING_API_URL
-- DIT_API_URL
+- PRODUCTION_API_URL (include `/v1 suffix`)
+- STAGING_API_URL (include `/v1 suffix`)
+- DIT_API_URL (include `/v1 suffix`)
+- PRODUCTION_EARTHDATA_URL
+- STAGING_EARTHDATA_URL
+- DIT_EARTHDATA_URL (not required, or can be set to empty string)
 
-The 3 API secrets should include `/v1` on the end, e.g., `https://jsxxxxxxh.execute-api.us-west-2.amazonaws.com/v1`.
+The three `API_URL` secrets should include `/v1` on the end, e.g., `https://jsxxxxxxh.execute-api.us-west-2.amazonaws.com/v1`.
 
 ### Deployment Manual
 Set the AWS environment variables:
@@ -109,7 +112,7 @@ yarn stage
 This will package the app and place all the contents in the `dist` directory.
 The app can then be run by any web server.
 
-**When building the site for deployment provide the base url trough the `BASEURL` environment variable. Omit the leading slash. (E.g. https://example.com)**
+**When building the site for deployment provide the base url through the `BASE_URL` environment variable. Omit the leading slash. (E.g. https://example.com)**
 
 Run on AWS:
 
