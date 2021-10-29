@@ -75,8 +75,8 @@ export default class About extends React.Component {
           </p>
           <div class="logos">
             <img src={`${baseUrl}/assets/graphics/content/about/logos/nasa-logo.png`} width='200' alt='NASA Logo' />
-            <img src={`${baseUrl}/assets/graphics/content/about/logos/esa-logo.png`} width='230' alt='ESA Logo' />
-            <img src={`${baseUrl}/assets/graphics/content/about/logos/jaxa-logo.png`} width='170' alt='JAXA Logo' />
+            <img src={`${baseUrl}/assets/graphics/content/about/logos/esa-logo.png`} width='220' alt='ESA Logo' />
+            <img src={`${baseUrl}/assets/graphics/content/about/logos/jaxa-logo.png`} width='180' alt='JAXA Logo' />
             <img src={`${baseUrl}/assets/graphics/content/about/logos/umd-logo.jpg`} width='200' alt='UMD Logo' />
             <img src={`${baseUrl}/assets/graphics/content/about/logos/nceo-logo.gif`} width='200' alt='NCEO Logo' />
             <img src={`${baseUrl}/assets/graphics/content/about/logos/ceos-logo.png`} width='200' alt='CEOS Logo' />
