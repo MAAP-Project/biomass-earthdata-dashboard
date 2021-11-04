@@ -10,15 +10,12 @@ on:
 env:
   AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
   AWS_REGION: ${{ secrets.AWS_REGION }}
-  PRODUCTION_API_URL: ${{ secrets.PRODUCTION_API_URL }}
-  STAGING_API_URL: ${{ secrets.STAGING_API_URL }}
-  DIT_API_URL: 'https://f5lwsxlvgi.execute-api.us-west-2.amazonaws.com/v1'
 
 jobs:
   fetch-branch:
     runs-on: ubuntu-latest
     outputs:
-      branch: ${{ steps.extract_branch.outputs.branch }}    
+      branch: ${{ steps.extract_branch.outputs.branch }}
     steps:
       - name: Extract branch name
         shell: bash
@@ -29,6 +26,21 @@ jobs:
     needs: fetch-branch
     runs-on: ubuntu-latest
     steps:
+      - name: Set Production env
+        if: needs.fetch-branch.outputs.branch == 'production'
+        run: |
+          echo "BASE_URL=${{ secrets.PRODUCTION_EARTHDATA_URL }}" >> $GITHUB_ENV
+          echo "API_URL=${{ secrets.PRODUCTION_API_URL }}" >> $GITHUB_ENV
+      - name: Set Staging env
+        if: needs.fetch-branch.outputs.branch == 'staging'
+        run: |
+          echo "BASE_URL=${{ secrets.STAGING_EARTHDATA_URL }}" >> $GITHUB_ENV
+          echo "API_URL=${{ secrets.STAGING_API_URL }}" >> $GITHUB_ENV
+      - name: Set DIT env
+        if: needs.fetch-branch.outputs.branch == 'main'
+        run: |
+          echo "BASE_URL=${{ secrets.DIT_EARTHDATA_URL }}" >> $GITHUB_ENV
+          echo "API_URL=${{ secrets.DIT_API_URL }}" >> $GITHUB_ENV
       - name: Configure AWS credentials from AWS Account
         uses: aws-actions/configure-aws-credentials@v1
         with:
