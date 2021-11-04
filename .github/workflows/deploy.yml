@@ -41,6 +41,10 @@ jobs:
         run: |
           echo "BASE_URL=${{ secrets.DIT_EARTHDATA_URL }}" >> $GITHUB_ENV
           echo "API_URL=${{ secrets.DIT_API_URL }}" >> $GITHUB_ENV
+      - name: Set aimee env
+        if: needs.fetch-branch.outputs.branch == 'aimee'
+        run: |
+          echo "API_URL=https://f5lwsxlvgi.execute-api.us-west-2.amazonaws.com/v1" >> $GITHUB_ENV
       - name: Configure AWS credentials from AWS Account
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -68,3 +72,4 @@ jobs:
         run: yarn deploy
 
       - run: echo "Successfully deployed."
+  
