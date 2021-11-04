@@ -577,6 +577,16 @@ class PageHeader extends React.Component {
                       About
                     </Button>
                   </li>
+                  <li>
+                    <Button
+                      element={NavLinkFilter}
+                      to='/contact'
+                      variation='achromic-plain'
+                      title='Contact'
+                    >
+                      Contact
+                    </Button>
+                  </li>                  
                   <ShareLi>
                     <Button
                       element='a'
