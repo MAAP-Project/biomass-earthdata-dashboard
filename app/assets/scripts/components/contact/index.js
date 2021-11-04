@@ -3,7 +3,6 @@ import styled from 'styled-components';
 
 import App from '../common/app';
 import config from '../../config';
-const { baseUrl } = config;
 import {
   Inpage,
   InpageHeader,
@@ -20,22 +19,6 @@ import { glsp } from '../../styles/utils/theme-values';
 const PageConstrainer = styled(Constrainer)`
   ${Prose} {
     max-width: 50rem;
-  }
-
-  div.logos {
-    max-width: 600px;
-    margin: 0px auto;
-  }
-
-  div.logos img {
-    padding-right: 2rem;
-  }
-
-  @media only screen and (max-width: 600px) {
-    div.logos img {
-      display: block;
-      margin: 0px auto;
-    }
   }
 
   > *:not(:last-child) {
