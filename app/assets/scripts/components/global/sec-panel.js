@@ -148,9 +148,6 @@ class ExpMapSecPanel extends React.Component {
               The products highlighted here are inputs to a global forest biomass harmonization activity, with inputs from NASA, ESA, JAXA, and NCEO. This dashboard provides a tool to explore and compare new biomass products, both for product producers and users. The biomass harmonization activity is working to validate and harmonize these products on a new open science platform, the <a href="https://scimaap.net/">NASA-ESA Multi Mission Algorithm and Analysis Platform</a>.  For more information on these products please visit: <a href="https://ceos.org/gst/biomass.html">https://ceos.org/gst/biomass.html</a>.
               </p>
             </SummaryExpandable>
-            <InsightsBlock>
-              {this.renderContent()}
-            </InsightsBlock>
           </BodyScroll>
         }
       />
