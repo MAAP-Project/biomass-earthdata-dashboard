@@ -28,7 +28,10 @@ jobs:
             ${{ runner.os }}-
 
       - run: npm install -g aws-cdk
-      # - run: npm audit --production
+      - run: sudo apt-get install jq
+
+      # "1004153 is a transitive dep of mapbox-gl, which would be a significant upgrade"
+      - run: "npm audit --production --json | jq -c '.advisories | keys[] | select( . as $in | ['1004153'] | index($in) | not)' | grep '.\\+'; exit $(( $? != 1 ? $? : 0 ))"
       - run: npm run test
       # - run: npm run lint # too many problems!
 
