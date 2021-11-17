@@ -27,14 +27,9 @@ jobs:
             ${{ runner.os }}-build-
             ${{ runner.os }}-
 
-      - name: Install AWS CDK
-        run: npm install -g aws-cdk
+      - run: npm install -g aws-cdk
+      - run: npm audit --production
+      - run: npm run test
+      # - run: npm run lint # too many problems!
 
-      - name: run npm audit
-        run: npm audit --production
-
-      - name: Run tests # LOL, there are none
-        run: npm run test
-
-      # - name: Run CDK synth
-        # run: cdk synth
+      - run: yarn build && cd cdk && yarn install && npm run build && cdk deploy
