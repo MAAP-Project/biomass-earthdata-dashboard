@@ -28,7 +28,7 @@ jobs:
             ${{ runner.os }}-
 
       - run: npm install -g aws-cdk
-      - run: npm audit --production
+      # - run: npm audit --production
       - run: npm run test
       # - run: npm run lint # too many problems!
 
