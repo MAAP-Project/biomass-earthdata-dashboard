@@ -8633,10 +8633,10 @@ react-side-effect@^2.1.0:
   resolved "https://registry.yarnpkg.com/react-side-effect/-/react-side-effect-2.1.0.tgz#1ce4a8b4445168c487ed24dab886421f74d380d3"
   integrity sha512-IgmcegOSi5SNX+2Snh1vqmF0Vg/CbkycU9XZbOHJlZ6kMzTmi3yc254oB1WCkgA7OQtIAoLmcSFuHTc/tlcqXg==
 
-react-tether@^2.0.7:
-  version "2.0.7"
-  resolved "https://registry.yarnpkg.com/react-tether/-/react-tether-2.0.7.tgz#81b15e84d9588b0f9e4c40a92596cce46d98e104"
-  integrity sha512-OZAMoT0y1//SN357HiJKic+Ax/kMe3CwdaDT+05P/DHMR9adTYH2RTMDZMjw/OGMmLlBFg6UrDFXiulVKKIBRw==
+react-tether@^2.0.8:
+  version "2.0.8"
+  resolved "https://registry.yarnpkg.com/react-tether/-/react-tether-2.0.8.tgz#770bb2c4b794c96fe163404273e8b5b7ddb3c153"
+  integrity sha512-k5imIcN7shOy0z59WKLljvBwmGqzAcqsjHtBk8h03F3aFn+Wdz4p56ecOLCqvBb/gpQp9WEFv+Saclro6GZQCQ==
   dependencies:
     prop-types "^15.6.2"
     tether "^1.4.5"
