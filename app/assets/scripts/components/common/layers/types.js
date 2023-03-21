@@ -16,7 +16,7 @@ const prepDateSource = (source, date, timeUnit = 'month') => {
   };
 };
 
-const prepGammaSource = (source, knobPos) => {
+const prepGammaSource = (source, knobPos = 0) => {
   // Gamma is calculated with the following scale:
   // domain: 0-100  range: 2-0.1
   // The higher the Knob, the lower the gamma.
@@ -33,7 +33,9 @@ const prepSource = (layerInfo, source, date, knobPos) => {
   if (layerInfo.legend.type === 'gradient-adjustable') {
     source = prepGammaSource(source, knobPos);
   }
-  source = prepDateSource(source, date, layerInfo.timeUnit);
+  if (date) {
+    source = prepDateSource(source, date, layerInfo.timeUnit);
+  }
   return source;
 };
 
@@ -138,8 +140,7 @@ export const layerTypes = {
               type: 'raster',
               source: id,
               paint: paint || {}
-            },
-            'admin-0-boundary-bg'
+            }
           );
         }
       }
@@ -170,13 +171,12 @@ export const layerTypes = {
             type: 'raster',
             source: id,
             paint: paint || {}
-          },
-          'admin-0-boundary-bg'
+          }
         );
       }
     }
   },
-  raster: {
+  'raster': {
     update: (ctx, layerInfo, prevProps) => {
       const { mbMap, mbMapComparing, mbMapComparingLoaded, props } = ctx;
       const { id, compare, paint, source } = layerInfo;
@@ -186,7 +186,10 @@ export const layerTypes = {
       // may happen in the stories when maintaining the layer and changing the
       // product. One example is the slowdown raster layer on la and sf.
       const sourceTiles = mbMap.getSource(id).tiles;
-      const newSourceTiles = source.tiles;
+      const knobPos = layerInfo.knobCurrPos;
+      const newSourceTiles = prepSource(layerInfo, source, null, knobPos).tiles;
+
+
       // Quick compare
       if (sourceTiles && sourceTiles.join('-') !== newSourceTiles.join('-')) {
         replaceRasterTiles(mbMap, id, newSourceTiles);
@@ -215,8 +218,7 @@ export const layerTypes = {
             type: 'raster',
             source: id,
             paint: paint || {}
-          },
-          'admin-0-boundary-bg'
+          }
         );
       }
     },
@@ -230,20 +232,20 @@ export const layerTypes = {
     show: (ctx, layerInfo) => {
       const { mbMap } = ctx;
       const { id, source, paint } = layerInfo;
-
       if (mbMap.getSource(id)) {
         mbMap.setLayoutProperty(id, 'visibility', 'visible');
       } else {
-        mbMap.addSource(id, source);
-        mbMap.addLayer(
-          {
-            id: id,
-            type: 'raster',
-            source: id,
-            paint: paint || {}
-          },
-          'admin-0-boundary-bg'
-        );
+        const preparedSource = prepSource(layerInfo, source, null, layerInfo.knobCurrPos)
+        mbMap.addSource(id, preparedSource);
+        const layer_properties = {
+          id: id,
+          type: 'raster',
+          source: id,
+          minzoom: source.minzoom,
+          maxzoom: source.maxzoom,
+          paint: paint || {}
+        }
+        mbMap.addLayer(layer_properties);
       }
     }
   },
