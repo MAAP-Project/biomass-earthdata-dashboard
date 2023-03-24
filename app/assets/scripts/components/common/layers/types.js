@@ -75,7 +75,7 @@ const toggleOrAddLayer = (mbMap, id, source, type, paint, beforeId) => {
     if (source['source_layer']) {
       layer_data['source-layer'] = source['source_layer']
     };
-    mbMap.addLayer(layer_data, 'admin-0-boundary-bg');
+    mbMap.addLayer(layer_data);
   }
 };
 
