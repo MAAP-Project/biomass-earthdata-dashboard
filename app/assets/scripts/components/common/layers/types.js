@@ -236,6 +236,7 @@ export const layerTypes = {
     show: (ctx, layerInfo) => {
       const { mbMap } = ctx;
       const { id, source, paint } = layerInfo;
+
       if (mbMap.getSource(id)) {
         mbMap.setLayoutProperty(id, 'visibility', 'visible');
       } else {
