@@ -75,7 +75,7 @@ const toggleOrAddLayer = (mbMap, id, source, type, paint, beforeId) => {
     if (source['source_layer']) {
       layer_data['source-layer'] = source['source_layer']
     };
-    mbMap.addLayer(layer_data);
+    mbMap.addLayer(layer_data, 'admin-0-boundary-bg');
   }
 };
 
@@ -140,7 +140,8 @@ export const layerTypes = {
               type: 'raster',
               source: id,
               paint: paint || {}
-            }
+            },
+            'admin-0-boundary-bg'
           );
         }
       }
@@ -171,12 +172,13 @@ export const layerTypes = {
             type: 'raster',
             source: id,
             paint: paint || {}
-          }
+          },
+          'admin-0-boundary-bg'
         );
       }
     }
   },
-  'raster': {
+  raster: {
     update: (ctx, layerInfo, prevProps) => {
       const { mbMap, mbMapComparing, mbMapComparingLoaded, props } = ctx;
       const { id, compare, paint, source } = layerInfo;
@@ -218,7 +220,8 @@ export const layerTypes = {
             type: 'raster',
             source: id,
             paint: paint || {}
-          }
+          },
+          'admin-0-boundary-bg'
         );
       }
     },
@@ -245,7 +248,7 @@ export const layerTypes = {
           maxzoom: source.maxzoom,
           paint: paint || {}
         }
-        mbMap.addLayer(layer_properties);
+        mbMap.addLayer(layer_properties, 'admin-0-boundary-bg');
       }
     }
   },
