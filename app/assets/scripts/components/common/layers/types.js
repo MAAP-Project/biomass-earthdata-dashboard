@@ -184,17 +184,18 @@ export const layerTypes = {
       const { id, compare, paint, source } = layerInfo;
       const { comparing } = props;
 
+      const knobPos = layerInfo.knobCurrPos || 50;
+
       // Check if the source tiles have changed and need to be replaced. This
       // may happen in the stories when maintaining the layer and changing the
       // product. One example is the slowdown raster layer on la and sf.
-      const sourceTiles = mbMap.getSource(id).tiles;
-      const knobPos = layerInfo.knobCurrPos;
-      const newSourceTiles = prepSource(layerInfo, source, null, knobPos).tiles;
 
+      const sourceTiles = mbMap.getSource(id).tiles;
+      const newSource = prepGammaSource(source, knobPos);
 
       // Quick compare
-      if (sourceTiles && sourceTiles.join('-') !== newSourceTiles.join('-')) {
-        replaceRasterTiles(mbMap, id, newSourceTiles);
+      if (sourceTiles && sourceTiles.join('-') !== newSource.tiles.join('-')) {
+        replaceRasterTiles(mbMap, id, newSource.tiles);
       }
 
       // Do not update if:
@@ -239,7 +240,10 @@ export const layerTypes = {
         mbMap.setLayoutProperty(id, 'visibility', 'visible');
       } else {
         const preparedSource = prepSource(layerInfo, source, null, layerInfo.knobCurrPos)
-        mbMap.addSource(id, preparedSource);
+        mbMap.addSource(
+          id,
+          prepGammaSource(source, layerInfo.knobCurrPos || 50)        
+        );
         const layer_properties = {
           id: id,
           type: 'raster',
