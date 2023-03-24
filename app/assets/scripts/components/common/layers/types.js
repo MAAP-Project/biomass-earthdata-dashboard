@@ -240,7 +240,6 @@ export const layerTypes = {
       if (mbMap.getSource(id)) {
         mbMap.setLayoutProperty(id, 'visibility', 'visible');
       } else {
-        const preparedSource = prepSource(layerInfo, source, null, layerInfo.knobCurrPos)
         mbMap.addSource(
           id,
           prepGammaSource(source, layerInfo.knobCurrPos || 50)        
