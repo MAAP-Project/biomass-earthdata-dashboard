@@ -30,7 +30,7 @@ In the [biomass-dashboard-api](https://github.com/MAAP-Project/biomass-dashboard
 Then run the following command to get the docker up and running.
 
 ```bash
-docker-compose up --build
+docker-compose up --build api -e ENV=LOCAL
 ```
 
 The API is now running at [localhost:8000](http://localhost:8000). Check your datasets at [localhost:8000/v1/datasets](http://localhost:8000/v1/datasets)

@@ -4,7 +4,7 @@ module.exports = {
     appTitle: 'Biomass Earthdata Dashboard',
     appDescription: 'Explore the Biomass datasets.',
     // twitterHandle: '@NASAEarthData',
-    mbToken: 'pk.eyJ1IjoiY292aWQtbmFzYSIsImEiOiJjbDRyaGY4cjgwcjF6M2tscHg2MGR5dzBoIn0.e-izXV-_2jFzZNT8erOOjQ',
+    mbToken: 'pk.eyJ1IjoiY292aWQtbmFzYSIsImEiOiJjbDR6dDV5dWgwZTRtM2RvN2F1a3R1dnhmIn0.ueoAoFT0yBresvYVl8B6Fg',
     api: process.env.API_URL || 'http://localhost:8000/v1',
     map: {
       center: [0, 0],
