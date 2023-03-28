@@ -16,7 +16,7 @@ const prepDateSource = (source, date, timeUnit = 'month') => {
   };
 };
 
-const prepGammaSource = (source, knobPos) => {
+const prepGammaSource = (source, knobPos = 0) => {
   // Gamma is calculated with the following scale:
   // domain: 0-100  range: 2-0.1
   // The higher the Knob, the lower the gamma.
@@ -33,7 +33,9 @@ const prepSource = (layerInfo, source, date, knobPos) => {
   if (layerInfo.legend.type === 'gradient-adjustable') {
     source = prepGammaSource(source, knobPos);
   }
-  source = prepDateSource(source, date, layerInfo.timeUnit);
+  if (date) {
+    source = prepDateSource(source, date, layerInfo.timeUnit);
+  }
   return source;
 };
 
@@ -240,17 +242,17 @@ export const layerTypes = {
       } else {
         mbMap.addSource(
           id,
-          prepGammaSource(source, layerInfo.knobCurrPos || 50)
+          prepGammaSource(source, layerInfo.knobCurrPos || 50)        
         );
-        mbMap.addLayer(
-          {
-            id: id,
-            type: 'raster',
-            source: id,
-            paint: paint || {}
-          },
-          'admin-0-boundary-bg'
-        );
+        const layer_properties = {
+          id: id,
+          type: 'raster',
+          source: id,
+          minzoom: source.minzoom,
+          maxzoom: source.maxzoom,
+          paint: paint || {}
+        }
+        mbMap.addLayer(layer_properties, 'admin-0-boundary-bg');
       }
     }
   },
