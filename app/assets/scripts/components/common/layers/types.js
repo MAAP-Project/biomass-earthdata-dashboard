@@ -7,6 +7,20 @@ const dateFormats = {
   day: 'yyyy.MM.dd'
 };
 
+// Helper function to normalize source to an array
+// API can send source as either a single object or an array of objects
+const getSourceList = (source) => {
+  if (!source) return [];
+  return Array.isArray(source) ? source : [source];
+};
+
+// Helper function to generate unique source/layer IDs
+// Single source: returns base id
+// Multiple sources: returns id-0, id-1, etc.
+const getSourceId = (baseId, sourceList, index) => {
+  return sourceList.length > 1 ? `${baseId}-${index}` : baseId;
+};
+
 const prepDateSource = (source, date, timeUnit = 'month') => {
   return {
     ...source,
@@ -22,7 +36,6 @@ const prepGammaSource = (source, knobPos = 0) => {
   // The higher the Knob, the lower the gamma.
   // This is a linear scale of type y = -mx + b
   // y = -0.02x + 2;
-
   return {
     ...source,
     tiles: source.tiles.map((t) => t.replace('{gamma}', -0.019 * knobPos + 2))
@@ -73,8 +86,8 @@ const toggleOrAddLayer = (mbMap, id, source, type, paint, beforeId) => {
       paint
     };
     if (source['source_layer']) {
-      layer_data['source-layer'] = source['source_layer']
-    };
+      layer_data['source-layer'] = source['source_layer'];
+    }
     mbMap.addLayer(layer_data);
   }
 };
@@ -82,9 +95,9 @@ const toggleOrAddLayer = (mbMap, id, source, type, paint, beforeId) => {
 export const layerTypes = {
   'raster-timeseries': {
     update: (ctx, layerInfo, prevProps) => {
-
       const { mbMap, mbMapComparing, mbMapComparingLoaded, props } = ctx;
-      const { id, source, compare, paint } = layerInfo;
+      const { id, compare, paint } = layerInfo;
+      const sourceList = getSourceList(layerInfo.source);
       const prevLayerInfo = prevProps.layers.find((l) => l.id === layerInfo.id);
       const { date, comparing } = props;
 
@@ -102,31 +115,39 @@ export const layerTypes = {
         knobPos === knobPosPrev &&
         // Compare didn't change.
         comparing === prevProps.comparing
-      ) { return; }
+      ) {
+        return;
+      }
 
-      // The source we're updating is not present.
-      if (!mbMap.getSource(id)) return;
+      // Check if any of the sources we're updating are present.
+      const firstSourceId = getSourceId(id, sourceList, 0);
+      if (!mbMap.getSource(firstSourceId)) return;
 
       // If we're comparing, and the compare map is not loaded.
       if (comparing && !mbMapComparingLoaded) return;
 
       // END update checks.
 
-      // Update layer tiles.
-      const tiles = prepSource(layerInfo, source, date, knobPos).tiles;
-      replaceRasterTiles(mbMap, id, tiles);
+      // Update layer tiles for all sources.
+      sourceList.forEach((source, index) => {
+        const sourceId = getSourceId(id, sourceList, index);
+        const tiles = prepSource(layerInfo, source, date, knobPos).tiles;
+        replaceRasterTiles(mbMap, sourceId, tiles);
+      });
 
       // Update/init compare layer tiles.
       if (comparing) {
         const compareDate =
           typeof compare.compareDate === 'function'
             ? compare.compareDate(date)
-            // Default compare date is 5y ago.
-            : sub(date, { years: 5 });
+            : // Default compare date is 5y ago.
+              sub(date, { years: 5 });
 
+        // For compare, use the first source or compare.source if specified
+        const compareSourceToUse = compare.source || sourceList[0];
         const sourceCompare = prepSource(
           { ...layerInfo, ...compare },
-          compare.source || source,
+          compareSourceToUse,
           compareDate,
           knobPos
         );
@@ -149,39 +170,54 @@ export const layerTypes = {
     hide: (ctx, layerInfo) => {
       const { mbMap } = ctx;
       const { id } = layerInfo;
-      if (mbMap.getSource(id)) {
-        mbMap.setLayoutProperty(id, 'visibility', 'none');
-      }
+      const sourceList = getSourceList(layerInfo.source);
+
+      // Hide all sources
+      sourceList.forEach((source, index) => {
+        const sourceId = getSourceId(id, sourceList, index);
+        if (mbMap.getSource(sourceId)) {
+          mbMap.setLayoutProperty(sourceId, 'visibility', 'none');
+        }
+      });
     },
     show: (ctx, layerInfo) => {
       const { mbMap, props } = ctx;
-      const { id, source, paint } = layerInfo;
+      const { id, paint } = layerInfo;
+      const sourceList = getSourceList(layerInfo.source);
       const { date } = props;
       if (!date) return;
 
-      if (mbMap.getSource(id)) {
-        mbMap.setLayoutProperty(id, 'visibility', 'visible');
-      } else {
-        mbMap.addSource(
-          id,
-          prepSource(layerInfo, source, date, layerInfo.knobCurrPos)
-        );
-        mbMap.addLayer(
-          {
-            id: id,
-            type: 'raster',
-            source: id,
-            paint: paint || {}
-          },
-          'admin-0-boundary-bg'
-        );
-      }
+      // Show/add all sources
+      sourceList.forEach((source, index) => {
+        const sourceId = getSourceId(id, sourceList, index);
+
+        if (mbMap.getSource(sourceId)) {
+          mbMap.setLayoutProperty(sourceId, 'visibility', 'visible');
+        } else {
+          mbMap.addSource(
+            sourceId,
+            prepSource(layerInfo, source, date, layerInfo.knobCurrPos)
+          );
+          mbMap.addLayer(
+            {
+              id: sourceId,
+              type: 'raster',
+              source: sourceId,
+              minzoom: source.minzoom,
+              maxzoom: source.maxzoom,
+              paint: paint || {}
+            },
+            'admin-0-boundary-bg'
+          );
+        }
+      });
     }
   },
   raster: {
     update: (ctx, layerInfo, prevProps) => {
       const { mbMap, mbMapComparing, mbMapComparingLoaded, props } = ctx;
-      const { id, compare, paint, source } = layerInfo;
+      const { id, compare, paint } = layerInfo;
+      const sourceList = getSourceList(layerInfo.source);
       const { comparing } = props;
 
       const knobPos = layerInfo.knobCurrPos || 50;
@@ -189,14 +225,22 @@ export const layerTypes = {
       // Check if the source tiles have changed and need to be replaced. This
       // may happen in the stories when maintaining the layer and changing the
       // product. One example is the slowdown raster layer on la and sf.
+      sourceList.forEach((source, index) => {
+        const sourceId = getSourceId(id, sourceList, index);
+        const mapSource = mbMap.getSource(sourceId);
+        if (mapSource) {
+          const sourceTiles = mapSource.tiles;
+          const newSource = prepGammaSource(source, knobPos);
 
-      const sourceTiles = mbMap.getSource(id).tiles;
-      const newSource = prepGammaSource(source, knobPos);
-
-      // Quick compare
-      if (sourceTiles && sourceTiles.join('-') !== newSource.tiles.join('-')) {
-        replaceRasterTiles(mbMap, id, newSource.tiles);
-      }
+          // Quick compare
+          if (
+            sourceTiles &&
+            sourceTiles.join('-') !== newSource.tiles.join('-')
+          ) {
+            replaceRasterTiles(mbMap, sourceId, newSource.tiles);
+          }
+        }
+      });
 
       // Do not update if:
       if (
@@ -204,7 +248,9 @@ export const layerTypes = {
         comparing === prevProps.comparing ||
         // There's no comparing map.
         !mbMapComparing
-      ) { return; }
+      ) {
+        return;
+      }
 
       // If we're comparing, and the compare map is not loaded.
       if (comparing && !mbMapComparingLoaded) return;
@@ -229,31 +275,43 @@ export const layerTypes = {
     hide: (ctx, layerInfo) => {
       const { mbMap } = ctx;
       const { id } = layerInfo;
-      if (mbMap.getSource(id)) {
-        mbMap.setLayoutProperty(id, 'visibility', 'none');
-      }
+      const sourceList = getSourceList(layerInfo.source);
+
+      // Hide all sources
+      sourceList.forEach((source, index) => {
+        const sourceId = getSourceId(id, sourceList, index);
+        if (mbMap.getSource(sourceId)) {
+          mbMap.setLayoutProperty(sourceId, 'visibility', 'none');
+        }
+      });
     },
     show: (ctx, layerInfo) => {
       const { mbMap } = ctx;
-      const { id, source, paint } = layerInfo;
+      const { id, paint } = layerInfo;
+      const sourceList = getSourceList(layerInfo.source);
 
-      if (mbMap.getSource(id)) {
-        mbMap.setLayoutProperty(id, 'visibility', 'visible');
-      } else {
-        mbMap.addSource(
-          id,
-          prepGammaSource(source, layerInfo.knobCurrPos || 50)        
-        );
-        const layer_properties = {
-          id: id,
-          type: 'raster',
-          source: id,
-          minzoom: source.minzoom,
-          maxzoom: source.maxzoom,
-          paint: paint || {}
+      // Show/add all sources
+      sourceList.forEach((source, index) => {
+        const sourceId = getSourceId(id, sourceList, index);
+
+        if (mbMap.getSource(sourceId)) {
+          mbMap.setLayoutProperty(sourceId, 'visibility', 'visible');
+        } else {
+          mbMap.addSource(
+            sourceId,
+            prepGammaSource(source, layerInfo.knobCurrPos || 50)
+          );
+          const layer_properties = {
+            id: sourceId,
+            type: 'raster',
+            source: sourceId,
+            minzoom: source.minzoom,
+            maxzoom: source.maxzoom,
+            paint: paint || {}
+          };
+          mbMap.addLayer(layer_properties, 'admin-0-boundary-bg');
         }
-        mbMap.addLayer(layer_properties, 'admin-0-boundary-bg');
-      }
+      });
     }
   },
   'inference-timeseries': {
@@ -271,7 +329,9 @@ export const layerTypes = {
         date &&
         // Dates are the same
         date.getTime() === prevProps.date.getTime()
-      ) { return; }
+      ) {
+        return;
+      }
 
       // The source we're updating is not present.
       if (!mbMap.getSource(vecId) || !mbMap.getSource(rastId)) return;
@@ -333,13 +393,7 @@ export const layerTypes = {
         )
       };
 
-      toggleOrAddLayer(
-        mbMap,
-        vecId,
-        vectorL,
-        'line',
-        inferPaint
-      );
+      toggleOrAddLayer(mbMap, vecId, vectorL, 'line', inferPaint);
       toggleOrAddLayer(mbMap, rastId, rasterL, 'raster', {});
 
       fetch(vectorL.data)
@@ -352,11 +406,10 @@ export const layerTypes = {
         });
     }
   },
-  'geojson': {
+  geojson: {
     hide: (ctx, layerInfo) => {
       const { mbMap } = ctx;
       const { id } = layerInfo;
-
       const geojsonId = `${id}-geojson`;
 
       if (mbMap.getSource(geojsonId)) {
@@ -372,20 +425,13 @@ export const layerTypes = {
         ...source,
         data: source.data
       };
-      toggleOrAddLayer(
-        mbMap,
-        geojsonId,
-        geojsonL,
-        'circle',
-        paint
-      );
+      toggleOrAddLayer(mbMap, geojsonId, geojsonL, 'circle', paint);
     }
   },
-  'vector': {
+  vector: {
     hide: (ctx, layerInfo) => {
       const { mbMap } = ctx;
       const { id } = layerInfo;
-
       const vecId = `${id}-vector`;
 
       if (mbMap.getSource(vecId)) {
@@ -401,13 +447,7 @@ export const layerTypes = {
         ...source,
         data: source.data
       };
-      toggleOrAddLayer(
-        mbMap,
-        vecId,
-        vectorL,
-        'circle',
-        paint
-      );
+      toggleOrAddLayer(mbMap, vecId, vectorL, 'circle', paint);
     }
   }
 };
