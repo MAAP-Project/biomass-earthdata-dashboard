@@ -410,68 +410,44 @@ export const layerTypes = {
     hide: (ctx, layerInfo) => {
       const { mbMap } = ctx;
       const { id } = layerInfo;
-      const sourceList = getSourceList(layerInfo.source);
+      const geojsonId = `${id}-geojson`;
 
-      // Hide all sources
-      sourceList.forEach((source, index) => {
-        const sourceId = getSourceId(id, sourceList, index);
-        const geojsonId = `${sourceId}-geojson`;
-
-        if (mbMap.getSource(geojsonId)) {
-          mbMap.setLayoutProperty(geojsonId, 'visibility', 'none');
-        }
-      });
+      if (mbMap.getSource(geojsonId)) {
+        mbMap.setLayoutProperty(geojsonId, 'visibility', 'none');
+      }
     },
     show: (ctx, layerInfo) => {
       const { mbMap } = ctx;
-      const { id, paint } = layerInfo;
-      const sourceList = getSourceList(layerInfo.source);
+      const { id, source, paint } = layerInfo;
+      const geojsonId = `${id}-geojson`;
 
-      // Show/add all sources
-      sourceList.forEach((source, index) => {
-        const sourceId = getSourceId(id, sourceList, index);
-        const geojsonId = `${sourceId}-geojson`;
-
-        const geojsonL = {
-          ...source,
-          data: source.data
-        };
-        toggleOrAddLayer(mbMap, geojsonId, geojsonL, 'circle', paint);
-      });
+      const geojsonL = {
+        ...source,
+        data: source.data
+      };
+      toggleOrAddLayer(mbMap, geojsonId, geojsonL, 'circle', paint);
     }
   },
   vector: {
     hide: (ctx, layerInfo) => {
       const { mbMap } = ctx;
       const { id } = layerInfo;
-      const sourceList = getSourceList(layerInfo.source);
+      const vecId = `${id}-vector`;
 
-      // Hide all sources
-      sourceList.forEach((source, index) => {
-        const sourceId = getSourceId(id, sourceList, index);
-        const vecId = `${sourceId}-vector`;
-
-        if (mbMap.getSource(vecId)) {
-          mbMap.setLayoutProperty(vecId, 'visibility', 'none');
-        }
-      });
+      if (mbMap.getSource(vecId)) {
+        mbMap.setLayoutProperty(vecId, 'visibility', 'none');
+      }
     },
     show: (ctx, layerInfo) => {
       const { mbMap } = ctx;
-      const { id, paint } = layerInfo;
-      const sourceList = getSourceList(layerInfo.source);
+      const { id, source, paint } = layerInfo;
+      const vecId = `${id}-vector`;
 
-      // Show/add all sources
-      sourceList.forEach((source, index) => {
-        const sourceId = getSourceId(id, sourceList, index);
-        const vecId = `${sourceId}-vector`;
-
-        const vectorL = {
-          ...source,
-          data: source.data
-        };
-        toggleOrAddLayer(mbMap, vecId, vectorL, 'circle', paint);
-      });
+      const vectorL = {
+        ...source,
+        data: source.data
+      };
+      toggleOrAddLayer(mbMap, vecId, vectorL, 'circle', paint);
     }
   }
 };
