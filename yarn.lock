@@ -8633,12 +8633,11 @@ react-side-effect@^2.1.0:
   resolved "https://registry.yarnpkg.com/react-side-effect/-/react-side-effect-2.1.0.tgz#1ce4a8b4445168c487ed24dab886421f74d380d3"
   integrity sha512-IgmcegOSi5SNX+2Snh1vqmF0Vg/CbkycU9XZbOHJlZ6kMzTmi3yc254oB1WCkgA7OQtIAoLmcSFuHTc/tlcqXg==
 
-react-tether@^2.0.7:
-  version "2.0.7"
-  resolved "https://registry.yarnpkg.com/react-tether/-/react-tether-2.0.7.tgz#81b15e84d9588b0f9e4c40a92596cce46d98e104"
-  integrity sha512-OZAMoT0y1//SN357HiJKic+Ax/kMe3CwdaDT+05P/DHMR9adTYH2RTMDZMjw/OGMmLlBFg6UrDFXiulVKKIBRw==
+react-tether@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/react-tether/-/react-tether-3.0.1.tgz#6a6dce4ceb2246de69f68620e50d633d995eb023"
+  integrity sha512-c9yI50o7thRFBlgbb63RZoAfkhUUjOSwXEbiOqRUi7+QgAp5XMlGMn8ZFj2HXqA8+cm2+nFmBetWnBlypCpSwg==
   dependencies:
-    prop-types "^15.6.2"
     tether "^1.4.5"
 
 react-tooltip@^4.2.6:
